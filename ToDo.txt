@@ -1,0 +1,16 @@
+- Viết base		DONE!
+- Vẽ background. (rừng, biển, động)
+- Vẽ char, gồm:
+	+ Khỉ 
+	+ Chim
+	+ Lợn
+	+ Rùa
+	+ Cá sấu
+- Vẽ obstacle:
+	+ lều
+	+ Hộp
+	+ Đá
+- Add và cho background roll.
+- Add và thêm animation cho khỉ.
+- Thêm func tính đường nhảy của khỉ
+- 

@@ -1,0 +1,33 @@
+# depslib dependency file v1.0
+1646639987 source:d:\code\sdl\bananakong\function\basefunc.cpp
+	"BaseFunc.h"
+
+1646643332 d:\code\sdl\bananakong\function\basefunc.h
+	<bits/stdc++.h>
+	"SDL.h"
+	"SDL_image.h"
+	"SDL_mixer.h"
+	"SDL_ttf.h"
+	<string>
+
+1646642311 source:d:\code\sdl\bananakong\function\baseobject.cpp
+	"BaseObject.h"
+
+1646642298 d:\code\sdl\bananakong\function\baseobject.h
+	"BaseFunc.h"
+
+1646642837 source:d:\code\sdl\bananakong\main.cpp
+	<bits/stdc++.h>
+	"Function/BaseFunc.h"
+	"Function/BaseObject.h"
+	"Function/GameFunc.h"
+
+1646639987 d:\code\sdl\bananakong\function\basefunc.cpp
+	"BaseFunc.h"
+
+1646641312 d:\code\sdl\bananakong\function\baseobject.cpp
+	"BaseObject.h"
+
+1646643711 d:\code\sdl\bananakong\function\gamefunc.h
+	"BaseFunc.h"
+
