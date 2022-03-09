@@ -13,6 +13,8 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="Function" />
+					<Add directory="include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -22,6 +24,8 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="Function" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -32,7 +36,26 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Material/Background/AllLayer.png" />
+		<Unit filename="Material/Background/Ground.png" />
+		<Unit filename="Material/Background/Layer0.png" />
+		<Unit filename="Material/Background/Layer1.png" />
+		<Unit filename="Material/Background/Layer2.png" />
+		<Unit filename="Material/Background/Layer3.png" />
+		<Unit filename="Material/Characters/Monkey/MonkeyIdle.png" />
+		<Unit filename="Material/Characters/Monkey/MonkeyJump.png" />
+		<Unit filename="Material/Characters/Monkey/MonkeyJump_NoPara.png" />
+		<Unit filename="Material/Characters/Monkey/MonkeyRun.png" />
+		<Unit filename="Material/Characters/Monkey/MonkeyWalk.png" />
+		<Unit filename="include/BaseFunc.h" />
+		<Unit filename="include/BaseObj.h" />
+		<Unit filename="include/GameFunc.h" />
+		<Unit filename="include/GameObj.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/BaseFunc.cpp" />
+		<Unit filename="src/BaseObj.cpp" />
+		<Unit filename="src/GameFunc.cpp" />
+		<Unit filename="src/GameObj.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

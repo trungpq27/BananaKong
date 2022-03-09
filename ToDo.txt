@@ -1,7 +1,7 @@
-- Viết base		DONE!
-- Vẽ background. (rừng, biển, động)
+- Viết base		(DONE!)
+- Vẽ background. (rừng (DONE!), biển, động)
 - Vẽ char, gồm:
-	+ Khỉ 
+	+ Khỉ		(DONE!)
 	+ Chim
 	+ Lợn
 	+ Rùa
@@ -10,7 +10,7 @@
 	+ lều
 	+ Hộp
 	+ Đá
-- Add và cho background roll.
-- Add và thêm animation cho khỉ.
+- Add và cho background roll.		(DONE!)
+- Add và thêm animation cho khỉ		(semi)
 - Thêm func tính đường nhảy của khỉ
 - 

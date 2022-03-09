@@ -12,16 +12,22 @@ private:
     int mWidth;
     int mHeight;
 
+
 public:
     BaseObject();
+
     ~BaseObject();
-    bool loadFromFile(std::string path);
+
+    bool loadFromFile(std::string path, SDL_Renderer *gRenderer);
+
     void free();
-    void render(int x, int y);
+
+    void render(SDL_Renderer* gRenderer, int x, int y, int wSize, int hSize, SDL_Rect* clip = NULL);
+
     int getWidth();
+
     int getHeight();
 
 };
 
-
-#endif BASE_OBJECT_H_
+#endif //BASE_OBJECT_H_

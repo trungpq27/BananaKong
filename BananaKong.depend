@@ -1,26 +1,27 @@
 # depslib dependency file v1.0
-1646639987 source:d:\code\sdl\bananakong\function\basefunc.cpp
+1646738420 source:d:\code\sdl\bananakong\function\basefunc.cpp
 	"BaseFunc.h"
 
-1646643332 d:\code\sdl\bananakong\function\basefunc.h
+1646739034 d:\code\sdl\bananakong\function\basefunc.h
 	<bits/stdc++.h>
-	"SDL.h"
-	"SDL_image.h"
-	"SDL_mixer.h"
-	"SDL_ttf.h"
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+	<iostream>
 	<string>
 
-1646642311 source:d:\code\sdl\bananakong\function\baseobject.cpp
+1646738937 source:d:\code\sdl\bananakong\function\baseobject.cpp
 	"BaseObject.h"
 
-1646642298 d:\code\sdl\bananakong\function\baseobject.h
+1646738948 d:\code\sdl\bananakong\function\baseobject.h
 	"BaseFunc.h"
 
-1646642837 source:d:\code\sdl\bananakong\main.cpp
-	<bits/stdc++.h>
-	"Function/BaseFunc.h"
-	"Function/BaseObject.h"
-	"Function/GameFunc.h"
+1646814427 source:d:\code\sdl\bananakong\main.cpp
+	"include/GameObj.h"
+	"include/BaseFunc.h"
+	"include/BaseObj.h"
+	"include/GameFunc.h"
 
 1646639987 d:\code\sdl\bananakong\function\basefunc.cpp
 	"BaseFunc.h"
@@ -30,4 +31,96 @@
 
 1646643711 d:\code\sdl\bananakong\function\gamefunc.h
 	"BaseFunc.h"
+
+1646736283 d:\code\sdl\bananakong\object\gameobject.h
+	"../Function/BaseFunc.h"
+
+1646736285 source:d:\code\sdl\bananakong\object\gameobject.cpp
+	"GameObject.h"
+
+1646736300 source:d:\code\sdl\bananakong\material\basefunc.cpp
+	"BaseFunc.h"
+
+1646736237 d:\code\sdl\bananakong\material\basefunc.h
+	<bits/stdc++.h>
+	<string>
+	<stdio.h>
+	"SDL.h"
+	"SDL_image.h"
+	"SDL_mixer.h"
+	"SDL_ttf.h"
+
+1646736470 source:d:\code\sdl\bananakong\material\baseobject.cpp
+	"BaseObject.h"
+
+1646736452 d:\code\sdl\bananakong\material\baseobject.h
+	"BaseFunc.h"
+
+1646736285 source:d:\code\sdl\bananakong\material\gameobject.cpp
+	"GameObject.h"
+
+1646736574 d:\code\sdl\bananakong\material\gameobject.h
+	"BaseFunc.h"
+
+1646738420 source:d:\code\sdl\bananakong\basefunc.cpp
+	"BaseFunc.h"
+
+1646739034 d:\code\sdl\bananakong\basefunc.h
+	<bits/stdc++.h>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+	<iostream>
+	<string>
+
+1646738937 source:d:\code\sdl\bananakong\baseobject.cpp
+	"BaseObject.h"
+
+1646738948 d:\code\sdl\bananakong\baseobject.h
+	"BaseFunc.h"
+
+1646736820 source:d:\code\sdl\bananakong\gameobject.cpp
+	"GameObject.h"
+
+1646736817 d:\code\sdl\bananakong\gameobject.h
+	"BaseFunc.h"
+	"BaseObject.h"
+
+1646736820 source:d:\code\sdl\bananakong\function\gameobject.cpp
+	"GameObject.h"
+
+1646739750 d:\code\sdl\bananakong\function\gameobject.h
+	"BaseFunc.h"
+	"BaseObject.h"
+
+1646807482 source:d:\code\sdl\bananakong\src\basefunc.cpp
+	"BaseFunc.h"
+
+1646811544 d:\code\sdl\bananakong\include\basefunc.h
+	<bits/stdc++.h>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+	<iostream>
+	<string>
+
+1646811530 source:d:\code\sdl\bananakong\src\baseobj.cpp
+	"BaseObj.h"
+
+1646811571 d:\code\sdl\bananakong\include\baseobj.h
+	"BaseFunc.h"
+
+1646814429 source:d:\code\sdl\bananakong\src\gameobj.cpp
+	"GameObj.h"
+
+1646814445 d:\code\sdl\bananakong\include\gameobj.h
+	"BaseFunc.h"
+	"BaseObj.h"
+
+1646807505 source:d:\code\sdl\bananakong\src\gamefunc.cpp
+	"GameFunc.h"
+
+1646811571 d:\code\sdl\bananakong\include\gamefunc.h
 
