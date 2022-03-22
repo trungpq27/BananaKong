@@ -17,11 +17,10 @@
 1646738948 d:\code\sdl\bananakong\function\baseobject.h
 	"BaseFunc.h"
 
-1646814427 source:d:\code\sdl\bananakong\main.cpp
+1646842758 source:d:\code\sdl\bananakong\main.cpp
 	"include/GameObj.h"
 	"include/BaseFunc.h"
 	"include/BaseObj.h"
-	"include/GameFunc.h"
 
 1646639987 d:\code\sdl\bananakong\function\basefunc.cpp
 	"BaseFunc.h"
@@ -106,21 +105,78 @@
 	<iostream>
 	<string>
 
-1646811530 source:d:\code\sdl\bananakong\src\baseobj.cpp
+1646818377 source:d:\code\sdl\bananakong\src\baseobj.cpp
 	"BaseObj.h"
 
-1646811571 d:\code\sdl\bananakong\include\baseobj.h
+1646817075 d:\code\sdl\bananakong\include\baseobj.h
 	"BaseFunc.h"
 
-1646814429 source:d:\code\sdl\bananakong\src\gameobj.cpp
+1646823763 source:d:\code\sdl\bananakong\src\gameobj.cpp
 	"GameObj.h"
 
-1646814445 d:\code\sdl\bananakong\include\gameobj.h
+1646842690 d:\code\sdl\bananakong\include\gameobj.h
 	"BaseFunc.h"
 	"BaseObj.h"
 
-1646807505 source:d:\code\sdl\bananakong\src\gamefunc.cpp
+1646820183 source:d:\code\sdl\bananakong\src\gamefunc.cpp
 	"GameFunc.h"
 
-1646811571 d:\code\sdl\bananakong\include\gamefunc.h
+1646820256 d:\code\sdl\bananakong\include\gamefunc.h
+
+1647931222 source:d:\code\c++\sdl\bananakong\main.cpp
+	"gMonkey.h"
+	"BaseFunc.h"
+	"BaseObj.h"
+	"Background.h"
+	"HigherPath.h"
+
+1647766502 d:\code\c++\sdl\bananakong\include\gameobj.h
+
+1647763909 d:\code\c++\sdl\bananakong\include\basefunc.h
+	<bits/stdc++.h>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<iostream>
+	<string>
+
+1647792005 d:\code\c++\sdl\bananakong\include\baseobj.h
+	"BaseFunc.h"
+
+1646807482 source:d:\code\c++\sdl\bananakong\src\basefunc.cpp
+	"BaseFunc.h"
+
+1647791998 source:d:\code\c++\sdl\bananakong\src\baseobj.cpp
+	"BaseObj.h"
+
+1647766544 source:d:\code\c++\sdl\bananakong\src\gameobj.cpp
+	"GameObj.h"
+
+1647844244 source:d:\code\c++\sdl\bananakong\src\background.cpp
+	"Background.h"
+
+1647791933 d:\code\c++\sdl\bananakong\include\background.h
+	"BaseFunc.h"
+	"BaseObj.h"
+
+1647766527 source:d:\code\c++\sdl\bananakong\src\gmonkey.cpp
+	"gMonkey.h"
+
+1647766497 d:\code\c++\sdl\bananakong\include\gmonkey.h
+	"BaseFunc.h"
+	"BaseObj.h"
+
+1647767796 source:d:\code\c++\sdl\bananakong\src\obstacle.cpp
+	"Obstacle.h"
+
+1647767901 d:\code\c++\sdl\bananakong\include\obstacle.h
+	"BaseFunc.h"
+	"BaseObj.h"
+
+1647931215 source:d:\code\c++\sdl\bananakong\src\higherpath.cpp
+	"HigherPath.h"
+
+1647931214 d:\code\c++\sdl\bananakong\include\higherpath.h
+	"BaseFunc.h"
+	"BaseObj.h"
 

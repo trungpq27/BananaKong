@@ -3,6 +3,9 @@
 
 #include "BaseFunc.h"
 
+
+//----------Object Class--------->
+
 class BaseObject
 {
 
@@ -11,7 +14,6 @@ private:
     SDL_Texture* mTexture;
     int mWidth;
     int mHeight;
-
 
 public:
     BaseObject();
@@ -29,5 +31,7 @@ public:
     int getHeight();
 
 };
+
+//----------End of Object Class--------->
 
 #endif //BASE_OBJECT_H_

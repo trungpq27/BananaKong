@@ -42,22 +42,35 @@
 		<Unit filename="Material/Background/Layer1.png" />
 		<Unit filename="Material/Background/Layer2.png" />
 		<Unit filename="Material/Background/Layer3.png" />
+		<Unit filename="Material/Characters/Monkey/MonkeyFall_NoPara.png" />
 		<Unit filename="Material/Characters/Monkey/MonkeyIdle.png" />
 		<Unit filename="Material/Characters/Monkey/MonkeyJump.png" />
-		<Unit filename="Material/Characters/Monkey/MonkeyJump_NoPara.png" />
 		<Unit filename="Material/Characters/Monkey/MonkeyRun.png" />
 		<Unit filename="Material/Characters/Monkey/MonkeyWalk.png" />
+		<Unit filename="Material/HigherPath/AirPath1.png" />
+		<Unit filename="Material/HigherPath/AirPath2.png" />
+		<Unit filename="Material/HigherPath/UpPath1.png" />
+		<Unit filename="Material/HigherPath/UpPath2.png" />
+		<Unit filename="Material/Obstacle/StonePig.png" />
+		<Unit filename="Material/Obstacle/Tent.png" />
+		<Unit filename="include/Background.h" />
 		<Unit filename="include/BaseFunc.h" />
 		<Unit filename="include/BaseObj.h" />
-		<Unit filename="include/GameFunc.h" />
-		<Unit filename="include/GameObj.h" />
+		<Unit filename="include/HigherPath.h" />
+		<Unit filename="include/Obstacle.h" />
+		<Unit filename="include/gMonkey.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Background.cpp" />
 		<Unit filename="src/BaseFunc.cpp" />
 		<Unit filename="src/BaseObj.cpp" />
-		<Unit filename="src/GameFunc.cpp" />
-		<Unit filename="src/GameObj.cpp" />
+		<Unit filename="src/HigherPath.cpp" />
+		<Unit filename="src/Obstacle.cpp" />
+		<Unit filename="src/gMonkey.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
+			<code_completion />
+			<envvars />
+			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

@@ -1,6 +1,8 @@
 #include "BaseObj.h"
 
 
+//<----------Object Class---------
+
 BaseObject::BaseObject(){
     mTexture = NULL;
     mWidth = 0;
@@ -60,7 +62,6 @@ void BaseObject::render(SDL_Renderer *gRenderer, int x, int y, int wSize, int hS
     SDL_Rect renderQuad = {x, y, wSize, hSize};
 
     SDL_RenderCopy(gRenderer, mTexture, clip, &renderQuad);
-
 }
 
 int BaseObject::getWidth(){
@@ -71,3 +72,4 @@ int BaseObject::getHeight(){
     return mHeight;
 }
 
+//----------End of Object Class--------->
