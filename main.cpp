@@ -3,6 +3,7 @@
 #include "BaseObj.h"
 #include "Background.h"
 #include "HigherPath.h"
+#include "Obstacle.h"
 
 
 using namespace std;
@@ -29,14 +30,15 @@ SDL_Rect gMonkeyWalking_Clips[MONKEY_WALKING_FRAME_COUNT];
 SDL_Rect gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME_COUNT];
 
 //-----HigherPath-----
-HigherPath AirPath1_Texture(AIR_PATH1_ID);
-HigherPath AirPath2_Texture(AIR_PATH2_ID);
-HigherPath UpPath1_Texture(UP_PATH1_ID);
-HigherPath UpPath2_Texture(UP_PATH2_ID);
+pair<int, int> PathPosX_Carry[HIGHER_PATH_COUNT+1];
+HigherPath AirPath1_Texture(AIR_PATH1_ID, PathPosX_Carry);
+HigherPath AirPath2_Texture(AIR_PATH2_ID, PathPosX_Carry);
+HigherPath UpPath1_Texture(UP_PATH1_ID, PathPosX_Carry);
+HigherPath UpPath2_Texture(UP_PATH2_ID, PathPosX_Carry);
 
 //-----Obstacle-----
-BaseObject StonePig_Texture;
-BaseObject Tent_Texture;
+Obstacle StonePig_Texture(STONE_PIG_ID, PathPosX_Carry);
+Obstacle Tent_Texture(TENT_ID, PathPosX_Carry);
 
 
 //----------End of Declare---------->
@@ -70,17 +72,25 @@ int main( int argc, char* args[] )
                 RenderScrollingGround( groundTexture, gRenderer, MONKEY_RUNNING_SPEED);
 
                 //-----Higher Path-----
-                UpPath1_Texture.Move(MONKEY_RUNNING_SPEED);
+                UpPath1_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
                 UpPath1_Texture.render(gRenderer, UP_PATH1_WIDTH, UP_PATH1_HEIGHT);
 
-                UpPath2_Texture.Move(MONKEY_RUNNING_SPEED);
+                UpPath2_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
                 UpPath2_Texture.render(gRenderer, UP_PATH2_WIDTH, UP_PATH2_HEIGHT);
 
-                AirPath1_Texture.Move(MONKEY_RUNNING_SPEED);
+                AirPath1_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
                 AirPath1_Texture.render(gRenderer, AIR_PATH1_WIDTH, AIR_PATH1_HEIGHT);
 
-                AirPath2_Texture.Move(MONKEY_RUNNING_SPEED);
+                AirPath2_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
                 AirPath2_Texture.render(gRenderer, AIR_PATH2_WIDTH, AIR_PATH2_HEIGHT);
+
+                //-----Obstacle-----
+
+                StonePig_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                StonePig_Texture.render(gRenderer, STONE_PIG_WIDTH, STONE_PIG_HEIGHT);
+
+                Tent_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                Tent_Texture.render(gRenderer, TENT_WIDTH, TENT_HEIGHT);
 
                 //-----Running Monkey-----
                 SDL_Rect* currentClip = NULL;
