@@ -56,6 +56,7 @@
 		<Unit filename="include/Background.h" />
 		<Unit filename="include/BaseFunc.h" />
 		<Unit filename="include/BaseObj.h" />
+		<Unit filename="include/GameFunc.h" />
 		<Unit filename="include/HigherPath.h" />
 		<Unit filename="include/Obstacle.h" />
 		<Unit filename="include/gMonkey.h" />
@@ -63,6 +64,7 @@
 		<Unit filename="src/Background.cpp" />
 		<Unit filename="src/BaseFunc.cpp" />
 		<Unit filename="src/BaseObj.cpp" />
+		<Unit filename="src/GameFunc.cpp" />
 		<Unit filename="src/HigherPath.cpp" />
 		<Unit filename="src/Obstacle.cpp" />
 		<Unit filename="src/gMonkey.cpp" />

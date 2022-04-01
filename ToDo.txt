@@ -2,6 +2,7 @@
 - Vẽ background. (rừng (DONE!), biển, động)
 - Vẽ char, gồm:
 	+ Khỉ									(DONE!)
+	+ Chuối
 	+ Chim
 	+ Lợn
 	+ Rùa
@@ -10,11 +11,13 @@
 	+ lều									(DONE!)
 	+ Đá									(DONE!)
 - Add và cho background roll.				(DONE!)
+- Add và thêm animation cho khỉ				(DONE!)
+- Add và thêm animation cho Chuối.
 - Add và chống đè cho HigherPath			(DONE!)
 - Add, chống đè + Lơ lửng cho lều và đá		(DONE!)
-- Add và thêm animation cho khỉ				(semi)
+- Thêm text hiện điểm						(DONE!)
 - Chia function khỏi main cho khỉ			(DONE!)
 - Nhận key state từ phím					(DONE!)
-- Thêm function nhảy (DONE!), bay và dash cho khỉ	
-- Thêm function tính đường nhảy của khỉ
-- 
+- Thêm function nhảy (DONE!), bay (DONE!) và dash cho khỉ	
+- thêm function đi trên higherPath
+- Thêm function va chạm obstacle

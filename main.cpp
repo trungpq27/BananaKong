@@ -1,33 +1,45 @@
+#define SDL_MAIN_HANDLED
 #include "gMonkey.h"
 #include "BaseFunc.h"
 #include "BaseObj.h"
 #include "Background.h"
 #include "HigherPath.h"
 #include "Obstacle.h"
+#include "GameFunc.h"
+#include "gText.h"
 
 
 using namespace std;
 
 //<----------Declare----------
 
+TTF_Font *gFont = NULL;
+
 //-----Background-----
+
+int gMonkeyState = STATE_RUN;
+
+int MONKEY_RUNNING_FRAME = 0;
+
+int MONKEY_ANIMATION_SPEED = 3;
+int MONKEY_JUMPING_SPEED = 10;
+int MONKEY_RUNNING_SPEED = 4;
+
 BaseObject backgroundTexture[BACKGROUND_LAYERS_COUNT];
 BaseObject groundTexture;
+gText gTextTexture;
 
 //-----gMonkey-----
-int MONKEY_RUNNING_FRAME = 0;
-int MONKEY_JUMPING_FRAME = 1;
-
-int MONKEY_RUNNING_SPEED = 4;
-int MONKEY_JUMPING_SPEED = 10;
-
 gMonkey gMonkeyWalking_Texture;
 gMonkey gMonkeyRunning_Texture;
 gMonkey gMonkeyJumping_Texture;
 gMonkey gMonkeyFallNPR_Texture;
+gMonkey gMonkeyFallPARA_Texture;
 
 SDL_Rect gMonkeyWalking_Clips[MONKEY_WALKING_FRAME_COUNT];
 SDL_Rect gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME_COUNT];
+
+pair <int, int> gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
 
 //-----HigherPath-----
 pair<int, int> PathPosX_Carry[HIGHER_PATH_COUNT+1];
@@ -94,33 +106,62 @@ int main( int argc, char* args[] )
 
                 //-----Running Monkey-----
                 SDL_Rect* currentClip = NULL;
-                gMonkeyRunning_Texture.SetState();
 
-                if( gMonkeyRunning_Texture.getState(GROUNDED) ){
-                    currentClip = &gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME / MONKEY_RUNNING_SPEED];
-                    gMonkeyRunning_Texture.render ( gRenderer, gMonkey_Pos.first, gMonkey_Pos.second, Monkey_W, Monkey_H, currentClip );
-                    MonkeyFrameControl(MONKEY_RUNNING_FRAME, MONKEY_RUNNING_SPEED);
-                }
-
-                else{
-
-                    if (gMonkeyRunning_Texture.getState(JUMP)){
-                        gMonkey_Pos.second-=MONKEY_JUMPING_SPEED;
-                        gMonkeyJumping_Texture.render ( gRenderer, gMonkey_Pos.first, gMonkey_Pos.second, Monkey_W, Monkey_H );
-                        if (gMonkey_Pos.second <= JumpTo) gMonkeyRunning_Texture.SetState(FALL);
-                    }
-                    if (gMonkeyRunning_Texture.getState(FALL)){
-                        gMonkey_Pos.second+=MONKEY_JUMPING_SPEED;
-                        gMonkeyFallNPR_Texture.render ( gRenderer, gMonkey_Pos.first, gMonkey_Pos.second, Monkey_W, Monkey_H );
-                        if (gMonkey_Pos.second >= Ground.second) gMonkeyRunning_Texture.SetState(GROUNDED);
+                if(gMonkeyState == STATE_RUN){
+                    if(currentKeyStates[ SDL_SCANCODE_UP ]) gMonkeyState = STATE_JUMP;
+                    else {
+                        currentClip = &gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED];
+                        ++MONKEY_RUNNING_FRAME;
+                        if (MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED >= MONKEY_RUNNING_FRAME_COUNT) MONKEY_RUNNING_FRAME = 0;
+                        gMonkeyRunning_Texture.render(gRenderer, currentClip);
                     }
                 }
 
+                if(gMonkeyState == STATE_JUMP){
+                    setMonkeyPos(gMonkeyJumping_Texture, gMonkey_Pos);
+                    if(gMonkeyJumping_Texture.getPosY() > gMonkey_JumpTo_Y1){
+                        gMonkeyJumping_Texture.setPosY(gMonkeyJumping_Texture.getPosY()-MONKEY_RUNNING_SPEED*2);
+                        gMonkey_Pos.second -= MONKEY_RUNNING_SPEED*2;
+                        gMonkeyJumping_Texture.render(gRenderer, currentClip);
+                    }
+                    else {
+                        if (!currentKeyStates[ SDL_SCANCODE_UP ]) gMonkeyState = STATE_FALLNPR;
+                        else gMonkeyState = STATE_FALLPARA;
+                    }
+                }
 
+                if(gMonkeyState == STATE_FALLNPR){
+                    setMonkeyPos(gMonkeyFallNPR_Texture, gMonkey_Pos);
+                    if(gMonkeyFallNPR_Texture.getPosY() < 480){
+                        if (currentKeyStates[ SDL_SCANCODE_UP ]) gMonkeyState = STATE_FALLPARA;
+                        else{
+                            gMonkeyFallNPR_Texture.setPosY(gMonkeyFallNPR_Texture.getPosY()+MONKEY_RUNNING_SPEED*2);
+                            gMonkey_Pos.second += MONKEY_RUNNING_SPEED*2;
+                            gMonkeyFallNPR_Texture.render(gRenderer, currentClip);
+                        }
+                    }
+                    else gMonkeyState = STATE_RUN;
+                }
 
+                if(gMonkeyState == STATE_FALLPARA){
+                    setMonkeyPos(gMonkeyFallPARA_Texture, gMonkey_Pos);
+                    if(!currentKeyStates[ SDL_SCANCODE_UP ]) gMonkeyState = STATE_FALLNPR;
+                    if(gMonkeyFallPARA_Texture.getPosY() < 480){
+                        gMonkeyFallPARA_Texture.setPosY(gMonkeyFallPARA_Texture.getPosY()+MONKEY_RUNNING_SPEED);
+                        gMonkey_Pos.second += MONKEY_RUNNING_SPEED/2;
+                        gMonkeyFallPARA_Texture.render(gRenderer, currentClip);
+                    }
+                    else gMonkeyState = STATE_RUN;
+                }
+                //-----Score-----
+
+                SDL_Color textColor = { 0, 0, 0 };
+                gTextTexture.loadFromRenderedText( "sdfiojioe", textColor, gFont, gRenderer);
+                gTextTexture.render( gRenderer, 5, 5 );
 
                 SDL_RenderPresent(gRenderer);
             }
+
         }
     }
     close();
@@ -140,6 +181,9 @@ bool init()
     }
     else
     {
+		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) ) {
+			printf( "Warning: Linear texture filtering not enabled!" );
+		}
         gWindow = SDL_CreateWindow(WINDOW_TITLE.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
         if( gWindow == NULL )
         {
@@ -162,8 +206,13 @@ bool init()
                 if( !(IMG_Init(imgFlags) & imgFlags) )
                 {
                     printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-                    success = 0;
+                    success = false;
                 }
+                if( TTF_Init() == -1 )
+				{
+					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+					success = false;
+				}
             }
         }
     }
@@ -175,6 +224,14 @@ bool loadMedia(){
 
     bool success = true;
 
+    //-----gfont-----
+    gFont = TTF_OpenFont( "Material/Fonts/UVNVan.TTF", 28 );
+	if( gFont == NULL )
+	{
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+
     //-----gMonkey-----
     if(!gMonkeyJumping_Texture.loadFromFile("Material/Characters/Monkey/MonkeyJump.png", gRenderer)){
         printf( "Failed to load monkeyJump texture image!\n" );
@@ -183,6 +240,11 @@ bool loadMedia(){
 
     if(!gMonkeyFallNPR_Texture.loadFromFile("Material/Characters/Monkey/MonkeyFall_NoPara.png", gRenderer)){
         printf( "Failed to load monkeyFallNoPara texture image!\n" );
+        success = false;
+    }
+
+    if(!gMonkeyFallPARA_Texture.loadFromFile("Material/Characters/Monkey/MonkeyFall_Para.png", gRenderer)){
+        printf( "Failed to load monkeyFallPara texture image!\n" );
         success = false;
     }
 
@@ -310,6 +372,9 @@ bool loadMedia(){
 
 void close()
 {
+    //-----gText-----
+    gTextTexture.free();
+
     //-----gMonkey-----
     gMonkeyRunning_Texture.free();
     gMonkeyWalking_Texture.free();
