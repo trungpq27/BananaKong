@@ -7,11 +7,11 @@
 	+ Rùa
 	+ Cá sấu
 - Vẽ obstacle:
-	+ lều
-	+ Hộp
-	+ Đá
+	+ lều									(DONE!)
+	+ Đá									(DONE!)
 - Add và cho background roll.				(DONE!)
-- Add và chống trùng cho HigherPath			(semi)
+- Add và chống đè cho HigherPath			(DONE!)
+- Add, chống đè + Lơ lửng cho lều và đá		(DONE!)
 - Add và thêm animation cho khỉ				(semi)
 - Chia function khỏi main cho khỉ			(DONE!)
 - Nhận key state từ phím					(DONE!)

@@ -2,35 +2,38 @@
 
 //<----------Object Class----------
 gMonkey::gMonkey() : BaseObject(){
-    state = GROUNDED;
+    posX = gMonkey_Stable_PosX;
+    posY = gMonkey_Stable_PosY;
 }
 
 gMonkey::~gMonkey(){
     BaseObject::free();
-    state = 0;
+    posX = 0;
+    posY = 0;
 }
 
-bool gMonkey::getState(int status){
-    return state == status;
+void gMonkey::render(SDL_Renderer* gRenderer, SDL_Rect* clip){
+    BaseObject::render(gRenderer, posX, posY, MONKEY_WIDTH, MONKEY_HEIGHT, clip);
 }
 
-void gMonkey::SetState(int setTo){
-
-    if (setTo != NULL) {
-        state = setTo;
-        return;
-    }
-
-    if (state == GROUNDED && currentKeyStates[SDL_SCANCODE_UP]) state = JUMP;
-
-
-    if (gMonkey_Pos.second > JumpTo && gMonkey_Pos.second != Ground.second) return;
-
+int gMonkey::getPosX(){
+    return posX;
 }
 
+int gMonkey::getPosY(){
+    return posY;
+}
+
+void gMonkey::setPosX(int posX){
+    this->posX = posX;
+}
+
+void gMonkey::setPosY(int posY){
+    this->posY = posY;
+}
 
 //<----------Function---------
-void MonkeyFrameControl(int &frame, double speed){
-    ++frame;
-    if (frame / speed >= MONKEY_RUNNING_FRAME_COUNT) frame = 0;
+void setMonkeyPos(gMonkey &gMonkey_Texture,pair <int, int> gMonkey_Pos){
+    gMonkey_Texture.setPosX(gMonkey_Pos.first);
+    gMonkey_Texture.setPosY(gMonkey_Pos.second);
 }

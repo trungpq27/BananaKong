@@ -4,53 +4,54 @@
 #include "BaseFunc.h"
 #include "BaseObj.h"
 
-#define JumpTo max(0, gMonkey_Pos.second - jumpUpY)
-
 //---State in Intenger---
-const int GROUNDED = 1;
-const int JUMP = 2;
-const int FALL = 3;
+const int STATE_RUN = 1;
+const int STATE_JUMP = 2;
+const int STATE_FALLNPR = 3;
+const int STATE_FALLPARA = 4;
 
 //---Position---
-static pair <int, int> Ground = {350,480};
-static pair <int,int> gMonkey_Pos = {350,480};
-const int jumpUpY = 230;
+const int gMonkey_Stable_PosX = 350;
+const int gMonkey_Stable_PosY = 480;
+const int gMonkey_JumpTo_Y1 = 280;
+const int gMonkey_JumpTo_Y2 = 120;
 
 //----Pic Info---
-const int Monkey_W = 100;
-const int Monkey_H = 120;
+const int MONKEY_WIDTH = 100;
+const int MONKEY_HEIGHT = 120;
 const int MONKEY_WALKING_FRAME_COUNT = 4;
 const int MONKEY_RUNNING_FRAME_COUNT = 8;
 const int MONKEY_JUMPING_FRAME_COUNT = 1;
+const int MONKEY_FALLNPR_FRAME_COUNT = 1;
 
 
 //<----------Object Class---------
 class gMonkey : public BaseObject{
 
 private:
-
-    int state;
+    int posX;
+    int posY;
 
 public:
     gMonkey();
 
     ~gMonkey();
 
-    bool getState(int status);
+    void render(SDL_Renderer* gRenderer, SDL_Rect* clip = NULL);
 
-    void SetState(int setTo = NULL);
+    int getPosX();
 
-    int getX();
+    int getPosY();
 
-    int getY();
+    void setPosX(int posX);
+
+    void setPosY(int posY);
 };
 
 
 
 //<----------Function---------
-void MonkeyFrameControl(int &frame, double speed);
-void MonkeyHandleMoving();
 
-
+void setMonkeyPos(gMonkey &gMonkey_Texture,pair <int, int> gMonkey_Pos);
 
 #endif // GMONKEY_H
