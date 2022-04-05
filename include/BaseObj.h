@@ -3,6 +3,9 @@
 
 #include "BaseFunc.h"
 
+const int SCORE_BOARD_HEIGHT = 130;
+const int SCORE_BOARD_WIDTH = SCORE_BOARD_HEIGHT*1.936;
+
 
 //----------Object Class--------->
 
@@ -24,7 +27,7 @@ public:
 
     void free();
 
-    void render(SDL_Renderer* gRenderer, int x, int y, int wSize, int hSize, SDL_Rect* clip = NULL);
+    void render(SDL_Renderer* gRenderer, double x, double y, int wSize, int hSize, SDL_Rect* clip = NULL);
 
     int getWidth();
 

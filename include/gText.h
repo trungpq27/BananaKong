@@ -4,6 +4,10 @@
 #include "BaseObj.h"
 #include "BaseFunc.h"
 
+const string fontPath = "Material/Fonts/UVNVan.TTF";
+const SDL_Color ScoreColor = { 	203, 134, 65 };
+const SDL_Color ScoreBorderColor = { 41, 51, 33 };
+
 
 class gText : public BaseObject{
     private:

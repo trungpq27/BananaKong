@@ -7,6 +7,10 @@
 #include "Background.h"
 #include "HigherPath.h"
 #include "Obstacle.h"
+#include "gText.h"
+
+
+string longLongToString(long long x);
 
 
 #endif // GAMEFUNC_H

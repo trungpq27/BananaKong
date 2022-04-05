@@ -14,7 +14,7 @@ void RenderScrollingBackground(BaseObject (&backgroundTexture)[BACKGROUND_LAYERS
     }
 }
 
-void RenderScrollingGround(BaseObject &groundTexture, SDL_Renderer* gRenderer, int GROUND_SPEED, int MonkeyDash){
+void RenderScrollingGround(BaseObject &groundTexture, SDL_Renderer* gRenderer, double GROUND_SPEED, int MonkeyDash){
 
     GROUND_SCROLLING_OFFSET -= GROUND_SPEED;
     if( GROUND_SCROLLING_OFFSET <= -SCREEN_WIDTH )

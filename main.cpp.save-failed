@@ -26,7 +26,7 @@ int gMonkeyState = STATE_RUN;
 
 int MONKEY_RUNNING_FRAME = 0;
 
-double MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
+int MONKEY_RUNNING_SPEED = 4;
 int MONKEY_ANIMATION_SPEED = MONKEY_RUNNING_SPEED*0.75;
 int MONKEY_JUMPING_SPEED = MONKEY_RUNNING_SPEED*2.5;
 
@@ -50,7 +50,7 @@ SDL_Rect gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME_COUNT];
 pair <int, int> gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
 
 //-----HigherPath-----
-pair<double, double> PathPosX_Carry[HIGHER_PATH_COUNT+1];
+pair<int, int> PathPosX_Carry[HIGHER_PATH_COUNT+1];
 HigherPath AirPath1_Texture(AIR_PATH1_ID, PathPosX_Carry);
 HigherPath AirPath2_Texture(AIR_PATH2_ID, PathPosX_Carry);
 HigherPath UpPath1_Texture(UP_PATH1_ID, PathPosX_Carry);
@@ -87,8 +87,6 @@ int main( int argc, char* args[] )
                     }
                 }
 
-                SDL_Delay(5);
-
                 //-----Clear Render-----
                 SDL_SetRenderDrawColor(gRenderer, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR );
                 SDL_RenderClear(gRenderer);
@@ -120,13 +118,12 @@ int main( int argc, char* args[] )
 
                 //-----Running Monkey-----
                 gMonkeyHandleMoving();
-
                 //-----Score Board-----
-                //ScoreBoard.render(gRenderer, 3, 4, SCORE_BOARD_WIDTH, SCORE_BOARD_HEIGHT);
-
+//                ScoreBoard.render(gRenderer, 3, 4, SCORE_BOARD_WIDTH, SCORE_BOARD_HEIGHT);
+//
                 //-----Score-----
                 gRunDistance += MONKEY_RUNNING_SPEED;
-                string scoreNow = longLongToString(gRunDistance/80) + " m";
+                string scoreNow = longLongToString(gRunDistance/100) + " m";
 
                 gTextTexture.loadFromRenderedText( scoreNow, ScoreBorderColor, gBorderFont, gRenderer);
                 gTextTexture.render( gRenderer, 10, 50 );
@@ -199,7 +196,7 @@ void gMonkeyHandleMoving(){
         else gMonkeyState = STATE_RUN;
     }
 
-    MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED + (1.0*gTimer.getTicks()/10000);
+    MONKEY_RUNNING_SPEED = gTimer.getTicks()/10000+4;
     cout << MONKEY_RUNNING_SPEED << "\n";
 }
 

@@ -31,28 +31,28 @@ const int TENT_WIDTH = TENT_HEIGHT*1.946;
 
 class Obstacle : public BaseObject{
     private:
-        int posX;
-        int posY;
+        double posX;
+        double posY;
         int posY_Level;
         int ObstacleWidth;
         int ID;
 
     public:
-        Obstacle(int ID, pair<int, int> *PathPosX_Carry);
+        Obstacle(int ID, pair<double, double> *PathPosX_Carry);
 
         ~Obstacle();
 
-        void updateX(int &posX, pair<int, int> *PathPosX_Carry);
+        void updateX(double &posX, pair<double, double> *PathPosX_Carry);
 
-        void updateY(int &posY, int &posY_Level);
+        void updateY(double &posY, int &posY_Level);
 
         void render(SDL_Renderer* gRenderer, int wSize, int hSize);
 
-        void Move(int speed, pair<int, int> *PathPosX_Carry);
+        void Move(double speed, pair<double, double> *PathPosX_Carry);
 
-        int getPosX();
+        double getPosX();
 
-        int getPosY();
+        double getPosY();
 };
 
 #endif // OBSTACLE_H

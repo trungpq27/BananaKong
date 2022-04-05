@@ -1,6 +1,6 @@
 #include "HigherPath.h"
 
-HigherPath::HigherPath(int ID, pair<int, int> *PathPosX_Carry) : BaseObject(){
+HigherPath::HigherPath(int ID, pair<double, double> *PathPosX_Carry) : BaseObject(){
     this->ID = ID;
     if (ID == UP_PATH1_ID){
         pathWidth = UP_PATH1_WIDTH;
@@ -32,10 +32,10 @@ HigherPath::~HigherPath(){
     pathWidth = 0;
 }
 
-void HigherPath::updateX(int &posX, pair<int, int> *PathPosX_Carry){
+void HigherPath::updateX(double &posX, pair<double, double> *PathPosX_Carry){
 
     posX = rand() % (PATH_SCREEN_SPACING) + SCREEN_WIDTH;
-    int posX_End = posX + pathWidth;
+    double posX_End = posX + pathWidth;
 
     int ID_Col = (ID % 2) ? (ID + 1) : (ID - 1);
 
@@ -52,7 +52,7 @@ void HigherPath::render(SDL_Renderer* gRenderer, int wSize, int hSize){
     BaseObject::render(gRenderer, posX, posY, wSize, hSize);
 }
 
-void HigherPath::Move(int speed, pair<int, int> *PathPosX_Carry){
+void HigherPath::Move(double speed, pair<double, double> *PathPosX_Carry){
 
     posX -= speed;
     PathPosX_Carry[ID].first -= speed;
@@ -60,10 +60,10 @@ void HigherPath::Move(int speed, pair<int, int> *PathPosX_Carry){
     if(posX < -pathWidth) updateX(posX, PathPosX_Carry);
 }
 
-int HigherPath::getPosX(){
+double HigherPath::getPosX(){
     return posX;
 }
 
-int HigherPath::getPosY(){
+double HigherPath::getPosY(){
     return posY;
 }

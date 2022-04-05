@@ -33,5 +33,7 @@ void close();
 
 //----------End of Base Variable---------->
 
+//----------Function---------->
+
 
 #endif //BASE_FUNC_H_

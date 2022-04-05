@@ -4,6 +4,9 @@
 #include "BaseFunc.h"
 #include "BaseObj.h"
 
+//---Speed---
+const double BASE_MONKEY_SPEED = 4.0;
+
 //---State in Intenger---
 const int STATE_RUN = 1;
 const int STATE_JUMP = 2;
@@ -13,7 +16,7 @@ const int STATE_FALLPARA = 4;
 //---Position---
 const int gMonkey_Stable_PosX = 350;
 const int gMonkey_Stable_PosY = 480;
-const int gMonkey_JumpTo_Y1 = 280;
+const int gMonkey_JumpTo_Y1 = 250;
 const int gMonkey_JumpTo_Y2 = 120;
 
 //----Pic Info---
@@ -53,5 +56,7 @@ public:
 //<----------Function---------
 
 void setMonkeyPos(gMonkey &gMonkey_Texture,pair <int, int> gMonkey_Pos);
+
+void gMonkeyHandleMoving();
 
 #endif // GMONKEY_H

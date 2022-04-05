@@ -57,7 +57,7 @@ void BaseObject::free(){
     }
 }
 
-void BaseObject::render(SDL_Renderer *gRenderer, int x, int y, int wSize, int hSize, SDL_Rect* clip){
+void BaseObject::render(SDL_Renderer *gRenderer, double x, double y, int wSize, int hSize, SDL_Rect* clip){
 
     SDL_Rect renderQuad = {x, y, wSize, hSize};
 

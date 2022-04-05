@@ -17,6 +17,7 @@
 - Add, chống đè + Lơ lửng cho lều và đá		(DONE!)
 - Thêm text hiện điểm						(DONE!)
 - Chia function khỏi main cho khỉ			(DONE!)
+- Thêm function AdvancedTimer 				(DONE!)
 - Nhận key state từ phím					(DONE!)
 - Thêm function nhảy (DONE!), bay (DONE!) và dash cho khỉ	
 - thêm function đi trên higherPath

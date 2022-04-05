@@ -53,13 +53,16 @@
 		<Unit filename="Material/HigherPath/UpPath2.png" />
 		<Unit filename="Material/Obstacle/StonePig.png" />
 		<Unit filename="Material/Obstacle/Tent.png" />
+		<Unit filename="Material/Others/ScoreBoard.png" />
 		<Unit filename="include/Background.h" />
 		<Unit filename="include/BaseFunc.h" />
 		<Unit filename="include/BaseObj.h" />
 		<Unit filename="include/GameFunc.h" />
 		<Unit filename="include/HigherPath.h" />
 		<Unit filename="include/Obstacle.h" />
+		<Unit filename="include/Timer.h" />
 		<Unit filename="include/gMonkey.h" />
+		<Unit filename="include/gText.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Background.cpp" />
 		<Unit filename="src/BaseFunc.cpp" />
@@ -67,12 +70,11 @@
 		<Unit filename="src/GameFunc.cpp" />
 		<Unit filename="src/HigherPath.cpp" />
 		<Unit filename="src/Obstacle.cpp" />
+		<Unit filename="src/Timer.cpp" />
 		<Unit filename="src/gMonkey.cpp" />
+		<Unit filename="src/gText.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
-			<code_completion />
-			<envvars />
-			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

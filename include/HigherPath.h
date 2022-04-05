@@ -34,26 +34,26 @@ const int AIR_PATH2_WIDTH = AIR_PATH2_HEIGHT*11.925;
 class HigherPath : public BaseObject
 {
     private:
-        int posX;
-        int posY;
+        double posX;
+        double posY;
         int pathWidth;
         int ID;
 
     public:
 
-        HigherPath(int ID, pair<int, int> *PathPosX_Carry);
+        HigherPath(int ID, pair<double, double> *PathPosX_Carry);
 
         ~HigherPath();
 
-        void updateX(int &posX, pair<int, int> *PathPosX_Carry);
+        void updateX(double &posX, pair<double, double> *PathPosX_Carry);
 
         void render(SDL_Renderer* gRenderer, int wSize, int hSize);
 
-        void Move(int speed, pair<int, int> *PathPosX_Carry);
+        void Move(double speed, pair<double, double> *PathPosX_Carry);
 
-        int getPosX();
+        double getPosX();
 
-        int getPosY();
+        double getPosY();
 };
 
 #endif // HIGHERPATH_H
