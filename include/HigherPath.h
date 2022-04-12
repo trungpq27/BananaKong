@@ -17,6 +17,9 @@ const int HIGH_PATH_X2_POSY = 260;
 
 //-----Path Render Info-----
 const int PATH_SCREEN_SPACING = 500;
+const int UP_PATH_BORDER = 20;
+const int AIR_PATH_BORDER = 18;
+
 const int UP_PATH1_HEIGHT = 160;
 const int UP_PATH1_WIDTH = UP_PATH1_HEIGHT*2.358;
 

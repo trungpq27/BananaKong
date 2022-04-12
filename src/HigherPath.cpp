@@ -41,7 +41,7 @@ void HigherPath::updateX(double &posX, pair<double, double> *PathPosX_Carry){
 
     if ((posX >= PathPosX_Carry[ID_Col].first && posX <= PathPosX_Carry[ID_Col].second)
         || (posX <= PathPosX_Carry[ID_Col].first && posX_End >= PathPosX_Carry[ID_Col].first)){
-         posX = (rand() % PATH_SCREEN_SPACING) + PathPosX_Carry[ID_Col].second;
+         posX = PathPosX_Carry[ID_Col].second + PATH_SCREEN_SPACING + (rand() % PATH_SCREEN_SPACING);
          posX_End = posX + pathWidth;
     }
 

@@ -27,8 +27,8 @@ int gMonkeyState = STATE_RUN;
 int MONKEY_RUNNING_FRAME = 0;
 
 double MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
-int MONKEY_ANIMATION_SPEED = MONKEY_RUNNING_SPEED*0.75;
-int MONKEY_JUMPING_SPEED = MONKEY_RUNNING_SPEED*2.5;
+int MONKEY_ANIMATION_SPEED;
+int MONKEY_JUMPING_SPEED;
 
 BaseObject backgroundTexture[BACKGROUND_LAYERS_COUNT];
 BaseObject groundTexture;
@@ -38,6 +38,9 @@ gText gTextTexture;
 BaseObject ScoreBoard;
 
 //-----gMonkey-----
+int JumpTo_Pos = gMonkey_JumpTo_Y1;
+int FallTo_Pos = gMonkey_Stable_PosY;
+
 gMonkey gMonkeyWalking_Texture;
 gMonkey gMonkeyRunning_Texture;
 gMonkey gMonkeyJumping_Texture;
@@ -86,8 +89,10 @@ int main( int argc, char* args[] )
                         quit = true;
                     }
                 }
-
                 SDL_Delay(5);
+
+                MONKEY_ANIMATION_SPEED = MONKEY_RUNNING_SPEED*0.75;
+                MONKEY_JUMPING_SPEED = MONKEY_RUNNING_SPEED*2.5;
 
                 //-----Clear Render-----
                 SDL_SetRenderDrawColor(gRenderer, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR );
@@ -119,7 +124,9 @@ int main( int argc, char* args[] )
                 Tent_Texture.render(gRenderer, TENT_WIDTH, TENT_HEIGHT);
 
                 //-----Running Monkey-----
+                gMonkeyHandleHigherPath(gMonkeyState, gMonkey_Pos, PathPosX_Carry, FallTo_Pos, MONKEY_JUMPING_SPEED);
                 gMonkeyHandleMoving();
+
 
                 //-----Score Board-----
                 //ScoreBoard.render(gRenderer, 3, 4, SCORE_BOARD_WIDTH, SCORE_BOARD_HEIGHT);
@@ -148,9 +155,22 @@ int main( int argc, char* args[] )
 
 //----------Function---------->
 void gMonkeyHandleMoving(){
+    //cout << gMonkeyState << " " << gMonkey_Pos.second << " " << gMonkey_X1_PosY << " " << FallTo_Pos << "\n";  //debug only
     SDL_Rect* currentClip = NULL;
+
     if(gMonkeyState == STATE_RUN){
-        if(currentKeyStates[ SDL_SCANCODE_UP ]) gMonkeyState = STATE_JUMP;
+        setMonkeyPos(gMonkeyRunning_Texture, gMonkey_Pos);
+        if(currentKeyStates[ SDL_SCANCODE_DOWN ]){
+                gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
+                gMonkeyState = STATE_FALLNPR;
+        }
+        if(currentKeyStates[ SDL_SCANCODE_UP ]){
+            JumpTo_Pos = gMonkey_JumpTo_Y1;
+            if (gMonkey_Pos.second == gMonkey_X1_PosY) JumpTo_Pos = gMonkey_JumpTo_Y2;
+            if (gMonkey_Pos.second == gMonkey_X2_PosY) JumpTo_Pos = 0;
+            gMonkeyState = STATE_JUMP;
+        }
+
         else {
             currentClip = &gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED];
             ++MONKEY_RUNNING_FRAME;
@@ -159,14 +179,16 @@ void gMonkeyHandleMoving(){
         }
     }
 
+
     if(gMonkeyState == STATE_JUMP){
         setMonkeyPos(gMonkeyJumping_Texture, gMonkey_Pos);
         if(currentKeyStates[ SDL_SCANCODE_DOWN ]) gMonkeyState = STATE_FALLNPR;
         else{
-            if(gMonkeyJumping_Texture.getPosY() > gMonkey_JumpTo_Y1){
-            gMonkeyJumping_Texture.setPosY(gMonkeyJumping_Texture.getPosY()-MONKEY_RUNNING_SPEED*2);
-            gMonkey_Pos.second -= MONKEY_JUMPING_SPEED;
-            gMonkeyJumping_Texture.render(gRenderer, currentClip);
+
+            if(gMonkey_Pos.second > JumpTo_Pos){
+                gMonkeyJumping_Texture.setPosY(gMonkeyJumping_Texture.getPosY()-MONKEY_JUMPING_SPEED);
+                gMonkey_Pos.second -= MONKEY_JUMPING_SPEED;
+                gMonkeyJumping_Texture.render(gRenderer, currentClip);
             }
             else {
                 if (!currentKeyStates[ SDL_SCANCODE_UP ]) gMonkeyState = STATE_FALLNPR;
@@ -175,32 +197,51 @@ void gMonkeyHandleMoving(){
         }
     }
 
+
     if(gMonkeyState == STATE_FALLNPR){
         setMonkeyPos(gMonkeyFallNPR_Texture, gMonkey_Pos);
-        if(gMonkeyFallNPR_Texture.getPosY() < 480){
+        if(gMonkey_Pos.second < FallTo_Pos){
+
             if (currentKeyStates[ SDL_SCANCODE_UP ]) gMonkeyState = STATE_FALLPARA;
+
             else{
-                gMonkeyFallNPR_Texture.setPosY(gMonkeyFallNPR_Texture.getPosY()+MONKEY_RUNNING_SPEED*2);
+                gMonkeyFallNPR_Texture.setPosY(gMonkeyFallNPR_Texture.getPosY()+MONKEY_JUMPING_SPEED);
                 gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
                 gMonkeyFallNPR_Texture.render(gRenderer, currentClip);
             }
         }
-        else gMonkeyState = STATE_RUN;
+        else{
+            gMonkeyState = STATE_RUN;
+            gMonkey_Pos.second = FallTo_Pos;
+        }
     }
+
 
     if(gMonkeyState == STATE_FALLPARA){
         setMonkeyPos(gMonkeyFallPARA_Texture, gMonkey_Pos);
-        if(!currentKeyStates[ SDL_SCANCODE_UP ]) gMonkeyState = STATE_FALLNPR;
-        if(gMonkeyFallPARA_Texture.getPosY() < 480){
+
+        if(gMonkey_Pos.second < FallTo_Pos && !currentKeyStates[ SDL_SCANCODE_UP ]){
+            gMonkeyState = STATE_FALLNPR;
+        }
+
+        if(gMonkey_Pos.second < FallTo_Pos){
             gMonkeyFallPARA_Texture.setPosY(gMonkeyFallPARA_Texture.getPosY()+MONKEY_RUNNING_SPEED);
             gMonkey_Pos.second += MONKEY_RUNNING_SPEED/2;
             gMonkeyFallPARA_Texture.render(gRenderer, currentClip);
         }
-        else gMonkeyState = STATE_RUN;
+        else{
+            gMonkeyState = STATE_RUN;
+            gMonkey_Pos.second = FallTo_Pos;
+        }
     }
 
-    MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED + (1.0*gTimer.getTicks()/10000);
-    cout << MONKEY_RUNNING_SPEED << "\n";
+    MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED + (1.0*gTimer.getTicks()/50000);
+
+    if (gMonkeyState == STATE_FALLNPR || gMonkeyState == STATE_FALLPARA){
+            FallTo_Pos = gMonkey_Stable_PosY;
+            if(gMonkey_Pos.second < gMonkey_X2_PosY) FallTo_Pos = gMonkey_X2_PosY;
+            else if(gMonkey_Pos.second < gMonkey_X1_PosY) FallTo_Pos = gMonkey_X1_PosY;
+    }
 }
 
 

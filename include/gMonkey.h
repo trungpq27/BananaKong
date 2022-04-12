@@ -22,6 +22,8 @@ const int gMonkey_JumpTo_Y2 = 120;
 //----Pic Info---
 const int MONKEY_WIDTH = 100;
 const int MONKEY_HEIGHT = 120;
+const int MONKEY_BORDER = 7;
+
 const int MONKEY_WALKING_FRAME_COUNT = 4;
 const int MONKEY_RUNNING_FRAME_COUNT = 8;
 const int MONKEY_JUMPING_FRAME_COUNT = 1;
@@ -56,7 +58,5 @@ public:
 //<----------Function---------
 
 void setMonkeyPos(gMonkey &gMonkey_Texture,pair <int, int> gMonkey_Pos);
-
-void gMonkeyHandleMoving();
 
 #endif // GMONKEY_H
