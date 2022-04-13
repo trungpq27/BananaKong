@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="BananaKong" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/BananaKong" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="Function" />
+					<Add directory="include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/BananaKong" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="Function" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="Material/Background/AllLayer.png" />
+		<Unit filename="Material/Background/Ground.png" />
+		<Unit filename="Material/Background/Layer0.png" />
+		<Unit filename="Material/Background/Layer1.png" />
+		<Unit filename="Material/Background/Layer2.png" />
+		<Unit filename="Material/Background/Layer3.png" />
+		<Unit filename="Material/Characters/Monkey/MonkeyFall_NoPara.png" />
+		<Unit filename="Material/Characters/Monkey/MonkeyIdle.png" />
+		<Unit filename="Material/Characters/Monkey/MonkeyJump.png" />
+		<Unit filename="Material/Characters/Monkey/MonkeyRun.png" />
+		<Unit filename="Material/Characters/Monkey/MonkeyWalk.png" />
+		<Unit filename="Material/HigherPath/AirPath1.png" />
+		<Unit filename="Material/HigherPath/AirPath2.png" />
+		<Unit filename="Material/HigherPath/UpPath1.png" />
+		<Unit filename="Material/HigherPath/UpPath2.png" />
+		<Unit filename="Material/Obstacle/StonePig.png" />
+		<Unit filename="Material/Obstacle/Tent.png" />
+		<Unit filename="Material/Others/ScoreBoard.png" />
+		<Unit filename="include/Background.h" />
+		<Unit filename="include/BaseFunc.h" />
+		<Unit filename="include/BaseObj.h" />
+		<Unit filename="include/GameFunc.h" />
+		<Unit filename="include/HigherPath.h" />
+		<Unit filename="include/Obstacle.h" />
+		<Unit filename="include/Timer.h" />
+		<Unit filename="include/gMonkey.h" />
+		<Unit filename="include/gText.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="src/Background.cpp" />
+		<Unit filename="src/BaseFunc.cpp" />
+		<Unit filename="src/BaseObj.cpp" />
+		<Unit filename="src/GameFunc.cpp" />
+		<Unit filename="src/HigherPath.cpp" />
+		<Unit filename="src/Obstacle.cpp" />
+		<Unit filename="src/Timer.cpp" />
+		<Unit filename="src/gMonkey.cpp" />
+		<Unit filename="src/gText.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
+0 comments on commit 65fb9a2

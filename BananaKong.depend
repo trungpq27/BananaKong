@@ -1,0 +1,213 @@
+# depslib dependency file v1.0
+1646738420 source:d:\code\sdl\bananakong\function\basefunc.cpp
+	"BaseFunc.h"
+
+1646739034 d:\code\sdl\bananakong\function\basefunc.h
+	<bits/stdc++.h>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+	<iostream>
+	<string>
+
+1646738937 source:d:\code\sdl\bananakong\function\baseobject.cpp
+	"BaseObject.h"
+
+1646738948 d:\code\sdl\bananakong\function\baseobject.h
+	"BaseFunc.h"
+
+1646842758 source:d:\code\sdl\bananakong\main.cpp
+	"include/GameObj.h"
+	"include/BaseFunc.h"
+	"include/BaseObj.h"
+
+1646639987 d:\code\sdl\bananakong\function\basefunc.cpp
+	"BaseFunc.h"
+
+1646641312 d:\code\sdl\bananakong\function\baseobject.cpp
+	"BaseObject.h"
+
+1646643711 d:\code\sdl\bananakong\function\gamefunc.h
+	"BaseFunc.h"
+
+1646736283 d:\code\sdl\bananakong\object\gameobject.h
+	"../Function/BaseFunc.h"
+
+1646736285 source:d:\code\sdl\bananakong\object\gameobject.cpp
+	"GameObject.h"
+
+1646736300 source:d:\code\sdl\bananakong\material\basefunc.cpp
+	"BaseFunc.h"
+
+1646736237 d:\code\sdl\bananakong\material\basefunc.h
+	<bits/stdc++.h>
+	<string>
+	<stdio.h>
+	"SDL.h"
+	"SDL_image.h"
+	"SDL_mixer.h"
+	"SDL_ttf.h"
+
+1646736470 source:d:\code\sdl\bananakong\material\baseobject.cpp
+	"BaseObject.h"
+
+1646736452 d:\code\sdl\bananakong\material\baseobject.h
+	"BaseFunc.h"
+
+1646736285 source:d:\code\sdl\bananakong\material\gameobject.cpp
+	"GameObject.h"
+
+1646736574 d:\code\sdl\bananakong\material\gameobject.h
+	"BaseFunc.h"
+
+1646738420 source:d:\code\sdl\bananakong\basefunc.cpp
+	"BaseFunc.h"
+
+1646739034 d:\code\sdl\bananakong\basefunc.h
+	<bits/stdc++.h>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+	<iostream>
+	<string>
+
+1646738937 source:d:\code\sdl\bananakong\baseobject.cpp
+	"BaseObject.h"
+
+1646738948 d:\code\sdl\bananakong\baseobject.h
+	"BaseFunc.h"
+
+1646736820 source:d:\code\sdl\bananakong\gameobject.cpp
+	"GameObject.h"
+
+1646736817 d:\code\sdl\bananakong\gameobject.h
+	"BaseFunc.h"
+	"BaseObject.h"
+
+1646736820 source:d:\code\sdl\bananakong\function\gameobject.cpp
+	"GameObject.h"
+
+1646739750 d:\code\sdl\bananakong\function\gameobject.h
+	"BaseFunc.h"
+	"BaseObject.h"
+
+1646807482 source:d:\code\sdl\bananakong\src\basefunc.cpp
+	"BaseFunc.h"
+
+1646811544 d:\code\sdl\bananakong\include\basefunc.h
+	<bits/stdc++.h>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+	<iostream>
+	<string>
+
+1646818377 source:d:\code\sdl\bananakong\src\baseobj.cpp
+	"BaseObj.h"
+
+1646817075 d:\code\sdl\bananakong\include\baseobj.h
+	"BaseFunc.h"
+
+1646823763 source:d:\code\sdl\bananakong\src\gameobj.cpp
+	"GameObj.h"
+
+1646842690 d:\code\sdl\bananakong\include\gameobj.h
+	"BaseFunc.h"
+	"BaseObj.h"
+
+1646820183 source:d:\code\sdl\bananakong\src\gamefunc.cpp
+	"GameFunc.h"
+
+1646820256 d:\code\sdl\bananakong\include\gamefunc.h
+
+1649753399 source:d:\code\c++\sdl\bananakong\main.cpp
+	"gMonkey.h"
+	"BaseFunc.h"
+	"BaseObj.h"
+	"Background.h"
+	"HigherPath.h"
+	"Obstacle.h"
+	"GameFunc.h"
+	"gText.h"
+	"Timer.h"
+
+1647766502 d:\code\c++\sdl\bananakong\include\gameobj.h
+
+1648794786 d:\code\c++\sdl\bananakong\include\basefunc.h
+	<bits/stdc++.h>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+	<iostream>
+	<string>
+
+1649086864 d:\code\c++\sdl\bananakong\include\baseobj.h
+	"BaseFunc.h"
+
+1649138766 source:d:\code\c++\sdl\bananakong\src\basefunc.cpp
+	"BaseFunc.h"
+
+1649138772 source:d:\code\c++\sdl\bananakong\src\baseobj.cpp
+	"BaseObj.h"
+
+1647766544 source:d:\code\c++\sdl\bananakong\src\gameobj.cpp
+	"GameObj.h"
+
+1649138763 source:d:\code\c++\sdl\bananakong\src\background.cpp
+	"Background.h"
+
+1649086913 d:\code\c++\sdl\bananakong\include\background.h
+	"BaseFunc.h"
+	"BaseObj.h"
+
+1649138781 source:d:\code\c++\sdl\bananakong\src\gmonkey.cpp
+	"gMonkey.h"
+
+1649215596 d:\code\c++\sdl\bananakong\include\gmonkey.h
+	"BaseFunc.h"
+	"BaseObj.h"
+
+1649138802 source:d:\code\c++\sdl\bananakong\src\obstacle.cpp
+	"Obstacle.h"
+
+1649126200 d:\code\c++\sdl\bananakong\include\obstacle.h
+	"BaseObj.h"
+	"BaseFunc.h"
+	"HigherPath.h"
+
+1649588852 source:d:\code\c++\sdl\bananakong\src\higherpath.cpp
+	"HigherPath.h"
+
+1649753135 d:\code\c++\sdl\bananakong\include\higherpath.h
+	"BaseFunc.h"
+	"BaseObj.h"
+
+1649487243 d:\code\c++\sdl\bananakong\include\gamefunc.h
+	"gMonkey.h"
+	"BaseFunc.h"
+	"BaseObj.h"
+	"Background.h"
+	"HigherPath.h"
+	"Obstacle.h"
+	"gText.h"
+
+1649753377 source:d:\code\c++\sdl\bananakong\src\gamefunc.cpp
+	"GameFunc.h"
+
+1648795760 d:\code\c++\sdl\bananakong\include\gtext.h
+	"BaseObj.h"
+	"BaseFunc.h"
+
+1649138790 source:d:\code\c++\sdl\bananakong\src\gtext.cpp
+	"gText.h"
+
+1649063502 d:\code\c++\sdl\bananakong\include\timer.h
+	<BaseFunc.h>
+
+1649138807 source:d:\code\c++\sdl\bananakong\src\timer.cpp
+	"Timer.h"
+
