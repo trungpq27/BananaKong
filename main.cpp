@@ -41,6 +41,8 @@ BaseObject ScoreBoard;
 int JumpTo_Pos = gMonkey_JumpTo_Y1;
 int FallTo_Pos = gMonkey_Stable_PosY;
 
+int JumpBreak = 0;
+
 gMonkey gMonkeyWalking_Texture;
 gMonkey gMonkeyRunning_Texture;
 gMonkey gMonkeyJumping_Texture;
@@ -124,7 +126,7 @@ int main( int argc, char* args[] )
                 Tent_Texture.render(gRenderer, TENT_WIDTH, TENT_HEIGHT);
 
                 //-----Running Monkey-----
-                gMonkeyHandleHigherPath(gMonkeyState, gMonkey_Pos, PathPosX_Carry, FallTo_Pos, MONKEY_JUMPING_SPEED);
+                gMonkeyHandleHigherPath(gMonkeyState, gMonkey_Pos, PathPosX_Carry, FallTo_Pos, MONKEY_JUMPING_SPEED, JumpBreak);
                 gMonkeyHandleMoving();
 
 
@@ -156,15 +158,18 @@ int main( int argc, char* args[] )
 //----------Function---------->
 void gMonkeyHandleMoving(){
     //cout << gMonkeyState << " " << gMonkey_Pos.second << " " << gMonkey_X1_PosY << " " << FallTo_Pos << "\n";  //debug only
+    cout << JumpBreak << "\n";
+
     SDL_Rect* currentClip = NULL;
 
     if(gMonkeyState == STATE_RUN){
+        JumpBreak += MONKEY_RUNNING_SPEED;
         setMonkeyPos(gMonkeyRunning_Texture, gMonkey_Pos);
         if(currentKeyStates[ SDL_SCANCODE_DOWN ]){
                 gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
                 gMonkeyState = STATE_FALLNPR;
         }
-        if(currentKeyStates[ SDL_SCANCODE_UP ]){
+        if(currentKeyStates[ SDL_SCANCODE_UP ] && JumpBreak >= BreakDistance){
             JumpTo_Pos = gMonkey_JumpTo_Y1;
             if (gMonkey_Pos.second == gMonkey_X1_PosY) JumpTo_Pos = gMonkey_JumpTo_Y2;
             if (gMonkey_Pos.second == gMonkey_X2_PosY) JumpTo_Pos = 0;
@@ -231,17 +236,18 @@ void gMonkeyHandleMoving(){
         }
         else{
             gMonkeyState = STATE_RUN;
+            JumpBreak = 0;
             gMonkey_Pos.second = FallTo_Pos;
         }
     }
-
-    MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED + (1.0*gTimer.getTicks()/50000);
 
     if (gMonkeyState == STATE_FALLNPR || gMonkeyState == STATE_FALLPARA){
             FallTo_Pos = gMonkey_Stable_PosY;
             if(gMonkey_Pos.second < gMonkey_X2_PosY) FallTo_Pos = gMonkey_X2_PosY;
             else if(gMonkey_Pos.second < gMonkey_X1_PosY) FallTo_Pos = gMonkey_X1_PosY;
     }
+
+    MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED + (1.0*gTimer.getTicks()/50000);
 }
 
 

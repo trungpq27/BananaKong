@@ -7,7 +7,7 @@ string longLongToString(long long x){
     return str;
 }
 
-void gMonkeyHandleHigherPath(int &gMonkeyState, pair<int, int> &gMonkey_Pos, pair<double, double> *PathPosX_Carry, int &FallTo_Pos, int MONKEY_JUMPING_SPEED){
+void gMonkeyHandleHigherPath(int &gMonkeyState, pair<int, int> &gMonkey_Pos, pair<double, double> *PathPosX_Carry, int &FallTo_Pos, int MONKEY_JUMPING_SPEED, int &JumpBreak){
 
     for(int ID = 1; ID <= HIGHER_PATH_COUNT; ++ID){
 
@@ -20,6 +20,7 @@ void gMonkeyHandleHigherPath(int &gMonkeyState, pair<int, int> &gMonkey_Pos, pai
             if (gMonkeyState == STATE_FALLNPR || gMonkeyState == STATE_FALLPARA){
 
                 if (gMonkey_Pos.second >= gMonkey_HigherPath_PosY && gMonkey_Pos.second <= gMonkey_HigherPath_PosY + MONKEY_JUMPING_SPEED){
+                    JumpBreak = 0;
                     gMonkey_Pos.second = gMonkey_HigherPath_PosY;
                     gMonkeyState = STATE_RUN;
                 }
