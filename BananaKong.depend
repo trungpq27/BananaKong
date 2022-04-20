@@ -123,7 +123,7 @@
 
 1646820256 d:\code\sdl\bananakong\include\gamefunc.h
 
-1650462414 source:d:\code\c++\sdl\bananakong\main.cpp
+1650466182 source:d:\code\c++\sdl\bananakong\main.cpp
 	"gMonkey.h"
 	"BaseFunc.h"
 	"BaseObj.h"
@@ -172,13 +172,14 @@
 	"BaseFunc.h"
 	"BaseObj.h"
 
-1649844324 source:d:\code\c++\sdl\bananakong\src\obstacle.cpp
+1650465481 source:d:\code\c++\sdl\bananakong\src\obstacle.cpp
 	"Obstacle.h"
 
-1649844324 d:\code\c++\sdl\bananakong\include\obstacle.h
+1650465374 d:\code\c++\sdl\bananakong\include\obstacle.h
 	"BaseObj.h"
 	"BaseFunc.h"
 	"HigherPath.h"
+	"gMonkey.h"
 
 1649844324 source:d:\code\c++\sdl\bananakong\src\higherpath.cpp
 	"HigherPath.h"
@@ -218,6 +219,6 @@
 	"Obstacle.h"
 	"gMonkey.h"
 
-1650462766 source:d:\code\c++\sdl\bananakong\src\gbanana.cpp
+1650463879 source:d:\code\c++\sdl\bananakong\src\gbanana.cpp
 	"gBanana.h"
 

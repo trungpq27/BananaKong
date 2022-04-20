@@ -4,6 +4,7 @@
 #include "BaseObj.h"
 #include "BaseFunc.h"
 #include "HigherPath.h"
+#include "gMonkey.h"
 
 //-----ID int Intenger-----
 const int STONE_PIG_ID = 1;
@@ -21,6 +22,8 @@ const int POSY_AIR_ID = 2;
 static pair <int, int> ObstaclePosX_Carry [OBSTACLE_POSY_LEVEL_COUNT][OBSTACLE_COUNT+1];
 
 //-----Obstacle Render Info-----
+const int OBSTACLE_HEIGHT = 120;
+
 const int OBSTACLE_SCREEN_SPACING = 500;
 const int STONE_PIG_HEIGHT = 120;
 const int STONE_PIG_WIDTH = STONE_PIG_HEIGHT*1.719;
@@ -49,6 +52,8 @@ class Obstacle : public BaseObject{
         void render(SDL_Renderer* gRenderer, int wSize, int hSize);
 
         void Move(double speed, pair<double, double> *PathPosX_Carry);
+
+        void Handle_Monkey(pair<int, int> gMonkey_Pos, bool &game_over, int gMonkeyState);
 
         double getPosX();
 

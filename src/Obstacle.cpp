@@ -65,6 +65,21 @@ void Obstacle::Move(double speed, pair<double, double> *PathPosX_Carry){
     }
 }
 
+void Obstacle::Handle_Monkey(pair<int, int> gMonkey_Pos, bool &game_over, int gMonkeyState){
+    //cout << gMonkey_Pos.second << " " << posY <<  "\n";   //debug only
+
+    int monkey_border = 30;
+
+    if (gMonkeyState == STATE_JUMP) monkey_border = 80;
+
+    if ((gMonkey_Pos.second <= posY + OBSTACLE_HEIGHT) && (gMonkey_Pos.second + MONKEY_HEIGHT >= posY)){
+        if ((gMonkey_Pos.first + MONKEY_WIDTH - monkey_border) >= posX && gMonkey_Pos.first <= posX ) {
+            game_over = 1;
+        }
+    }
+}
+
+
 double Obstacle::getPosX(){
     return posX;
 }

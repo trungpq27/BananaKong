@@ -18,4 +18,5 @@
 - Nhận key state từ phím					(DONE!)
 - Thêm function nhảy (DONE!), bay (DONE!) 
 - thêm function đi trên higherPath			(DONE!)
-- Thêm function va chạm obstacle			
+- Thêm function va chạm obstacle			(DONE!)
+- Thêm Menu và Death Screen

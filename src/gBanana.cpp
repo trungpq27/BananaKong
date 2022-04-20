@@ -66,8 +66,8 @@ void gBanana::Handle_Monkey(pair <int, int> gMonkey_Pos, list<pair<double, int>>
         pair <double, int> Banana_posNow = BananaPos.front();
         BananaPos.pop_front();
 
-        if ((Banana_posNow.second >= gMonkey_Pos.second && Banana_posNow.second <= gMonkey_Pos.second + MONKEY_HEIGHT) &&
-            (Banana_posNow.first >= gMonkey_Pos.first && Banana_posNow.first <= gMonkey_Pos.first + MONKEY_WIDTH - 30)){
+        if ((Banana_posNow.second + BANANA_HEIGHT >= gMonkey_Pos.second && Banana_posNow.second <= gMonkey_Pos.second + MONKEY_HEIGHT) &&
+            (Banana_posNow.first + BANANA_WIDTH >= gMonkey_Pos.first && Banana_posNow.first <= gMonkey_Pos.first + MONKEY_WIDTH - 30)){
                 Banana_Score++;
                 Banana_Sum--;
             }

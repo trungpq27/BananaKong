@@ -15,6 +15,9 @@ using namespace std;
 
 //<----------Declare----------
 
+bool game_over = 0;
+
+
 Timer gTimer;
 
 TTF_Font *gFont = NULL;
@@ -90,6 +93,7 @@ int main( int argc, char* args[] )
 
             //-----set Timer-----
             gTimer.start();
+            game_over = 0;
 
             while (!quit) {
                 while( SDL_PollEvent(&e) != 0) {
@@ -126,9 +130,11 @@ int main( int argc, char* args[] )
                 //-----Obstacle-----
                 StonePig_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
                 StonePig_Texture.render(gRenderer, STONE_PIG_WIDTH, STONE_PIG_HEIGHT);
+                StonePig_Texture.Handle_Monkey(gMonkey_Pos, game_over, gMonkeyState);
 
                 Tent_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
                 Tent_Texture.render(gRenderer, TENT_WIDTH, TENT_HEIGHT);
+                Tent_Texture.Handle_Monkey(gMonkey_Pos, game_over, gMonkeyState);
 
                 //-----gBanana-----
                 gBanana_Texture.render(gRenderer, BANANA_WIDTH, BANANA_HEIGHT, MONKEY_RUNNING_SPEED, BananaPos);
@@ -145,7 +151,8 @@ int main( int argc, char* args[] )
                 //-----Score-----
                 gRunDistance += MONKEY_RUNNING_SPEED;
                 string scoreNow = longLongToString(gRunDistance/80) + " m";
-                string bananaScoreNow = longLongToString(Banana_Score) + " Bananas";
+                string bananaScoreNow = longLongToString(Banana_Score) + " Banana";
+                if (Banana_Score >= 2) bananaScoreNow += 's';
 
                 gTextTexture.loadFromRenderedText( scoreNow, ScoreBorderColor, gBorderFont, gRenderer);
                 gTextTexture.render( gRenderer, 10, 30 );
@@ -160,6 +167,18 @@ int main( int argc, char* args[] )
                 gTextTexture.render( gRenderer, 12, 59 );
 
                 SDL_RenderPresent(gRenderer);
+
+                while (game_over){
+
+                    gTextTexture.loadFromRenderedText( "Thua", ScoreBorderColor, gBorderFont, gRenderer);
+                    gTextTexture.render( gRenderer, 10, 30 );
+
+                    gTextTexture.loadFromRenderedText( "Thua", ScoreColor, gFont, gRenderer);
+                    gTextTexture.render( gRenderer, 12, 29 );
+
+                    SDL_RenderPresent(gRenderer);
+
+                }
 
             }
 

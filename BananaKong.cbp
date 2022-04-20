@@ -42,6 +42,7 @@
 		<Unit filename="Material/Background/Layer1.png" />
 		<Unit filename="Material/Background/Layer2.png" />
 		<Unit filename="Material/Background/Layer3.png" />
+		<Unit filename="Material/Characters/Banana/Banana.png" />
 		<Unit filename="Material/Characters/Monkey/MonkeyFall_NoPara.png" />
 		<Unit filename="Material/Characters/Monkey/MonkeyIdle.png" />
 		<Unit filename="Material/Characters/Monkey/MonkeyJump.png" />
@@ -61,6 +62,7 @@
 		<Unit filename="include/HigherPath.h" />
 		<Unit filename="include/Obstacle.h" />
 		<Unit filename="include/Timer.h" />
+		<Unit filename="include/gBanana.h" />
 		<Unit filename="include/gMonkey.h" />
 		<Unit filename="include/gText.h" />
 		<Unit filename="main.cpp" />
@@ -71,6 +73,7 @@
 		<Unit filename="src/HigherPath.cpp" />
 		<Unit filename="src/Obstacle.cpp" />
 		<Unit filename="src/Timer.cpp" />
+		<Unit filename="src/gBanana.cpp" />
 		<Unit filename="src/gMonkey.cpp" />
 		<Unit filename="src/gText.cpp" />
 		<Extensions>
@@ -78,4 +81,3 @@
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
-0 comments on commit 65fb9a2
