@@ -8,6 +8,7 @@
 #include "GameFunc.h"
 #include "gText.h"
 #include "Timer.h"
+#include "gBanana.h"
 
 
 using namespace std;
@@ -65,6 +66,11 @@ HigherPath UpPath2_Texture(UP_PATH2_ID, PathPosX_Carry);
 Obstacle StonePig_Texture(STONE_PIG_ID, PathPosX_Carry);
 Obstacle Tent_Texture(TENT_ID, PathPosX_Carry);
 
+//-----gBanana-----
+list<pair<double, int>> BananaPos;
+gBanana gBanana_Texture(BananaPos);
+int Banana_Score = 0;
+
 
 //----------End of Declare---------->
 
@@ -118,12 +124,15 @@ int main( int argc, char* args[] )
                 AirPath2_Texture.render(gRenderer, AIR_PATH2_WIDTH, AIR_PATH2_HEIGHT);
 
                 //-----Obstacle-----
-
                 StonePig_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
                 StonePig_Texture.render(gRenderer, STONE_PIG_WIDTH, STONE_PIG_HEIGHT);
 
                 Tent_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
                 Tent_Texture.render(gRenderer, TENT_WIDTH, TENT_HEIGHT);
+
+                //-----gBanana-----
+                gBanana_Texture.render(gRenderer, BANANA_WIDTH, BANANA_HEIGHT, MONKEY_RUNNING_SPEED, BananaPos);
+                gBanana_Texture.Handle_Monkey(gMonkey_Pos, BananaPos, Banana_Score);
 
                 //-----Running Monkey-----
                 gMonkeyHandleHigherPath(gMonkeyState, gMonkey_Pos, PathPosX_Carry, FallTo_Pos, MONKEY_JUMPING_SPEED, JumpBreak);
@@ -136,12 +145,19 @@ int main( int argc, char* args[] )
                 //-----Score-----
                 gRunDistance += MONKEY_RUNNING_SPEED;
                 string scoreNow = longLongToString(gRunDistance/80) + " m";
+                string bananaScoreNow = longLongToString(Banana_Score) + " Bananas";
 
                 gTextTexture.loadFromRenderedText( scoreNow, ScoreBorderColor, gBorderFont, gRenderer);
-                gTextTexture.render( gRenderer, 10, 50 );
+                gTextTexture.render( gRenderer, 10, 30 );
 
                 gTextTexture.loadFromRenderedText( scoreNow, ScoreColor, gFont, gRenderer);
-                gTextTexture.render( gRenderer, 12, 49 );
+                gTextTexture.render( gRenderer, 12, 29 );
+
+                gTextTexture.loadFromRenderedText( bananaScoreNow, ScoreBorderColor, gBorderFont, gRenderer);
+                gTextTexture.render( gRenderer, 10, 60 );
+
+                gTextTexture.loadFromRenderedText( bananaScoreNow, ScoreColor, gFont, gRenderer);
+                gTextTexture.render( gRenderer, 12, 59 );
 
                 SDL_RenderPresent(gRenderer);
 
@@ -158,7 +174,7 @@ int main( int argc, char* args[] )
 //----------Function---------->
 void gMonkeyHandleMoving(){
     //cout << gMonkeyState << " " << gMonkey_Pos.second << " " << gMonkey_X1_PosY << " " << FallTo_Pos << "\n";  //debug only
-    cout << JumpBreak << "\n";
+    //cout << JumpBreak << "\n";  //debug only
 
     SDL_Rect* currentClip = NULL;
 
@@ -413,6 +429,11 @@ bool loadMedia(){
             gMonkeyRunning_Clips[7].h = 168;
             gMonkeyRunning_Clips[7].w = 140;
 
+    }
+    //-----gBanana-----
+    if(!gBanana_Texture.loadFromFile("Material/Characters/Banana/Banana.png", gRenderer)){
+        printf( "Failed to load Banana texture image!\n" );
+        success = false;
     }
 
     //-----Background-----

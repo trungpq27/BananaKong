@@ -1,24 +1,21 @@
 - Viết base									(DONE!)
-- Vẽ background. (rừng (DONE!), biển, động)
+- Vẽ background.							(DONE!)
 - Vẽ char, gồm:
 	+ Khỉ									(DONE!)
-	+ Chuối
-	+ Chim
-	+ Lợn
-	+ Rùa
-	+ Cá sấu
+	+ Chuối									(DONE!)
 - Vẽ obstacle:
 	+ lều									(DONE!)
 	+ Đá									(DONE!)
 - Add và cho background roll.				(DONE!)
 - Add và thêm animation cho khỉ				(DONE!)
-- Add và thêm animation cho Chuối.
+- Add và thêm Rolling cho Chuối.			(DONE!)
+- Cho khỉ ăn Chuối và in số lượng Chuối		(DONE!)
 - Add và chống đè cho HigherPath			(DONE!)
 - Add, chống đè + Lơ lửng cho lều và đá		(DONE!)
 - Thêm text hiện điểm						(DONE!)
 - Chia function khỏi main cho khỉ			(DONE!)
 - Thêm function AdvancedTimer 				(DONE!)
 - Nhận key state từ phím					(DONE!)
-- Thêm function nhảy (DONE!), bay (DONE!) và dash cho khỉ	
-- thêm function đi trên higherPath
-- Thêm function va chạm obstacle
+- Thêm function nhảy (DONE!), bay (DONE!) 
+- thêm function đi trên higherPath			(DONE!)
+- Thêm function va chạm obstacle			
