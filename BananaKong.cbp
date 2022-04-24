@@ -52,12 +52,16 @@
 		<Unit filename="Material/HigherPath/AirPath2.png" />
 		<Unit filename="Material/HigherPath/UpPath1.png" />
 		<Unit filename="Material/HigherPath/UpPath2.png" />
+		<Unit filename="Material/Menu/Button/Again.png" />
+		<Unit filename="Material/Menu/Button/Exit.png" />
+		<Unit filename="Material/Menu/Button/Start.png" />
 		<Unit filename="Material/Obstacle/StonePig.png" />
 		<Unit filename="Material/Obstacle/Tent.png" />
 		<Unit filename="Material/Others/ScoreBoard.png" />
 		<Unit filename="include/Background.h" />
 		<Unit filename="include/BaseFunc.h" />
 		<Unit filename="include/BaseObj.h" />
+		<Unit filename="include/Button.h" />
 		<Unit filename="include/GameFunc.h" />
 		<Unit filename="include/HigherPath.h" />
 		<Unit filename="include/Obstacle.h" />
@@ -69,6 +73,7 @@
 		<Unit filename="src/Background.cpp" />
 		<Unit filename="src/BaseFunc.cpp" />
 		<Unit filename="src/BaseObj.cpp" />
+		<Unit filename="src/Button.cpp" />
 		<Unit filename="src/GameFunc.cpp" />
 		<Unit filename="src/HigherPath.cpp" />
 		<Unit filename="src/Obstacle.cpp" />

@@ -9,71 +9,71 @@
 #include "gText.h"
 #include "Timer.h"
 #include "gBanana.h"
+#include "Button.h"
 
 
 using namespace std;
 
 //<----------Declare----------
-
-bool game_over = 0;
-
-
-Timer gTimer;
+//-----TimerAndText-----
 
 TTF_Font *gFont = NULL;
 TTF_Font *gBorderFont = NULL;
-long long gRunDistance;
+
+TTF_Font *gDeathFont = NULL;
+TTF_Font *gDeathBorderFont = NULL;
+
+gText gTextTexture;
+Timer gTimer;
 
 //-----Background-----
-
-int gMonkeyState = STATE_RUN;
-
-int MONKEY_RUNNING_FRAME = 0;
-
-double MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
-int MONKEY_ANIMATION_SPEED;
-int MONKEY_JUMPING_SPEED;
-
+BaseObject DeathScreen;
+BaseObject StartBackground_Texture;
 BaseObject backgroundTexture[BACKGROUND_LAYERS_COUNT];
 BaseObject groundTexture;
-gText gTextTexture;
+
+//-----Button-----
+Button StartButton(MENU_BUTTON_ID);
+Button ExitButton(MENU_BUTTON_ID);
+Button AgainButton(MENU_BUTTON_ID);
+
+Button PlayButton(PAUSE_BUTTON_ID);
+Button PauseButton(PAUSE_BUTTON_ID);
 
 //-----ScoreBoard-----
 BaseObject ScoreBoard;
 
 //-----gMonkey-----
+int gMonkeyState = STATE_RUN;
+int JumpBreak = 0;
 int JumpTo_Pos = gMonkey_JumpTo_Y1;
 int FallTo_Pos = gMonkey_Stable_PosY;
+pair <int, int> gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
 
-int JumpBreak = 0;
+int MONKEY_RUNNING_FRAME = 0;
+int MONKEY_ANIMATION_SPEED;
+int MONKEY_JUMPING_SPEED;
+double MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
 
-gMonkey gMonkeyWalking_Texture;
 gMonkey gMonkeyRunning_Texture;
 gMonkey gMonkeyJumping_Texture;
 gMonkey gMonkeyFallNPR_Texture;
 gMonkey gMonkeyFallPARA_Texture;
 
-SDL_Rect gMonkeyWalking_Clips[MONKEY_WALKING_FRAME_COUNT];
 SDL_Rect gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME_COUNT];
 
-pair <int, int> gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
-
 //-----HigherPath-----
-pair<double, double> PathPosX_Carry[HIGHER_PATH_COUNT+1];
-HigherPath AirPath1_Texture(AIR_PATH1_ID, PathPosX_Carry);
-HigherPath AirPath2_Texture(AIR_PATH2_ID, PathPosX_Carry);
-HigherPath UpPath1_Texture(UP_PATH1_ID, PathPosX_Carry);
-HigherPath UpPath2_Texture(UP_PATH2_ID, PathPosX_Carry);
+HigherPath AirPath1_Texture;
+HigherPath AirPath2_Texture;
+HigherPath UpPath1_Texture;
+HigherPath UpPath2_Texture;
 
 //-----Obstacle-----
-Obstacle StonePig_Texture(STONE_PIG_ID, PathPosX_Carry);
-Obstacle Tent_Texture(TENT_ID, PathPosX_Carry);
+Obstacle StonePig_Texture;
+Obstacle Tent_Texture;
 
 //-----gBanana-----
-list<pair<double, int>> BananaPos;
-gBanana gBanana_Texture(BananaPos);
-int Banana_Score = 0;
-
+gBanana gBanana_Texture;
 
 //----------End of Declare---------->
 
@@ -85,206 +85,195 @@ int main( int argc, char* args[] )
     else
     {
         if( !loadMedia() )  printf( "Failed to load media!\n" );
+
         else
         {
-            bool quit = false;
-            SDL_Event e;
-            int frame = 0;
+            bool menu = true;
+            bool play = false;
+            StartButton.setPos(390, 200);
+            ExitButton.setPos(390, 380);
+            SDL_SetRenderDrawColor(gRenderer, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR );
 
-            //-----set Timer-----
-            gTimer.start();
-            game_over = 0;
+            while(menu)
+            {
+                SDL_Event e_mouse;
+				while (SDL_PollEvent(&e_mouse) != 0)
+				{
+					if (e_mouse.type == SDL_QUIT) menu = false;
 
-            while (!quit) {
-                while( SDL_PollEvent(&e) != 0) {
-                    if (e.type == SDL_QUIT) {
-                        quit = true;
+					bool quit_game = false;
+
+                    StartButton.handleEvent(&e_mouse, menu, play);
+                    ExitButton.handleEvent(&e_mouse, menu, quit_game);
+
+                    if (quit_game == true){
+                        close();
+                        return 0;
                     }
                 }
-                SDL_Delay(5);
-
-                MONKEY_ANIMATION_SPEED = MONKEY_RUNNING_SPEED*0.75;
-                MONKEY_JUMPING_SPEED = MONKEY_RUNNING_SPEED*2.5;
-
-                //-----Clear Render-----
-                SDL_SetRenderDrawColor(gRenderer, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR );
                 SDL_RenderClear(gRenderer);
 
-                //-----Scrolling Background-----
-                RenderScrollingBackground( backgroundTexture, gRenderer );
-                RenderScrollingGround( groundTexture, gRenderer, MONKEY_RUNNING_SPEED);
+                StartBackground_Texture.render(gRenderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-                //-----Higher Path-----
-                UpPath1_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
-                UpPath1_Texture.render(gRenderer, UP_PATH1_WIDTH, UP_PATH1_HEIGHT);
-
-                UpPath2_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
-                UpPath2_Texture.render(gRenderer, UP_PATH2_WIDTH, UP_PATH2_HEIGHT);
-
-                AirPath1_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
-                AirPath1_Texture.render(gRenderer, AIR_PATH1_WIDTH, AIR_PATH1_HEIGHT);
-
-                AirPath2_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
-                AirPath2_Texture.render(gRenderer, AIR_PATH2_WIDTH, AIR_PATH2_HEIGHT);
-
-                //-----Obstacle-----
-                StonePig_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
-                StonePig_Texture.render(gRenderer, STONE_PIG_WIDTH, STONE_PIG_HEIGHT);
-                StonePig_Texture.Handle_Monkey(gMonkey_Pos, game_over, gMonkeyState);
-
-                Tent_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
-                Tent_Texture.render(gRenderer, TENT_WIDTH, TENT_HEIGHT);
-                Tent_Texture.Handle_Monkey(gMonkey_Pos, game_over, gMonkeyState);
-
-                //-----gBanana-----
-                gBanana_Texture.render(gRenderer, BANANA_WIDTH, BANANA_HEIGHT, MONKEY_RUNNING_SPEED, BananaPos);
-                gBanana_Texture.Handle_Monkey(gMonkey_Pos, BananaPos, Banana_Score);
-
-                //-----Running Monkey-----
-                gMonkeyHandleHigherPath(gMonkeyState, gMonkey_Pos, PathPosX_Carry, FallTo_Pos, MONKEY_JUMPING_SPEED, JumpBreak);
-                gMonkeyHandleMoving();
-
-
-                //-----Score Board-----
-                //ScoreBoard.render(gRenderer, 3, 4, SCORE_BOARD_WIDTH, SCORE_BOARD_HEIGHT);
-
-                //-----Score-----
-                gRunDistance += MONKEY_RUNNING_SPEED;
-                string scoreNow = longLongToString(gRunDistance/80) + " m";
-                string bananaScoreNow = longLongToString(Banana_Score) + " Banana";
-                if (Banana_Score >= 2) bananaScoreNow += 's';
-
-                gTextTexture.loadFromRenderedText( scoreNow, ScoreBorderColor, gBorderFont, gRenderer);
-                gTextTexture.render( gRenderer, 10, 30 );
-
-                gTextTexture.loadFromRenderedText( scoreNow, ScoreColor, gFont, gRenderer);
-                gTextTexture.render( gRenderer, 12, 29 );
-
-                gTextTexture.loadFromRenderedText( bananaScoreNow, ScoreBorderColor, gBorderFont, gRenderer);
-                gTextTexture.render( gRenderer, 10, 60 );
-
-                gTextTexture.loadFromRenderedText( bananaScoreNow, ScoreColor, gFont, gRenderer);
-                gTextTexture.render( gRenderer, 12, 59 );
+                StartButton.render(gRenderer);
+                ExitButton.render(gRenderer);
 
                 SDL_RenderPresent(gRenderer);
+            }
 
-                while (game_over){
+            while(play){
+                //-----gMonkeyInit-----
+                gMonkeyState = STATE_RUN;
+                JumpBreak = 0;
+                JumpTo_Pos = gMonkey_JumpTo_Y1;
+                FallTo_Pos = gMonkey_Stable_PosY;
+                gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
+                MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
+                MONKEY_RUNNING_FRAME = 0;
 
-                    gTextTexture.loadFromRenderedText( "Thua", ScoreBorderColor, gBorderFont, gRenderer);
+                //-----HigherPathInit-----
+                pair<double, double> PathPosX_Carry[HIGHER_PATH_COUNT+1];
+                AirPath1_Texture.init(AIR_PATH1_ID, PathPosX_Carry);
+                AirPath2_Texture.init(AIR_PATH2_ID, PathPosX_Carry);
+                UpPath1_Texture.init(UP_PATH1_ID, PathPosX_Carry);
+                UpPath2_Texture.init(UP_PATH2_ID, PathPosX_Carry);
+
+                //-----ObstacleInit-----
+                StonePig_Texture.init(STONE_PIG_ID, PathPosX_Carry);
+                Tent_Texture.init(TENT_ID, PathPosX_Carry);
+
+                //-----gBananaInit-----
+                list<pair<double, int>> BananaPos;
+                gBanana_Texture.init(BananaPos);
+
+                //-----TimerScoreInit-----
+                string DeathMessage = "YOU LOSE!";
+                gTimer.start();
+                long gRunDistance = 0;
+                int Banana_Score = 0;
+
+                //-----DeathScreen Button-----;
+                AgainButton.setPos(200, 400);
+                ExitButton.setPos(570, 400);
+
+                PlayButton.setPos(5,0);
+                PauseButton.setPos(5,0);
+
+                //-----GameStateInit-----
+                bool game_over = false;
+                bool game_paused = false;
+                bool quit = false;
+                SDL_Event e;
+                while (!quit) {
+                    while( SDL_PollEvent(&e) != 0) {
+                        if (e.type == SDL_QUIT) quit = true, play = false;
+
+                        PlayButton.handleEvent(&e, quit, game_paused);
+                    }
+
+                    SDL_Delay(5); //delay cho do lag
+
+                    MONKEY_ANIMATION_SPEED = MONKEY_RUNNING_SPEED*0.75;
+                    MONKEY_JUMPING_SPEED = MONKEY_RUNNING_SPEED*2.5;
+
+                    //-----Clear Render-----
+                    SDL_RenderClear(gRenderer);
+
+                    //-----Scrolling Background-----
+                    RenderScrollingBackground( backgroundTexture, gRenderer );
+                    RenderScrollingGround( groundTexture, gRenderer, MONKEY_RUNNING_SPEED);
+
+                    //-----Higher Path-----
+                    UpPath1_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                    UpPath1_Texture.render(gRenderer, UP_PATH1_WIDTH, UP_PATH1_HEIGHT);
+
+                    UpPath2_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                    UpPath2_Texture.render(gRenderer, UP_PATH2_WIDTH, UP_PATH2_HEIGHT);
+
+                    AirPath1_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                    AirPath1_Texture.render(gRenderer, AIR_PATH1_WIDTH, AIR_PATH1_HEIGHT);
+
+                    AirPath2_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                    AirPath2_Texture.render(gRenderer, AIR_PATH2_WIDTH, AIR_PATH2_HEIGHT);
+
+                    //-----Obstacle-----
+                    StonePig_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                    StonePig_Texture.render(gRenderer, STONE_PIG_WIDTH, STONE_PIG_HEIGHT);
+                    StonePig_Texture.Handle_Monkey(gMonkey_Pos, game_over, gMonkeyState);
+
+                    Tent_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                    Tent_Texture.render(gRenderer, TENT_WIDTH, TENT_HEIGHT);
+                    Tent_Texture.Handle_Monkey(gMonkey_Pos, game_over, gMonkeyState);
+
+                    //-----gBanana-----
+                    gBanana_Texture.render(gRenderer, BANANA_WIDTH, BANANA_HEIGHT, MONKEY_RUNNING_SPEED, BananaPos);
+                    gBanana_Texture.Handle_Monkey(gMonkey_Pos, BananaPos, Banana_Score);
+
+                    //-----Running Monkey-----
+                    gMonkeyHandleHigherPath(gMonkeyState, gMonkey_Pos, PathPosX_Carry, FallTo_Pos, MONKEY_JUMPING_SPEED, JumpBreak);
+
+                    gMonkeyHandleMoving(gRenderer, JumpBreak, gMonkeyState, gMonkey_Pos, JumpTo_Pos, FallTo_Pos,
+                                        gMonkeyRunning_Texture,gMonkeyRunning_Clips, gMonkeyJumping_Texture, gMonkeyFallNPR_Texture, gMonkeyFallPARA_Texture,
+                                        MONKEY_RUNNING_SPEED, MONKEY_RUNNING_FRAME, MONKEY_ANIMATION_SPEED, MONKEY_JUMPING_SPEED, gTimer);
+
+                    //-----Score-----
+                    gRunDistance += MONKEY_RUNNING_SPEED;
+                    string scoreNow = longLongToString(gRunDistance/80) + " m";
+                    string bananaScoreNow = longLongToString(Banana_Score) + " Banana";
+                    if (Banana_Score >= 2) bananaScoreNow += 's';
+
+                    gTextTexture.loadFromRenderedText( scoreNow, ScoreBorderColor, gBorderFont, gRenderer);
                     gTextTexture.render( gRenderer, 10, 30 );
 
-                    gTextTexture.loadFromRenderedText( "Thua", ScoreColor, gFont, gRenderer);
+                    gTextTexture.loadFromRenderedText( scoreNow, ScoreColor, gFont, gRenderer);
                     gTextTexture.render( gRenderer, 12, 29 );
 
+                    gTextTexture.loadFromRenderedText( bananaScoreNow, ScoreBorderColor, gBorderFont, gRenderer);
+                    gTextTexture.render( gRenderer, 10, 60 );
+
+                    gTextTexture.loadFromRenderedText( bananaScoreNow, ScoreColor, gFont, gRenderer);
+                    gTextTexture.render( gRenderer, 12, 59 );
+
+                    int BestDistance = gRunDistance/80, BestBanana = Banana_Score;
+                    UpdateHighScore(BestDistance, BestBanana, DeathMessage);
+
+                    //cout << gTimer.getTicks() << "\n"; //debug only
+
+                    //-----PlayPause-----
+
+                    PlayButton.render(gRenderer);
+
+                    //-----RenderPresent-----
                     SDL_RenderPresent(gRenderer);
+
+                    //-----Handle Pause/Death-----
+                    if (game_over || game_paused) DeathScreenShot(DeathScreen, gRenderer);
+
+                    while (game_over || game_paused)
+                    {
+                        HandleGameOver(game_over, game_paused, play, quit, gTimer, AgainButton, ExitButton, PauseButton);
+
+                        //-----Score Board-----
+                        SDL_RenderClear(gRenderer);
+
+                        scoreNow = "Distance:  " + longLongToString(gRunDistance/80) + " (Best " + longLongToString(BestDistance) + ")";
+                        bananaScoreNow = "Banana:  " + longLongToString(Banana_Score) + " (Best " + longLongToString(BestBanana) + ")";
+
+                        HandleDeathScreen (gRenderer, DeathScreen, game_over, ScoreBoard, gTextTexture, gDeathFont,
+                                           AgainButton, ExitButton, PauseButton, scoreNow, bananaScoreNow, DeathMessage);
+
+                        SDL_RenderPresent(gRenderer);
+                    }
 
                 }
 
             }
-
         }
     }
     close();
     return 0;
 }
 //----------End of Main---------->
-
-
-//----------Function---------->
-void gMonkeyHandleMoving(){
-    //cout << gMonkeyState << " " << gMonkey_Pos.second << " " << gMonkey_X1_PosY << " " << FallTo_Pos << "\n";  //debug only
-    //cout << JumpBreak << "\n";  //debug only
-
-    SDL_Rect* currentClip = NULL;
-
-    if(gMonkeyState == STATE_RUN){
-        JumpBreak += MONKEY_RUNNING_SPEED;
-        setMonkeyPos(gMonkeyRunning_Texture, gMonkey_Pos);
-        if(currentKeyStates[ SDL_SCANCODE_DOWN ]){
-                gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
-                gMonkeyState = STATE_FALLNPR;
-        }
-        if(currentKeyStates[ SDL_SCANCODE_UP ] && JumpBreak >= BreakDistance){
-            JumpTo_Pos = gMonkey_JumpTo_Y1;
-            if (gMonkey_Pos.second == gMonkey_X1_PosY) JumpTo_Pos = gMonkey_JumpTo_Y2;
-            if (gMonkey_Pos.second == gMonkey_X2_PosY) JumpTo_Pos = 0;
-            gMonkeyState = STATE_JUMP;
-        }
-
-        else {
-            currentClip = &gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED];
-            ++MONKEY_RUNNING_FRAME;
-            if (MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED >= MONKEY_RUNNING_FRAME_COUNT) MONKEY_RUNNING_FRAME = 0;
-            gMonkeyRunning_Texture.render(gRenderer, currentClip);
-        }
-    }
-
-
-    if(gMonkeyState == STATE_JUMP){
-        setMonkeyPos(gMonkeyJumping_Texture, gMonkey_Pos);
-        if(currentKeyStates[ SDL_SCANCODE_DOWN ]) gMonkeyState = STATE_FALLNPR;
-        else{
-
-            if(gMonkey_Pos.second > JumpTo_Pos){
-                gMonkeyJumping_Texture.setPosY(gMonkeyJumping_Texture.getPosY()-MONKEY_JUMPING_SPEED);
-                gMonkey_Pos.second -= MONKEY_JUMPING_SPEED;
-                gMonkeyJumping_Texture.render(gRenderer, currentClip);
-            }
-            else {
-                if (!currentKeyStates[ SDL_SCANCODE_UP ]) gMonkeyState = STATE_FALLNPR;
-                else gMonkeyState = STATE_FALLPARA;
-            }
-        }
-    }
-
-
-    if(gMonkeyState == STATE_FALLNPR){
-        setMonkeyPos(gMonkeyFallNPR_Texture, gMonkey_Pos);
-        if(gMonkey_Pos.second < FallTo_Pos){
-
-            if (currentKeyStates[ SDL_SCANCODE_UP ]) gMonkeyState = STATE_FALLPARA;
-
-            else{
-                gMonkeyFallNPR_Texture.setPosY(gMonkeyFallNPR_Texture.getPosY()+MONKEY_JUMPING_SPEED);
-                gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
-                gMonkeyFallNPR_Texture.render(gRenderer, currentClip);
-            }
-        }
-        else{
-            gMonkeyState = STATE_RUN;
-            gMonkey_Pos.second = FallTo_Pos;
-        }
-    }
-
-
-    if(gMonkeyState == STATE_FALLPARA){
-        setMonkeyPos(gMonkeyFallPARA_Texture, gMonkey_Pos);
-
-        if(gMonkey_Pos.second < FallTo_Pos && !currentKeyStates[ SDL_SCANCODE_UP ]){
-            gMonkeyState = STATE_FALLNPR;
-        }
-
-        if(gMonkey_Pos.second < FallTo_Pos){
-            gMonkeyFallPARA_Texture.setPosY(gMonkeyFallPARA_Texture.getPosY()+MONKEY_RUNNING_SPEED);
-            gMonkey_Pos.second += MONKEY_RUNNING_SPEED/2;
-            gMonkeyFallPARA_Texture.render(gRenderer, currentClip);
-        }
-        else{
-            gMonkeyState = STATE_RUN;
-            JumpBreak = 0;
-            gMonkey_Pos.second = FallTo_Pos;
-        }
-    }
-
-    if (gMonkeyState == STATE_FALLNPR || gMonkeyState == STATE_FALLPARA){
-            FallTo_Pos = gMonkey_Stable_PosY;
-            if(gMonkey_Pos.second < gMonkey_X2_PosY) FallTo_Pos = gMonkey_X2_PosY;
-            else if(gMonkey_Pos.second < gMonkey_X1_PosY) FallTo_Pos = gMonkey_X1_PosY;
-    }
-
-    MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED + (1.0*gTimer.getTicks()/50000);
-}
-
 
 //<----------Base Function----------
 bool init()
@@ -341,19 +330,27 @@ bool loadMedia(){
     bool success = true;
 
     //-----gfont-----
-    gFont = TTF_OpenFont( fontPath.c_str(), 28 );
+    gFont = TTF_OpenFont( "Material/Fonts/UVNVan.ttf", 28 );
 	if( gFont == NULL )
 	{
-		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
 		success = false;
 	}
 
-	gBorderFont = TTF_OpenFont( fontPath.c_str(), 28 );
+	gBorderFont = TTF_OpenFont( "Material/Fonts/UVNVan.ttf", 28 );
 	if( gBorderFont == NULL )
 	{
-		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
 		success = false;
 	}
+
+	gDeathFont = TTF_OpenFont( "Material/Fonts/Nueva.ttf", 43 );
+	if( gFont == NULL )
+	{
+		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+
 	//-----ScoreBoard-----
 	if(!ScoreBoard.loadFromFile("Material/Others/ScoreBoard.png", gRenderer)){
         printf( "Failed to load ScoreBoard texture image!\n" );
@@ -374,33 +371,6 @@ bool loadMedia(){
     if(!gMonkeyFallPARA_Texture.loadFromFile("Material/Characters/Monkey/MonkeyFall_Para.png", gRenderer)){
         printf( "Failed to load monkeyFallPara texture image!\n" );
         success = false;
-    }
-
-    if(!gMonkeyWalking_Texture.loadFromFile("Material/Characters/Monkey/MonkeyWalk.png", gRenderer)){
-        printf( "Failed to load monkeyWalk texture image!\n" );
-        success = false;
-    }
-    else {
-            gMonkeyWalking_Clips[0].x = 140 * 0;
-            gMonkeyWalking_Clips[0].y = 0;
-            gMonkeyWalking_Clips[0].h = 168;
-            gMonkeyWalking_Clips[0].w = 140;
-
-            gMonkeyWalking_Clips[1].x = 140 * 1;
-            gMonkeyWalking_Clips[1].y = 0;
-            gMonkeyWalking_Clips[1].h = 168;
-            gMonkeyWalking_Clips[1].w = 140;
-
-            gMonkeyWalking_Clips[2].x = 140 * 2;
-            gMonkeyWalking_Clips[2].y = 0;
-            gMonkeyWalking_Clips[2].h = 168;
-            gMonkeyWalking_Clips[2].w = 140;
-
-            gMonkeyWalking_Clips[3].x = 140 * 3;
-            gMonkeyWalking_Clips[3].y = 0;
-            gMonkeyWalking_Clips[3].h = 168;
-            gMonkeyWalking_Clips[3].w = 140;
-
     }
 
     if(!gMonkeyRunning_Texture.loadFromFile("Material/Characters/Monkey/MonkeyRun.png", gRenderer)){
@@ -468,6 +438,38 @@ bool loadMedia(){
         }
     }
 
+    if( !StartBackground_Texture.loadFromFile( "Material/Background/AllLayer.png", gRenderer ) ){
+        printf( "Failed to load StartBackground layer %d texture image!\n");
+        success = false;
+    }
+
+    //-----Button-----
+    if( !StartButton.loadFromFile( "Material/Menu/Button/Start.png", gRenderer ) ){
+        printf( "Failed to load StartButton layer %d texture image!\n");
+        success = false;
+    }
+
+    if( !ExitButton.loadFromFile( "Material/Menu/Button/Exit.png", gRenderer ) ){
+        printf( "Failed to load ExitButton layer %d texture image!\n");
+        success = false;
+    }
+
+    if( !AgainButton.loadFromFile( "Material/Menu/Button/Again.png", gRenderer ) ){
+        printf( "Failed to load AgainButton layer %d texture image!\n");
+        success = false;
+    }
+
+
+    if( !PlayButton.loadFromFile( "Material/Menu/PlayPause/Play.png", gRenderer ) ){
+        printf( "Failed to load PlayButton layer %d texture image!\n");
+        success = false;
+    }
+
+    if( !PauseButton.loadFromFile( "Material/Menu/PlayPause/Pause.png", gRenderer ) ){
+        printf( "Failed to load PauseButton layer %d texture image!\n");
+        success = false;
+    }
+
 
     //-----HigherPath-----
     if (!AirPath1_Texture.loadFromFile("Material/HigherPath/AirPath1.png", gRenderer)){
@@ -510,7 +512,6 @@ void close()
 
     //-----gMonkey-----
     gMonkeyRunning_Texture.free();
-    gMonkeyWalking_Texture.free();
     gMonkeyJumping_Texture.free();
     gMonkeyFallNPR_Texture.free();
 

@@ -123,7 +123,7 @@
 
 1646820256 d:\code\sdl\bananakong\include\gamefunc.h
 
-1650466182 source:d:\code\c++\sdl\bananakong\main.cpp
+1650797379 source:d:\code\c++\sdl\bananakong\main.cpp
 	"gMonkey.h"
 	"BaseFunc.h"
 	"BaseObj.h"
@@ -134,6 +134,7 @@
 	"gText.h"
 	"Timer.h"
 	"gBanana.h"
+	"Button.h"
 
 1647766502 d:\code\c++\sdl\bananakong\include\gameobj.h
 
@@ -146,7 +147,7 @@
 	<iostream>
 	<string>
 
-1649844324 d:\code\c++\sdl\bananakong\include\baseobj.h
+1650520585 d:\code\c++\sdl\bananakong\include\baseobj.h
 	"BaseFunc.h"
 
 1649844324 source:d:\code\c++\sdl\bananakong\src\basefunc.cpp
@@ -172,23 +173,23 @@
 	"BaseFunc.h"
 	"BaseObj.h"
 
-1650465481 source:d:\code\c++\sdl\bananakong\src\obstacle.cpp
+1650783004 source:d:\code\c++\sdl\bananakong\src\obstacle.cpp
 	"Obstacle.h"
 
-1650465374 d:\code\c++\sdl\bananakong\include\obstacle.h
+1650782488 d:\code\c++\sdl\bananakong\include\obstacle.h
 	"BaseObj.h"
 	"BaseFunc.h"
 	"HigherPath.h"
 	"gMonkey.h"
 
-1649844324 source:d:\code\c++\sdl\bananakong\src\higherpath.cpp
+1650783255 source:d:\code\c++\sdl\bananakong\src\higherpath.cpp
 	"HigherPath.h"
 
-1649844324 d:\code\c++\sdl\bananakong\include\higherpath.h
+1650782329 d:\code\c++\sdl\bananakong\include\higherpath.h
 	"BaseFunc.h"
 	"BaseObj.h"
 
-1649844324 d:\code\c++\sdl\bananakong\include\gamefunc.h
+1650797330 d:\code\c++\sdl\bananakong\include\gamefunc.h
 	"gMonkey.h"
 	"BaseFunc.h"
 	"BaseObj.h"
@@ -196,29 +197,38 @@
 	"HigherPath.h"
 	"Obstacle.h"
 	"gText.h"
+	"Timer.h"
+	"Button.h"
 
-1649844324 source:d:\code\c++\sdl\bananakong\src\gamefunc.cpp
+1650797314 source:d:\code\c++\sdl\bananakong\src\gamefunc.cpp
 	"GameFunc.h"
 
-1649844324 d:\code\c++\sdl\bananakong\include\gtext.h
+1650793630 d:\code\c++\sdl\bananakong\include\gtext.h
 	"BaseObj.h"
 	"BaseFunc.h"
 
 1649844324 source:d:\code\c++\sdl\bananakong\src\gtext.cpp
 	"gText.h"
 
-1649844324 d:\code\c++\sdl\bananakong\include\timer.h
+1650794232 d:\code\c++\sdl\bananakong\include\timer.h
 	<BaseFunc.h>
 
-1649844324 source:d:\code\c++\sdl\bananakong\src\timer.cpp
+1650794234 source:d:\code\c++\sdl\bananakong\src\timer.cpp
 	"Timer.h"
 
-1650462401 d:\code\c++\sdl\bananakong\include\gbanana.h
+1650784405 d:\code\c++\sdl\bananakong\include\gbanana.h
 	"BaseFunc.h"
 	"BaseObj.h"
 	"Obstacle.h"
 	"gMonkey.h"
 
-1650463879 source:d:\code\c++\sdl\bananakong\src\gbanana.cpp
+1650784440 source:d:\code\c++\sdl\bananakong\src\gbanana.cpp
 	"gBanana.h"
+
+1650789983 source:d:\code\c++\sdl\bananakong\src\button.cpp
+	"Button.h"
+
+1650789959 d:\code\c++\sdl\bananakong\include\button.h
+	"BaseFunc.h"
+	"BaseObj.h"
 

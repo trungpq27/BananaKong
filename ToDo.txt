@@ -16,7 +16,8 @@
 - Chia function khỏi main cho khỉ			(DONE!)
 - Thêm function AdvancedTimer 				(DONE!)
 - Nhận key state từ phím					(DONE!)
-- Thêm function nhảy (DONE!), bay (DONE!) 
-- thêm function đi trên higherPath			(DONE!)
+- Thêm function nhảy và bay					(DONE!) 
+- Thêm function đi trên higherPath			(DONE!)
 - Thêm function va chạm obstacle			(DONE!)
-- Thêm Menu và Death Screen
+- Thêm Menu và Death Screen					(DONE!)
+- Thêm SDL_Mixer và Sound Effect
