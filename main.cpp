@@ -15,6 +15,17 @@
 using namespace std;
 
 //<----------Declare----------
+
+//-----Sound-----
+bool Death_Sound_Played = 0;
+Mix_Music *gMusic = NULL;
+Mix_Chunk *gBananaGet_Sound = NULL;
+Mix_Chunk *gMonkeyJump_Sound = NULL;
+Mix_Chunk *gClick_Sound = NULL;
+Mix_Chunk *Hover_Sound = NULL;
+Mix_Chunk *Death_Sound = NULL;
+Mix_Chunk *SeeYa = NULL;
+
 //-----TimerAndText-----
 
 TTF_Font *gFont = NULL;
@@ -27,6 +38,7 @@ gText gTextTexture;
 Timer gTimer;
 
 //-----Background-----
+BaseObject Paused_Text;
 BaseObject DeathScreen;
 BaseObject StartBackground_Texture;
 BaseObject backgroundTexture[BACKGROUND_LAYERS_COUNT];
@@ -88,6 +100,8 @@ int main( int argc, char* args[] )
 
         else
         {
+            Mix_PlayMusic( gMusic, -1 );
+
             bool menu = true;
             bool play = false;
             StartButton.setPos(390, 200);
@@ -99,14 +113,18 @@ int main( int argc, char* args[] )
                 SDL_Event e_mouse;
 				while (SDL_PollEvent(&e_mouse) != 0)
 				{
-					if (e_mouse.type == SDL_QUIT) menu = false;
+					if (e_mouse.type == SDL_QUIT) {
+                            Exit_Sound(SeeYa);
+                            menu = false;
+					}
 
 					bool quit_game = false;
 
-                    StartButton.handleEvent(&e_mouse, menu, play);
-                    ExitButton.handleEvent(&e_mouse, menu, quit_game);
+                    StartButton.handleEvent(&e_mouse, menu, play, Hover_Sound, gClick_Sound);
+                    ExitButton.handleEvent(&e_mouse, menu, quit_game, Hover_Sound, gClick_Sound);
 
                     if (quit_game == true){
+                        Exit_Sound(SeeYa);
                         close();
                         return 0;
                     }
@@ -122,6 +140,15 @@ int main( int argc, char* args[] )
             }
 
             while(play){
+
+                //-----SoundInit-----
+                if(Death_Sound_Played){
+                    Mix_HaltChannel(-1);
+                    Death_Sound_Played = false;
+                }
+                if (Mix_PlayingMusic() == 0) Mix_PlayMusic( gMusic, -1 );
+                else if( Mix_PausedMusic() == 1 ) Mix_ResumeMusic();
+
                 //-----gMonkeyInit-----
                 gMonkeyState = STATE_RUN;
                 JumpBreak = 0;
@@ -164,11 +191,12 @@ int main( int argc, char* args[] )
                 bool game_paused = false;
                 bool quit = false;
                 SDL_Event e;
+
                 while (!quit) {
                     while( SDL_PollEvent(&e) != 0) {
                         if (e.type == SDL_QUIT) quit = true, play = false;
 
-                        PlayButton.handleEvent(&e, quit, game_paused);
+                        PlayButton.handleEvent(&e, quit, game_paused, Hover_Sound, gClick_Sound);
                     }
 
                     SDL_Delay(5); //delay cho do lag
@@ -207,14 +235,14 @@ int main( int argc, char* args[] )
 
                     //-----gBanana-----
                     gBanana_Texture.render(gRenderer, BANANA_WIDTH, BANANA_HEIGHT, MONKEY_RUNNING_SPEED, BananaPos);
-                    gBanana_Texture.Handle_Monkey(gMonkey_Pos, BananaPos, Banana_Score);
+                    gBanana_Texture.Handle_Monkey(gMonkey_Pos, BananaPos, Banana_Score, gBananaGet_Sound);
 
                     //-----Running Monkey-----
                     gMonkeyHandleHigherPath(gMonkeyState, gMonkey_Pos, PathPosX_Carry, FallTo_Pos, MONKEY_JUMPING_SPEED, JumpBreak);
 
                     gMonkeyHandleMoving(gRenderer, JumpBreak, gMonkeyState, gMonkey_Pos, JumpTo_Pos, FallTo_Pos,
                                         gMonkeyRunning_Texture,gMonkeyRunning_Clips, gMonkeyJumping_Texture, gMonkeyFallNPR_Texture, gMonkeyFallPARA_Texture,
-                                        MONKEY_RUNNING_SPEED, MONKEY_RUNNING_FRAME, MONKEY_ANIMATION_SPEED, MONKEY_JUMPING_SPEED, gTimer);
+                                        MONKEY_RUNNING_SPEED, MONKEY_RUNNING_FRAME, MONKEY_ANIMATION_SPEED, MONKEY_JUMPING_SPEED, gTimer, gMonkeyJump_Sound);
 
                     //-----Score-----
                     gRunDistance += MONKEY_RUNNING_SPEED;
@@ -251,7 +279,12 @@ int main( int argc, char* args[] )
 
                     while (game_over || game_paused)
                     {
-                        HandleGameOver(game_over, game_paused, play, quit, gTimer, AgainButton, ExitButton, PauseButton);
+                        if(game_over && !Death_Sound_Played){
+                            Mix_HaltMusic();
+                            Mix_PlayChannel(-1, Death_Sound, 0);
+                            Death_Sound_Played = 1;
+                        }
+                        HandleGameOver(game_over, game_paused, play, quit, gTimer, AgainButton, ExitButton, PauseButton, Hover_Sound, gClick_Sound, SeeYa);
 
                         //-----Score Board-----
                         SDL_RenderClear(gRenderer);
@@ -259,8 +292,8 @@ int main( int argc, char* args[] )
                         scoreNow = "Distance:  " + longLongToString(gRunDistance/80) + " (Best " + longLongToString(BestDistance) + ")";
                         bananaScoreNow = "Banana:  " + longLongToString(Banana_Score) + " (Best " + longLongToString(BestBanana) + ")";
 
-                        HandleDeathScreen (gRenderer, DeathScreen, game_over, ScoreBoard, gTextTexture, gDeathFont,
-                                           AgainButton, ExitButton, PauseButton, scoreNow, bananaScoreNow, DeathMessage);
+                        HandleDeathScreen (gRenderer, DeathScreen, game_over, ScoreBoard, Paused_Text, gTextTexture,
+                                           gDeathFont, AgainButton, ExitButton, PauseButton, scoreNow, bananaScoreNow, DeathMessage);
 
                         SDL_RenderPresent(gRenderer);
                     }
@@ -279,7 +312,7 @@ int main( int argc, char* args[] )
 bool init()
 {
     bool success = true;
-    if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+    if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 )
     {
         printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
         success = false;
@@ -318,6 +351,11 @@ bool init()
 					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
 					success = false;
 				}
+				if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+                {
+                    printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+                    success = false;
+                }
             }
         }
     }
@@ -442,6 +480,10 @@ bool loadMedia(){
         printf( "Failed to load StartBackground layer %d texture image!\n");
         success = false;
     }
+    if( !Paused_Text.loadFromFile( "Material/Menu/PlayPause/Paused.png", gRenderer ) ){
+        printf( "Failed to load Paused_Text layer %d texture image!\n");
+        success = false;
+    }
 
     //-----Button-----
     if( !StartButton.loadFromFile( "Material/Menu/Button/Start.png", gRenderer ) ){
@@ -470,7 +512,6 @@ bool loadMedia(){
         success = false;
     }
 
-
     //-----HigherPath-----
     if (!AirPath1_Texture.loadFromFile("Material/HigherPath/AirPath1.png", gRenderer)){
         printf( "Failed to load Ground AirPath1 image!\n" );
@@ -489,8 +530,6 @@ bool loadMedia(){
         success = false;
     }
 
-
-
     //-----Obstacle-----
     if (!StonePig_Texture.loadFromFile("Material/Obstacle/StonePig.png", gRenderer)){
         printf( "Failed to load Ground StonePig image!\n" );
@@ -498,6 +537,50 @@ bool loadMedia(){
     }
     if (!Tent_Texture.loadFromFile("Material/Obstacle/Tent.png", gRenderer)){
         printf( "Failed to load Ground Tent image!\n" );
+        success = false;
+    }
+
+    //Load music
+    gMusic = Mix_LoadMUS( "Material/Sound/MainBgm.wav" );
+    if( gMusic == NULL )
+    {
+        printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    gBananaGet_Sound = Mix_LoadWAV( "Material/Sound/BananaGet.wav" );
+    if( gBananaGet_Sound == NULL )
+    {
+        printf( "Failed to load BananaGet effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    gMonkeyJump_Sound = Mix_LoadWAV( "Material/Sound/MonkeyJump.wav" );
+    if( gBananaGet_Sound == NULL )
+    {
+        printf( "Failed to load MonkeyJump effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    gClick_Sound = Mix_LoadWAV( "Material/Sound/MouseClick.wav" );
+    if( gClick_Sound == NULL )
+    {
+        printf( "Failed to load MouseClick effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    Hover_Sound = Mix_LoadWAV( "Material/Sound/ButtonHover.wav" );
+    if( Hover_Sound == NULL )
+    {
+        printf( "Failed to load ButtonHover effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    Death_Sound = Mix_LoadWAV( "Material/Sound/Death.wav" );
+    if( Death_Sound == NULL )
+    {
+        printf( "Failed to load Death effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+    SeeYa = Mix_LoadWAV( "Material/Sound/seeya.wav" );
+    if( SeeYa == NULL )
+    {
+        printf( "Failed to load SeeYa effect! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
 
@@ -514,6 +597,11 @@ void close()
     gMonkeyRunning_Texture.free();
     gMonkeyJumping_Texture.free();
     gMonkeyFallNPR_Texture.free();
+    gMonkeyFallPARA_Texture.free();
+    StartBackground_Texture.free();
+    DeathScreen.free();
+    Paused_Text.free();
+
 
     //-----Backgorund-----
     groundTexture.free();
@@ -527,9 +615,37 @@ void close()
     UpPath1_Texture.free();
     UpPath2_Texture.free();
 
-    //Obstacle
+    //-----Obstacle-----
     StonePig_Texture.free();
     Tent_Texture.free();
+
+    //-----gBanana-----
+    gBanana_Texture.free();
+
+    //-----Button-----
+    StartButton.free();
+    ExitButton.free();
+    AgainButton.free();
+    PlayButton.free();
+    PauseButton.free();
+
+    //-----gTimer/gText-----
+    gTimer.stop();
+    gTextTexture.free();
+
+    //-----Music-----
+    Mix_FreeMusic(gMusic);
+    Mix_FreeChunk( gBananaGet_Sound );
+    Mix_FreeChunk( gMonkeyJump_Sound );
+    Mix_FreeChunk( gClick_Sound );
+    Mix_FreeChunk( Hover_Sound );
+    Mix_FreeChunk( Death_Sound );
+    gMusic = NULL;
+    gBananaGet_Sound = NULL;
+    gMonkeyJump_Sound = NULL;
+    gClick_Sound = NULL;
+    Hover_Sound = NULL;
+    Death_Sound = NULL;
 
     //-----Window-----
     SDL_DestroyRenderer(gRenderer);
@@ -538,8 +654,10 @@ void close()
     gWindow = NULL;
 
     //-----SDL-----
-    IMG_Quit();
     SDL_Quit();
+    IMG_Quit();
+    TTF_Quit();
+    Mix_Quit();
 }
 //----------End of Base Function---------->
 

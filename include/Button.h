@@ -16,7 +16,7 @@ const int PAUSE_BUTTON_ID = 2;
 class Button : public BaseObject
 {
     private:
-
+        bool hover;
         int ID;
         SDL_Point mPosition;
         int posX;
@@ -30,7 +30,7 @@ class Button : public BaseObject
 
         void setPos(int x, int y);
 
-        void handleEvent( SDL_Event* e_mouse, bool &menu, bool &state);
+        void handleEvent( SDL_Event* e_mouse, bool &menu, bool &state, Mix_Chunk *Hover_Sound, Mix_Chunk *gClick_Sound);
 
         void render(SDL_Renderer *gRenderer);
 };

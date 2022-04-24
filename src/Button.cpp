@@ -2,6 +2,7 @@
 
 Button::Button(int ID)
 {
+    hover = false;
     this->ID = ID;
     mPosition.x = 0;
     mPosition.y = 0;
@@ -30,7 +31,7 @@ void Button::setPos( int x, int y )
     mPosition.y = y;
 }
 
-void Button::handleEvent( SDL_Event* e_mouse, bool &menu, bool &state)
+void Button::handleEvent( SDL_Event* e_mouse, bool &menu, bool &state, Mix_Chunk *Hover_Sound, Mix_Chunk *gClick_Sound)
 {
     if( e_mouse->type == SDL_MOUSEMOTION || e_mouse->type == SDL_MOUSEBUTTONDOWN || e_mouse->type == SDL_MOUSEBUTTONUP )
     {
@@ -40,6 +41,7 @@ void Button::handleEvent( SDL_Event* e_mouse, bool &menu, bool &state)
 
         if((x < mPosition.x) || (x > mPosition.x + wSize) ||
            (y < mPosition.y) || (y > mPosition.y + hSize)){
+            hover = false;
             inside = false;
             mPosition.x = posX;
             mPosition.y = posY;
@@ -54,6 +56,11 @@ void Button::handleEvent( SDL_Event* e_mouse, bool &menu, bool &state)
         }
         if(inside)
         {
+            if (hover == false){
+                Mix_PlayChannel(-1, Hover_Sound, 0);
+                hover = true;
+            }
+
             if (ID == MENU_BUTTON_ID){
                 hSize = START_BUTTON_HEIGHT + 10;
                 wSize = START_BUTTON_WIDTH + 10;
@@ -69,6 +76,7 @@ void Button::handleEvent( SDL_Event* e_mouse, bool &menu, bool &state)
             if (e_mouse->type == SDL_MOUSEBUTTONDOWN){
                 menu = false;
                 state = true;
+                Mix_PlayChannel(-1, gClick_Sound, 0);
             }
         }
     }

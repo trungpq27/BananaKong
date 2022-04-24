@@ -62,7 +62,7 @@ void gBanana::render(SDL_Renderer* gRenderer, int wSize, int hSize, double speed
     }
 }
 
-void gBanana::Handle_Monkey(pair <int, int> gMonkey_Pos, list<pair<double, int>> &BananaPos, int &Banana_Score){
+void gBanana::Handle_Monkey(pair <int, int> gMonkey_Pos, list<pair<double, int>> &BananaPos, int &Banana_Score, Mix_Chunk *gBananaGet_Sound){
 
     int Carry = BananaPos.size();
     while(Carry--){
@@ -73,6 +73,7 @@ void gBanana::Handle_Monkey(pair <int, int> gMonkey_Pos, list<pair<double, int>>
             (Banana_posNow.first + BANANA_WIDTH >= gMonkey_Pos.first && Banana_posNow.first <= gMonkey_Pos.first + MONKEY_WIDTH - 30)){
                 Banana_Score++;
                 Banana_Sum--;
+                Mix_PlayChannel( -1, gBananaGet_Sound, 0 );
             }
         else BananaPos.push_back(Banana_posNow);
 

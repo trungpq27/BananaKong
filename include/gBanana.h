@@ -32,7 +32,7 @@ class gBanana : public BaseObject
 
         void render(SDL_Renderer* gRenderer, int wSize, int hSize, double speed, list<pair<double, int>> &BananaPos);
 
-        void Handle_Monkey(pair <int, int> gMonkey_Pos, list<pair<double, int>> &BananaPos, int &Banana_Score);
+        void Handle_Monkey(pair <int, int> gMonkey_Pos, list<pair<double, int>> &BananaPos, int &Banana_Score, Mix_Chunk *gBananaGet_Sound);
 };
 
 #endif // GBANANA_H

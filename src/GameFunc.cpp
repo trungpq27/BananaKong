@@ -1,5 +1,12 @@
 #include "GameFunc.h"
 
+void Exit_Sound(Mix_Chunk *SeeYa){
+    Mix_HaltMusic();
+    Mix_HaltChannel(-1);
+    Mix_PlayChannel(-1, SeeYa, 0);
+    SDL_Delay(1500);
+}
+
 string longLongToString(long long x){
     stringstream ss;
     ss << x;
@@ -43,7 +50,7 @@ void gMonkeyHandleHigherPath(int &gMonkeyState, pair<int, int> &gMonkey_Pos, pai
 void gMonkeyHandleMoving(SDL_Renderer* gRenderer, int &JumpBreak, int &gMonkeyState, pair <int, int> &gMonkey_Pos, int &JumpTo_Pos, int &FallTo_Pos,
                          gMonkey &gMonkeyRunning_Texture, SDL_Rect *gMonkeyRunning_Clips, gMonkey &gMonkeyJumping_Texture, gMonkey &gMonkeyFallNPR_Texture,
                          gMonkey &gMonkeyFallPARA_Texture, double &MONKEY_RUNNING_SPEED, int &MONKEY_RUNNING_FRAME, int &MONKEY_ANIMATION_SPEED,
-                         int &MONKEY_JUMPING_SPEED, Timer &gTimer){
+                         int &MONKEY_JUMPING_SPEED, Timer &gTimer, Mix_Chunk *gMonkeyJump_Sound){
 
     //cout << gMonkeyState << " " << gMonkey_Pos.second << " " << gMonkey_X1_PosY << " " << FallTo_Pos << "\n";  //debug only
     //cout << JumpBreak << "\n";  //debug only
@@ -61,6 +68,7 @@ void gMonkeyHandleMoving(SDL_Renderer* gRenderer, int &JumpBreak, int &gMonkeySt
             if (gMonkey_Pos.second == gMonkey_X1_PosY) JumpTo_Pos = gMonkey_JumpTo_Y2;
             if (gMonkey_Pos.second == gMonkey_X2_PosY) JumpTo_Pos = 0;
             gMonkeyState = STATE_JUMP;
+            Mix_PlayChannel(-1, gMonkeyJump_Sound, 0);
         }
 
         else {
@@ -164,31 +172,39 @@ void DeathScreenShot(BaseObject &DeathScreen, SDL_Renderer* gRenderer){
         printf( "Failed to load DeathScreen texture image!\n" );
 }
 
-void HandleGameOver(bool &game_over, bool &game_paused, bool &play, bool &quit, Timer &gTimer, Button &AgainButton, Button &ExitButton, Button &PauseButton){
+void HandleGameOver(bool &game_over, bool &game_paused, bool &play, bool &quit, Timer &gTimer, Button &AgainButton, Button &ExitButton, Button &PauseButton,
+                    Mix_Chunk *Hover_Sound, Mix_Chunk *gClick_Sound, Mix_Chunk *SeeYa){
+
     if (game_over) play = false, quit = true, gTimer.stop();
     else gTimer.pause();
     bool exit = false;
     SDL_Event e_mouse;
     while (SDL_PollEvent(&e_mouse) != 0)
     {
-        if (e_mouse.type == SDL_QUIT) game_over = false;
+        if (e_mouse.type == SDL_QUIT){
+            Exit_Sound(SeeYa);
+            game_over = false;
+        }
 
         if (game_over){
-            AgainButton.handleEvent(&e_mouse, game_over, play);
-            ExitButton.handleEvent(&e_mouse, game_over, exit);
+            AgainButton.handleEvent(&e_mouse, game_over, play, Hover_Sound, gClick_Sound);
+            ExitButton.handleEvent(&e_mouse, game_over, exit, Hover_Sound, gClick_Sound);
         }
 
         else if (game_paused){
-            PauseButton.handleEvent(&e_mouse, game_paused, play);
+            PauseButton.handleEvent(&e_mouse, game_paused, play, Hover_Sound, gClick_Sound);
             if (!game_paused) gTimer.unpause();
         }
 
-        if (exit) game_over = false;
+        if (exit){
+            Exit_Sound(SeeYa);
+            game_over = false;
+        }
     }
 }
 
-void HandleDeathScreen (SDL_Renderer* gRenderer, BaseObject &DeathScreen, bool &game_over, BaseObject &ScoreBoard, gText &gTextTexture, TTF_Font *gDeathFont,
-                        Button &AgainButton, Button &ExitButton, Button &PauseButton, string scoreNow, string bananaScoreNow, string DeathMessage){
+void HandleDeathScreen (SDL_Renderer* gRenderer, BaseObject &DeathScreen, bool &game_over, BaseObject &ScoreBoard, BaseObject &Paused_Text, gText &gTextTexture,
+                        TTF_Font *gDeathFont, Button &AgainButton, Button &ExitButton, Button &PauseButton, string scoreNow, string bananaScoreNow, string DeathMessage){
 
     DeathScreen.render(gRenderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     if (game_over){
@@ -206,6 +222,9 @@ void HandleDeathScreen (SDL_Renderer* gRenderer, BaseObject &DeathScreen, bool &
         AgainButton.render(gRenderer);
         ExitButton.render(gRenderer);
     }
-    else PauseButton.render(gRenderer);
+    else {
+        Paused_Text.render(gRenderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        PauseButton.render(gRenderer);
+    }
 
 }

@@ -36,6 +36,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="HighScoreFile" />
 		<Unit filename="Material/Background/AllLayer.png" />
 		<Unit filename="Material/Background/Ground.png" />
 		<Unit filename="Material/Background/Layer0.png" />
@@ -48,6 +49,8 @@
 		<Unit filename="Material/Characters/Monkey/MonkeyJump.png" />
 		<Unit filename="Material/Characters/Monkey/MonkeyRun.png" />
 		<Unit filename="Material/Characters/Monkey/MonkeyWalk.png" />
+		<Unit filename="Material/Fonts/Nueva.ttf" />
+		<Unit filename="Material/Fonts/UVNVan.TTF" />
 		<Unit filename="Material/HigherPath/AirPath1.png" />
 		<Unit filename="Material/HigherPath/AirPath2.png" />
 		<Unit filename="Material/HigherPath/UpPath1.png" />
@@ -58,6 +61,7 @@
 		<Unit filename="Material/Obstacle/StonePig.png" />
 		<Unit filename="Material/Obstacle/Tent.png" />
 		<Unit filename="Material/Others/ScoreBoard.png" />
+		<Unit filename="Material/Sound/MainBgm.wav" />
 		<Unit filename="include/Background.h" />
 		<Unit filename="include/BaseFunc.h" />
 		<Unit filename="include/BaseObj.h" />

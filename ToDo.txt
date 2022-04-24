@@ -20,4 +20,4 @@
 - Thêm function đi trên higherPath			(DONE!)
 - Thêm function va chạm obstacle			(DONE!)
 - Thêm Menu và Death Screen					(DONE!)
-- Thêm SDL_Mixer và Sound Effect
+- Thêm SDL_Mixer và Sound Effect			(DONE!)
