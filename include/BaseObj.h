@@ -3,8 +3,8 @@
 
 #include "BaseFunc.h"
 
-const int SCORE_BOARD_HEIGHT = 130;
-const int SCORE_BOARD_WIDTH = SCORE_BOARD_HEIGHT*1.936;
+const int SCORE_BOARD_HEIGHT = 400;
+const int SCORE_BOARD_WIDTH = SCORE_BOARD_HEIGHT*1.8;
 
 
 //----------Object Class--------->

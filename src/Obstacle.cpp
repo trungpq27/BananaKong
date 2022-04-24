@@ -2,14 +2,7 @@
 
 
 //-----Object Class-----
-Obstacle::Obstacle(int ID, pair<double, double> *PathPosX_Carry) : BaseObject(){
-    this->ID = ID;
-
-    if (ID == STONE_PIG_ID) ObstacleWidth = STONE_PIG_WIDTH;
-    if (ID == TENT_ID) ObstacleWidth = TENT_WIDTH;
-
-    updateY(posY, posY_Level);
-    updateX(posX, PathPosX_Carry);
+Obstacle::Obstacle() : BaseObject(){
 }
 
 Obstacle::~Obstacle(){
@@ -19,6 +12,21 @@ Obstacle::~Obstacle(){
     posY_Level = 0;
     ObstacleWidth = 0;
     ID = 0;
+}
+
+void Obstacle::init(int ID, pair<double, double> *PathPosX_Carry){
+
+    for (int i = 0; i < OBSTACLE_POSY_LEVEL_COUNT; ++i)
+        for (int j = 0; j <= OBSTACLE_COUNT+1; ++j) ObstaclePosX_Carry[i][j] = {0,0};
+
+    this->ID = ID;
+
+    if (ID == STONE_PIG_ID) ObstacleWidth = STONE_PIG_WIDTH;
+    if (ID == TENT_ID) ObstacleWidth = TENT_WIDTH;
+
+    updateY(posY, posY_Level);
+    updateX(posX, PathPosX_Carry);
+
 }
 
 void Obstacle::updateY(double &posY, int &posY_Level){

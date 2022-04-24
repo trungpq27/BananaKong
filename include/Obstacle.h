@@ -41,9 +41,11 @@ class Obstacle : public BaseObject{
         int ID;
 
     public:
-        Obstacle(int ID, pair<double, double> *PathPosX_Carry);
+        Obstacle();
 
         ~Obstacle();
+
+        void init(int ID, pair<double, double> *PathPosX_Carry);
 
         void updateX(double &posX, pair<double, double> *PathPosX_Carry);
 

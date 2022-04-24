@@ -1,14 +1,17 @@
 #include "gBanana.h"
 
-gBanana::gBanana(list<pair<double, int>> &BananaPos) : BaseObject(){
-    Banana_Sum = 0;
-    updateY();
-    updateX(posX, BananaPos);
+gBanana::gBanana() : BaseObject(){
 }
 
 gBanana::~gBanana()
 {
 
+}
+
+void gBanana::init(list<pair<double, int>> &BananaPos){
+    Banana_Sum = 0;
+    updateY();
+    updateX(posX, BananaPos);
 }
 
 void gBanana::updateY(){

@@ -21,8 +21,10 @@ class gBanana : public BaseObject
         int Banana_Sum;
 
     public:
-        gBanana(list<pair<double, int>> &BananaPos);
+        gBanana();
         ~gBanana();
+
+        void init(list<pair<double, int>> &BananaPos);
 
         void updateY();
 

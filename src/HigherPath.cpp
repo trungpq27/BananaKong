@@ -1,6 +1,18 @@
 #include "HigherPath.h"
 
-HigherPath::HigherPath(int ID, pair<double, double> *PathPosX_Carry) : BaseObject(){
+HigherPath::HigherPath() : BaseObject(){
+}
+
+HigherPath::~HigherPath(){
+    BaseObject::free();
+    posX = 0;
+    posY = 0;
+    ID = 0;
+    pathWidth = 0;
+}
+
+void HigherPath::init(int ID, pair<double, double> *PathPosX_Carry){
+
     this->ID = ID;
     if (ID == UP_PATH1_ID){
         pathWidth = UP_PATH1_WIDTH;
@@ -22,14 +34,7 @@ HigherPath::HigherPath(int ID, pair<double, double> *PathPosX_Carry) : BaseObjec
         posY = HIGH_PATH_X2_POSY;
     }
     updateX(posX, PathPosX_Carry);
-}
 
-HigherPath::~HigherPath(){
-    BaseObject::free();
-    posX = 0;
-    posY = 0;
-    ID = 0;
-    pathWidth = 0;
 }
 
 void HigherPath::updateX(double &posX, pair<double, double> *PathPosX_Carry){

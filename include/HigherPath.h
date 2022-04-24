@@ -44,9 +44,11 @@ class HigherPath : public BaseObject
 
     public:
 
-        HigherPath(int ID, pair<double, double> *PathPosX_Carry);
+        HigherPath();
 
         ~HigherPath();
+
+        void init(int ID, pair<double, double> *PathPosX_Carry);
 
         void updateX(double &posX, pair<double, double> *PathPosX_Carry);
 
