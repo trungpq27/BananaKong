@@ -63,9 +63,9 @@ int FallTo_Pos = gMonkey_Stable_PosY;
 pair <int, int> gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
 
 int MONKEY_RUNNING_FRAME = 0;
-int MONKEY_ANIMATION_SPEED;
 int MONKEY_JUMPING_SPEED;
 double MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
+int MONKEY_ANIMATION_SPEED = MONKEY_RUNNING_SPEED*0.75;
 
 gMonkey gMonkeyRunning_Texture;
 gMonkey gMonkeyJumping_Texture;
@@ -131,7 +131,16 @@ int main( int argc, char* args[] )
                 }
                 SDL_RenderClear(gRenderer);
 
+                RenderScrollingBackground( backgroundTexture, gRenderer );
+                RenderScrollingGround( groundTexture, gRenderer, MONKEY_RUNNING_SPEED);
+
                 StartBackground_Texture.render(gRenderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+                SDL_Rect* currentClip = NULL;
+                currentClip = &gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED];
+                ++MONKEY_RUNNING_FRAME;
+                if (MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED >= MONKEY_RUNNING_FRAME_COUNT) MONKEY_RUNNING_FRAME = 0;
+                gMonkeyRunning_Texture.render(gRenderer, currentClip);
 
                 StartButton.render(gRenderer);
                 ExitButton.render(gRenderer);
@@ -199,7 +208,7 @@ int main( int argc, char* args[] )
                         PlayButton.handleEvent(&e, quit, game_paused, Hover_Sound, gClick_Sound);
                     }
 
-                    SDL_Delay(5); //delay cho do lag
+                    //SDL_Delay(5); //delay cho do lag
 
                     MONKEY_ANIMATION_SPEED = MONKEY_RUNNING_SPEED*0.75;
                     MONKEY_JUMPING_SPEED = MONKEY_RUNNING_SPEED*2.5;
@@ -270,7 +279,6 @@ int main( int argc, char* args[] )
                     //-----PlayPause-----
 
                     PlayButton.render(gRenderer);
-
                     //-----RenderPresent-----
                     SDL_RenderPresent(gRenderer);
 
@@ -279,6 +287,7 @@ int main( int argc, char* args[] )
 
                     while (game_over || game_paused)
                     {
+                        if(game_paused) Mix_PauseMusic();
                         if(game_over && !Death_Sound_Played){
                             Mix_HaltMusic();
                             Mix_PlayChannel(-1, Death_Sound, 0);
@@ -293,7 +302,8 @@ int main( int argc, char* args[] )
                         bananaScoreNow = "Banana:  " + longLongToString(Banana_Score) + " (Best " + longLongToString(BestBanana) + ")";
 
                         HandleDeathScreen (gRenderer, DeathScreen, game_over, ScoreBoard, Paused_Text, gTextTexture,
-                                           gDeathFont, AgainButton, ExitButton, PauseButton, scoreNow, bananaScoreNow, DeathMessage);
+                                           gDeathFont, gDeathBorderFont, AgainButton, ExitButton, PauseButton, scoreNow,
+                                           bananaScoreNow, DeathMessage);
 
                         SDL_RenderPresent(gRenderer);
                     }
@@ -382,12 +392,19 @@ bool loadMedia(){
 		success = false;
 	}
 
-	gDeathFont = TTF_OpenFont( "Material/Fonts/Nueva.ttf", 43 );
-	if( gFont == NULL )
+	gDeathFont = TTF_OpenFont( "Material/Fonts/Nueva.ttf", 40 );
+	if( gDeathFont == NULL )
 	{
 		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
 		success = false;
 	}
+	gDeathBorderFont = TTF_OpenFont( "Material/Fonts/Nueva.ttf", 40 );
+	if( gDeathBorderFont == NULL )
+	{
+		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+	else TTF_SetFontOutline(gDeathBorderFont, 1);
 
 	//-----ScoreBoard-----
 	if(!ScoreBoard.loadFromFile("Material/Others/ScoreBoard.png", gRenderer)){
@@ -476,7 +493,7 @@ bool loadMedia(){
         }
     }
 
-    if( !StartBackground_Texture.loadFromFile( "Material/Background/AllLayer.png", gRenderer ) ){
+    if( !StartBackground_Texture.loadFromFile( "Material/Background/Title.png", gRenderer ) ){
         printf( "Failed to load StartBackground layer %d texture image!\n");
         success = false;
     }

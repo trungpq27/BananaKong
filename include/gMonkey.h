@@ -14,7 +14,7 @@ const int STATE_FALLNPR = 3;
 const int STATE_FALLPARA = 4;
 
 //---Position---
-const int gMonkey_Stable_PosX = 350;
+const int gMonkey_Stable_PosX = 280;
 const int gMonkey_Stable_PosY = 480;
 const int gMonkey_JumpTo_Y1 = 250;
 const int gMonkey_JumpTo_Y2 = 120;

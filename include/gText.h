@@ -8,6 +8,7 @@ const string fontPath = "Material/Fonts/Nueva.ttf";
 const SDL_Color ScoreColor = { 	203, 134, 65 };
 const SDL_Color ScoreBorderColor = { 41, 51, 33 };
 const SDL_Color DeathScoreColor = {142, 50, 0 };
+const SDL_Color DeathScoreBorderColor = {0, 0, 0 };
 
 
 class gText : public BaseObject{
@@ -15,6 +16,7 @@ class gText : public BaseObject{
         SDL_Texture* gFontTexture;
         int textWidth;
         int textHeight;
+        int centeredPosX;
 
     public:
         gText();
@@ -24,6 +26,8 @@ class gText : public BaseObject{
         void free();
 
 		bool loadFromRenderedText( std::string textureText, SDL_Color textColor, TTF_Font *gFont, SDL_Renderer *gRenderer);
+
+		int getCenter();
 
 		void setColor( Uint8 red, Uint8 green, Uint8 blue );
 

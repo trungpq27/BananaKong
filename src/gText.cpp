@@ -25,7 +25,7 @@ bool gText::loadFromRenderedText(string textureText, SDL_Color textColor, TTF_Fo
 	free();
 
 	//Render text surface
-	SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText.c_str(), textColor );
+	SDL_Surface* textSurface = TTF_RenderUTF8_Blended( gFont, textureText.c_str(), textColor );
 	if( textSurface == NULL )
 	{
 		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
@@ -47,9 +47,19 @@ bool gText::loadFromRenderedText(string textureText, SDL_Color textColor, TTF_Fo
 		//Get rid of old surface
 		SDL_FreeSurface( textSurface );
 	}
+    int w, h;
+    if (TTF_SizeText(gFont, textureText.c_str(), &w, &h)){
+        printf( "Unable to get text size! SDL Error: %s\n", SDL_GetError() );
+    }
+    else centeredPosX = (SCREEN_WIDTH - w)/2;
+	//cout << centeredPosX << "\n";   //debug only
 
 	//Return success
 	return gFontTexture != NULL;
+}
+
+int gText::getCenter(){
+    return centeredPosX;
 }
 
 void gText::setColor( Uint8 red, Uint8 green, Uint8 blue )

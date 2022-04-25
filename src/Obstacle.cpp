@@ -15,10 +15,6 @@ Obstacle::~Obstacle(){
 }
 
 void Obstacle::init(int ID, pair<double, double> *PathPosX_Carry){
-
-    for (int i = 0; i < OBSTACLE_POSY_LEVEL_COUNT; ++i)
-        for (int j = 0; j <= OBSTACLE_COUNT+1; ++j) ObstaclePosX_Carry[i][j] = {0,0};
-
     this->ID = ID;
 
     if (ID == STONE_PIG_ID) ObstacleWidth = STONE_PIG_WIDTH;
@@ -36,7 +32,6 @@ void Obstacle::updateY(double &posY, int &posY_Level){
 
 void Obstacle::updateX(double &posX, pair<double, double> *PathPosX_Carry){
 
-
         int PATH_ID = rand()%2 + 1;
         if (posY_Level == POSY_AIR_ID) PATH_ID += 2;
 
@@ -48,12 +43,12 @@ void Obstacle::updateX(double &posX, pair<double, double> *PathPosX_Carry){
             if (posX <= SCREEN_WIDTH) posX = -ObstacleWidth;
         }
 
-     for(int i = 0; i <= OBSTACLE_COUNT; ++i){
+     for(int i = 1; i <= OBSTACLE_COUNT; ++i){
         double OLD_POSX = ObstaclePosX_Carry[posY_Level][i].first;
         double OLD_POSX_END = ObstaclePosX_Carry[posY_Level][i].second;
-        if((posX >= OLD_POSX && posX <= OLD_POSX_END) || (posX <= OLD_POSX && posX+ObstacleWidth >= OLD_POSX)) posX = -ObstacleWidth;
+        if((posX >= OLD_POSX && posX <= OLD_POSX_END) || (posX <= OLD_POSX && posX+ObstacleWidth >= OLD_POSX))
+            posX = -ObstacleWidth;
     }
-
     ObstaclePosX_Carry[posY_Level][ID] = make_pair(posX, posX+ObstacleWidth);
 
 }

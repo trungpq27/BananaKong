@@ -38,6 +38,7 @@ void HandleGameOver(bool &game_over, bool &game_paused, bool &play, bool &quit, 
                     Mix_Chunk *Hover_Sound, Mix_Chunk *gClick_Sound, Mix_Chunk *SeeYa);
 
 void HandleDeathScreen (SDL_Renderer* gRenderer, BaseObject &DeathScreen, bool &game_over, BaseObject &ScoreBoard, BaseObject &Paused_Text, gText &gTextTexture,
-                        TTF_Font *gDeathFont, Button &AgainButton, Button &ExitButton, Button &PauseButton, string scoreNow, string bananaScoreNow, string DeathMessage);
+                        TTF_Font *gDeathFont, TTF_Font *gDeathBorderFont, Button &AgainButton, Button &ExitButton, Button &PauseButton, string scoreNow,
+                        string bananaScoreNow, string DeathMessage);
 
 #endif // GAMEFUNC_H
