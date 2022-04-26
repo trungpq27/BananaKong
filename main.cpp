@@ -1,17 +1,5 @@
 #define SDL_MAIN_HANDLED
-
-#include "gMonkey.h"
-#include "BaseFunc.h"
-#include "BaseObj.h"
-#include "Background.h"
-#include "HigherPath.h"
-#include "Obstacle.h"
 #include "GameFunc.h"
-#include "gText.h"
-#include "Timer.h"
-#include "gBanana.h"
-#include "Button.h"
-#include "gSound.h"
 
 
 using namespace std;
@@ -123,90 +111,16 @@ int main( int argc, char* args[] )
 
         else while (backToMenu)
         {
-            MONKEY_RUNNING_FRAME = 0;
-            MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
-            MONKEY_ANIMATION_SPEED = MONKEY_RUNNING_SPEED*0.75;
-
-            gMonkeyState = STATE_RUN;
-            gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
-
-            Mix_PlayMusic( gMusic, -1 );
-            backToMenu = false;
-            menu = true;
-            play = false;
-
-            StartButton.setSize(START_BUTTON_WIDTH, START_BUTTON_HEIGHT);
-            StartButton.setPos((SCREEN_WIDTH - START_BUTTON_WIDTH)/2, 200);
-            ExitButton.setSize(START_BUTTON_WIDTH, START_BUTTON_HEIGHT);
-            ExitButton.setPos((SCREEN_WIDTH - START_BUTTON_WIDTH)/2, 380);
-
-            AgainButton.setSize(START_BUTTON_WIDTH, START_BUTTON_HEIGHT);
-
-            PauseButton.setSize(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
-
-            PlayButton.setSize(ROUND_BUTTON_SIZE, ROUND_BUTTON_SIZE);
-            HomeButton.setSize(ROUND_BUTTON_SIZE, ROUND_BUTTON_SIZE);
-            RoundExitButton.setSize(ROUND_BUTTON_SIZE, ROUND_BUTTON_SIZE);
-
-            PlayButton.setPos(270, 300);
-            HomeButton.setPos(470, 300);
-            RoundExitButton.setPos(670, 300);
-
-            SDL_SetRenderDrawColor(gRenderer, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR );
+            GameInitEverything(gRenderer);
+            menu = true; play = false;
 
             while(menu) HandleMenu(gRenderer);
 
             while(play){
 
-                //-----SoundInit-----
-                if(Death_Sound_Played){
-                    Mix_HaltChannel(-1);
-                    Death_Sound_Played = false;
-                }
-                if (Mix_PlayingMusic() == 0) Mix_PlayMusic( gMusic, -1 );
-                else if( Mix_PausedMusic() == 1 ) Mix_ResumeMusic();
+                GameInitEverything(gRenderer);
 
-                //-----gMonkeyInit-----
-                gMonkeyState = STATE_RUN;
-                JumpBreak = 0;
-                JumpTo_Pos = gMonkey_JumpTo_Y1;
-                FallTo_Pos = gMonkey_Stable_PosY;
-                gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
-                MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
-                MONKEY_RUNNING_FRAME = 0;
-
-                //-----HigherPathInit-----
-                AirPath1_Texture.init(AIR_PATH1_ID);
-                AirPath2_Texture.init(AIR_PATH2_ID);
-                UpPath1_Texture.init(UP_PATH1_ID);
-                UpPath2_Texture.init(UP_PATH2_ID);
-
-                //-----ObstacleInit-----
-                StonePig_Texture.init(STONE_PIG_ID);
-                Tent_Texture.init(TENT_ID);
-
-                //-----gBananaInit-----
-                while(!BananaPos.empty()) BananaPos.pop_front();
-                gBanana_Texture.init();
-
-                //-----TimerScoreInit-----
-                DeathMessage = "YOU LOSE!";
-                gTimer.start();
-                gRunDistance = 0;
-                Banana_Score = 0;
-
-                //-----DeathScreen Button-----;
-                AgainButton.setPos(200, 400);
-                ExitButton.setPos(570, 400);
-
-                PauseButton.setPos(5,5);
-
-                //-----GameStateInit-----
-                game_over = false;
-                game_paused = false;
-                quit = false;
                 SDL_Event e;
-
                 while (!quit) {
                     while( SDL_PollEvent(&e) != 0) {
                         if (e.type == SDL_QUIT) quit = true, play = false;

@@ -30,4 +30,10 @@ extern BaseObject StartBackground_Texture;
 extern BaseObject backgroundTexture[BACKGROUND_LAYERS_COUNT];
 extern BaseObject groundTexture;
 
+extern BaseObject ScoreBoard;
+extern string DeathMessage;
+extern string scoreNow;
+extern string bananaScoreNow;
+
+
 #endif // BACKGROUND_H

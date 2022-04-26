@@ -3,6 +3,7 @@
 
 #include "BaseFunc.h"
 
+extern bool Death_Sound_Played;
 extern Mix_Music *gMusic;
 extern Mix_Chunk *gBananaGet_Sound;
 extern Mix_Chunk *gMonkeyJump_Sound;

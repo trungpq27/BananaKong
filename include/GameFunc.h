@@ -8,8 +8,8 @@
 #include "HigherPath.h"
 #include "Obstacle.h"
 #include "gText.h"
-#include "gBanana.h"
 #include "Timer.h"
+#include "gBanana.h"
 #include "Button.h"
 #include "gSound.h"
 
@@ -29,17 +29,13 @@ extern bool game_over;
 extern bool game_paused;
 extern bool quit;
 
-//-----ScoreBoard-----
-extern BaseObject ScoreBoard;
-extern string DeathMessage;
-extern string scoreNow;
-extern string bananaScoreNow;
-
 //----------
 
 void Exit_Sound();
 
 string longLongToString(long long x);
+
+void GameInitEverything(SDL_Renderer* gRenderer);
 
 void HandleMenu(SDL_Renderer* gRenderer);
 

@@ -14,6 +14,77 @@ string longLongToString(long long x){
     return str;
 }
 
+void GameInitEverything(SDL_Renderer* gRenderer){
+
+    //-----SoundInit-----
+    if(Death_Sound_Played){
+        Mix_HaltChannel(-1);
+        Death_Sound_Played = false;
+    }
+    if (Mix_PlayingMusic() == 0) Mix_PlayMusic( gMusic, -1 );
+    else if( Mix_PausedMusic() == 1 ) Mix_ResumeMusic();
+
+    //-----gMonkeyInit-----
+    gMonkeyState = STATE_RUN;
+    JumpBreak = 0;
+    JumpTo_Pos = gMonkey_JumpTo_Y1;
+    FallTo_Pos = gMonkey_Stable_PosY;
+    gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
+    MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
+    MONKEY_RUNNING_FRAME = 0;
+
+    //-----HigherPathInit-----
+    AirPath1_Texture.init(AIR_PATH1_ID);
+    AirPath2_Texture.init(AIR_PATH2_ID);
+    UpPath1_Texture.init(UP_PATH1_ID);
+    UpPath2_Texture.init(UP_PATH2_ID);
+
+    //-----ObstacleInit-----
+    StonePig_Texture.init(STONE_PIG_ID);
+    Tent_Texture.init(TENT_ID);
+
+    //-----gBananaInit-----
+    while(!BananaPos.empty()) BananaPos.pop_front();
+    gBanana_Texture.init();
+
+    //-----TimerScoreInit-----
+    DeathMessage = "YOU LOSE!";
+    gTimer.start();
+    gRunDistance = 0;
+    Banana_Score = 0;
+
+    //-----gButton Init-----
+    StartButton.setSize(START_BUTTON_WIDTH, START_BUTTON_HEIGHT);
+    StartButton.setPos((SCREEN_WIDTH - START_BUTTON_WIDTH)/2, 200);
+
+    ExitButton.setSize(START_BUTTON_WIDTH, START_BUTTON_HEIGHT);
+    ExitButton.setPos((SCREEN_WIDTH - START_BUTTON_WIDTH)/2, 380);
+
+    AgainButton.setSize(START_BUTTON_WIDTH, START_BUTTON_HEIGHT);
+    AgainButton.setPos(200, 400);
+
+    PauseButton.setSize(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+    PauseButton.setPos(5,5);
+
+    PlayButton.setSize(ROUND_BUTTON_SIZE, ROUND_BUTTON_SIZE);
+    PlayButton.setPos(270, 300);
+
+    HomeButton.setSize(ROUND_BUTTON_SIZE, ROUND_BUTTON_SIZE);
+    HomeButton.setPos(470, 300);
+
+    RoundExitButton.setSize(ROUND_BUTTON_SIZE, ROUND_BUTTON_SIZE);
+    RoundExitButton.setPos(670, 300);
+
+    //-----GameStateInit-----
+    backToMenu = false;
+    game_over = false;
+    game_paused = false;
+    quit = false;
+
+    //-----Renderer Init-----
+    SDL_SetRenderDrawColor(gRenderer, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR );
+}
+
 void HandleMenu(SDL_Renderer* gRenderer){
     SDL_Event e_mouse;
     while (SDL_PollEvent(&e_mouse) != 0)
@@ -260,6 +331,8 @@ void HandleGameOver(){
 }
 
 void HandleDeathScreen (SDL_Renderer* gRenderer){
+
+    ExitButton.setPos(570, 400);
 
     SDL_RenderClear(gRenderer);
 
