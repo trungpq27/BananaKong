@@ -31,4 +31,7 @@ class Timer
 		bool isPaused();
 };
 
+//-----Extern in Main-----
+extern Timer gTimer;
+
 #endif // TIMER_H

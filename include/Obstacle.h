@@ -19,8 +19,6 @@ const int POSY_GROUND_ID = 0;
 const int POSY_UP_ID = 1;
 const int POSY_AIR_ID = 2;
 
-static pair <int, int> ObstaclePosX_Carry [OBSTACLE_POSY_LEVEL_COUNT][OBSTACLE_COUNT+1];
-
 //-----Obstacle Render Info-----
 const int OBSTACLE_HEIGHT = 120;
 
@@ -30,6 +28,8 @@ const int STONE_PIG_WIDTH = STONE_PIG_HEIGHT*1.719;
 
 const int TENT_HEIGHT = 120;
 const int TENT_WIDTH = TENT_HEIGHT*1.946;
+
+static pair <int, int> ObstaclePosX_Carry [OBSTACLE_POSY_LEVEL_COUNT][OBSTACLE_COUNT+1];
 
 
 class Obstacle : public BaseObject{
@@ -45,21 +45,27 @@ class Obstacle : public BaseObject{
 
         ~Obstacle();
 
-        void init(int ID, pair<double, double> *PathPosX_Carry);
+        void init(int ID);
 
-        void updateX(double &posX, pair<double, double> *PathPosX_Carry);
+        void updateX(double &posX);
 
         void updateY(double &posY, int &posY_Level);
 
         void render(SDL_Renderer* gRenderer, int wSize, int hSize);
 
-        void Move(double speed, pair<double, double> *PathPosX_Carry);
+        void Move();
 
-        void Handle_Monkey(pair<int, int> gMonkey_Pos, bool &game_over, int gMonkeyState);
+        void Handle_Monkey();
 
         double getPosX();
 
         double getPosY();
 };
+
+//-----Exntern in Main-----
+extern Obstacle StonePig_Texture;
+extern Obstacle Tent_Texture;
+
+extern bool game_over;
 
 #endif // OBSTACLE_H

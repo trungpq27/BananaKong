@@ -1,4 +1,5 @@
 #define SDL_MAIN_HANDLED
+
 #include "gMonkey.h"
 #include "BaseFunc.h"
 #include "BaseObj.h"
@@ -10,11 +11,23 @@
 #include "Timer.h"
 #include "gBanana.h"
 #include "Button.h"
+#include "gSound.h"
 
 
 using namespace std;
 
 //<----------Declare----------
+
+const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
+
+//-----gameState-----
+bool backToMenu = true;
+bool menu = true;
+bool play = false;
+bool quit_game = false;
+bool game_over = false;
+bool game_paused = false;
+bool quit = false;
 
 //-----Sound-----
 bool Death_Sound_Played = 0;
@@ -30,7 +43,6 @@ Mix_Chunk *SeeYa = NULL;
 
 TTF_Font *gFont = NULL;
 TTF_Font *gBorderFont = NULL;
-
 TTF_Font *gDeathFont = NULL;
 TTF_Font *gDeathBorderFont = NULL;
 
@@ -45,17 +57,23 @@ BaseObject backgroundTexture[BACKGROUND_LAYERS_COUNT];
 BaseObject groundTexture;
 
 //-----Button-----
-Button StartButton(MENU_BUTTON_ID);
-Button ExitButton(MENU_BUTTON_ID);
-Button AgainButton(MENU_BUTTON_ID);
+Button StartButton;
+Button ExitButton;
+Button AgainButton;
 
-Button PlayButton(PAUSE_BUTTON_ID);
-Button PauseButton(PAUSE_BUTTON_ID);
+Button PlayButton;
+Button PauseButton;
+Button RoundExitButton;
+Button HomeButton;
 
 //-----ScoreBoard-----
 BaseObject ScoreBoard;
+string DeathMessage;
+string scoreNow;
+string bananaScoreNow;
 
 //-----gMonkey-----
+int gRunDistance = 0;
 int gMonkeyState = STATE_RUN;
 int JumpBreak = 0;
 int JumpTo_Pos = gMonkey_JumpTo_Y1;
@@ -79,13 +97,16 @@ HigherPath AirPath1_Texture;
 HigherPath AirPath2_Texture;
 HigherPath UpPath1_Texture;
 HigherPath UpPath2_Texture;
+pair<double, double> PathPosX_Carry[HIGHER_PATH_COUNT+1];
 
 //-----Obstacle-----
 Obstacle StonePig_Texture;
 Obstacle Tent_Texture;
 
 //-----gBanana-----
+int Banana_Score = 0;
 gBanana gBanana_Texture;
+list<pair<double, int>> BananaPos;
 
 //----------End of Declare---------->
 
@@ -96,57 +117,44 @@ int main( int argc, char* args[] )
     if( !init() ) printf( "Failed to initialize!\n" );
     else
     {
+        backToMenu = true;
+
         if( !loadMedia() )  printf( "Failed to load media!\n" );
 
-        else
+        else while (backToMenu)
         {
-            Mix_PlayMusic( gMusic, -1 );
+            MONKEY_RUNNING_FRAME = 0;
+            MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
+            MONKEY_ANIMATION_SPEED = MONKEY_RUNNING_SPEED*0.75;
 
-            bool menu = true;
-            bool play = false;
-            StartButton.setPos(390, 200);
-            ExitButton.setPos(390, 380);
+            gMonkeyState = STATE_RUN;
+            gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
+
+            Mix_PlayMusic( gMusic, -1 );
+            backToMenu = false;
+            menu = true;
+            play = false;
+
+            StartButton.setSize(START_BUTTON_WIDTH, START_BUTTON_HEIGHT);
+            StartButton.setPos((SCREEN_WIDTH - START_BUTTON_WIDTH)/2, 200);
+            ExitButton.setSize(START_BUTTON_WIDTH, START_BUTTON_HEIGHT);
+            ExitButton.setPos((SCREEN_WIDTH - START_BUTTON_WIDTH)/2, 380);
+
+            AgainButton.setSize(START_BUTTON_WIDTH, START_BUTTON_HEIGHT);
+
+            PauseButton.setSize(SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+
+            PlayButton.setSize(ROUND_BUTTON_SIZE, ROUND_BUTTON_SIZE);
+            HomeButton.setSize(ROUND_BUTTON_SIZE, ROUND_BUTTON_SIZE);
+            RoundExitButton.setSize(ROUND_BUTTON_SIZE, ROUND_BUTTON_SIZE);
+
+            PlayButton.setPos(270, 300);
+            HomeButton.setPos(470, 300);
+            RoundExitButton.setPos(670, 300);
+
             SDL_SetRenderDrawColor(gRenderer, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR );
 
-            while(menu)
-            {
-                SDL_Event e_mouse;
-				while (SDL_PollEvent(&e_mouse) != 0)
-				{
-					if (e_mouse.type == SDL_QUIT) {
-                            Exit_Sound(SeeYa);
-                            menu = false;
-					}
-
-					bool quit_game = false;
-
-                    StartButton.handleEvent(&e_mouse, menu, play, Hover_Sound, gClick_Sound);
-                    ExitButton.handleEvent(&e_mouse, menu, quit_game, Hover_Sound, gClick_Sound);
-
-                    if (quit_game == true){
-                        Exit_Sound(SeeYa);
-                        close();
-                        return 0;
-                    }
-                }
-                SDL_RenderClear(gRenderer);
-
-                RenderScrollingBackground( backgroundTexture, gRenderer );
-                RenderScrollingGround( groundTexture, gRenderer, MONKEY_RUNNING_SPEED);
-
-                StartBackground_Texture.render(gRenderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-                SDL_Rect* currentClip = NULL;
-                currentClip = &gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED];
-                ++MONKEY_RUNNING_FRAME;
-                if (MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED >= MONKEY_RUNNING_FRAME_COUNT) MONKEY_RUNNING_FRAME = 0;
-                gMonkeyRunning_Texture.render(gRenderer, currentClip);
-
-                StartButton.render(gRenderer);
-                ExitButton.render(gRenderer);
-
-                SDL_RenderPresent(gRenderer);
-            }
+            while(menu) HandleMenu(gRenderer);
 
             while(play){
 
@@ -168,47 +176,43 @@ int main( int argc, char* args[] )
                 MONKEY_RUNNING_FRAME = 0;
 
                 //-----HigherPathInit-----
-                pair<double, double> PathPosX_Carry[HIGHER_PATH_COUNT+1];
-                AirPath1_Texture.init(AIR_PATH1_ID, PathPosX_Carry);
-                AirPath2_Texture.init(AIR_PATH2_ID, PathPosX_Carry);
-                UpPath1_Texture.init(UP_PATH1_ID, PathPosX_Carry);
-                UpPath2_Texture.init(UP_PATH2_ID, PathPosX_Carry);
+                AirPath1_Texture.init(AIR_PATH1_ID);
+                AirPath2_Texture.init(AIR_PATH2_ID);
+                UpPath1_Texture.init(UP_PATH1_ID);
+                UpPath2_Texture.init(UP_PATH2_ID);
 
                 //-----ObstacleInit-----
-                StonePig_Texture.init(STONE_PIG_ID, PathPosX_Carry);
-                Tent_Texture.init(TENT_ID, PathPosX_Carry);
+                StonePig_Texture.init(STONE_PIG_ID);
+                Tent_Texture.init(TENT_ID);
 
                 //-----gBananaInit-----
-                list<pair<double, int>> BananaPos;
-                gBanana_Texture.init(BananaPos);
+                while(!BananaPos.empty()) BananaPos.pop_front();
+                gBanana_Texture.init();
 
                 //-----TimerScoreInit-----
-                string DeathMessage = "YOU LOSE!";
+                DeathMessage = "YOU LOSE!";
                 gTimer.start();
-                long gRunDistance = 0;
-                int Banana_Score = 0;
+                gRunDistance = 0;
+                Banana_Score = 0;
 
                 //-----DeathScreen Button-----;
                 AgainButton.setPos(200, 400);
                 ExitButton.setPos(570, 400);
 
-                PlayButton.setPos(5,0);
-                PauseButton.setPos(5,0);
+                PauseButton.setPos(5,5);
 
                 //-----GameStateInit-----
-                bool game_over = false;
-                bool game_paused = false;
-                bool quit = false;
+                game_over = false;
+                game_paused = false;
+                quit = false;
                 SDL_Event e;
 
                 while (!quit) {
                     while( SDL_PollEvent(&e) != 0) {
                         if (e.type == SDL_QUIT) quit = true, play = false;
 
-                        PlayButton.handleEvent(&e, quit, game_paused, Hover_Sound, gClick_Sound);
+                        PauseButton.handleEvent(&e, quit, game_paused);
                     }
-
-                    //SDL_Delay(5); //delay cho do lag
 
                     MONKEY_ANIMATION_SPEED = MONKEY_RUNNING_SPEED*0.75;
                     MONKEY_JUMPING_SPEED = MONKEY_RUNNING_SPEED*2.5;
@@ -217,73 +221,69 @@ int main( int argc, char* args[] )
                     SDL_RenderClear(gRenderer);
 
                     //-----Scrolling Background-----
-                    RenderScrollingBackground( backgroundTexture, gRenderer );
-                    RenderScrollingGround( groundTexture, gRenderer, MONKEY_RUNNING_SPEED);
+                    RenderScrollingBackground(gRenderer );
+                    RenderScrollingGround(gRenderer);
 
                     //-----Higher Path-----
-                    UpPath1_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                    UpPath1_Texture.Move();
                     UpPath1_Texture.render(gRenderer, UP_PATH1_WIDTH, UP_PATH1_HEIGHT);
 
-                    UpPath2_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                    UpPath2_Texture.Move();
                     UpPath2_Texture.render(gRenderer, UP_PATH2_WIDTH, UP_PATH2_HEIGHT);
 
-                    AirPath1_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                    AirPath1_Texture.Move();
                     AirPath1_Texture.render(gRenderer, AIR_PATH1_WIDTH, AIR_PATH1_HEIGHT);
 
-                    AirPath2_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                    AirPath2_Texture.Move();
                     AirPath2_Texture.render(gRenderer, AIR_PATH2_WIDTH, AIR_PATH2_HEIGHT);
 
                     //-----Obstacle-----
-                    StonePig_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                    StonePig_Texture.Move();
                     StonePig_Texture.render(gRenderer, STONE_PIG_WIDTH, STONE_PIG_HEIGHT);
-                    StonePig_Texture.Handle_Monkey(gMonkey_Pos, game_over, gMonkeyState);
+                    StonePig_Texture.Handle_Monkey();
 
-                    Tent_Texture.Move(MONKEY_RUNNING_SPEED, PathPosX_Carry);
+                    Tent_Texture.Move();
                     Tent_Texture.render(gRenderer, TENT_WIDTH, TENT_HEIGHT);
-                    Tent_Texture.Handle_Monkey(gMonkey_Pos, game_over, gMonkeyState);
+                    Tent_Texture.Handle_Monkey();
 
                     //-----gBanana-----
-                    gBanana_Texture.render(gRenderer, BANANA_WIDTH, BANANA_HEIGHT, MONKEY_RUNNING_SPEED, BananaPos);
-                    gBanana_Texture.Handle_Monkey(gMonkey_Pos, BananaPos, Banana_Score, gBananaGet_Sound);
+                    gBanana_Texture.render(gRenderer);
+                    gBanana_Texture.Handle_Monkey();
 
                     //-----Running Monkey-----
-                    gMonkeyHandleHigherPath(gMonkeyState, gMonkey_Pos, PathPosX_Carry, FallTo_Pos, MONKEY_JUMPING_SPEED, JumpBreak);
+                    gMonkeyHandleHigherPath();
 
-                    gMonkeyHandleMoving(gRenderer, JumpBreak, gMonkeyState, gMonkey_Pos, JumpTo_Pos, FallTo_Pos,
-                                        gMonkeyRunning_Texture,gMonkeyRunning_Clips, gMonkeyJumping_Texture, gMonkeyFallNPR_Texture, gMonkeyFallPARA_Texture,
-                                        MONKEY_RUNNING_SPEED, MONKEY_RUNNING_FRAME, MONKEY_ANIMATION_SPEED, MONKEY_JUMPING_SPEED, gTimer, gMonkeyJump_Sound);
+                    gMonkeyHandleMoving(gRenderer);
+
+                    //-----Handle Pause/Death-----
+                    if (game_over || game_paused) DeathScreenShot(gRenderer);
 
                     //-----Score-----
                     gRunDistance += MONKEY_RUNNING_SPEED;
-                    string scoreNow = longLongToString(gRunDistance/80) + " m";
-                    string bananaScoreNow = longLongToString(Banana_Score) + " Banana";
+                    scoreNow = longLongToString(gRunDistance/80) + " m";
+                    bananaScoreNow = longLongToString(Banana_Score) + " Banana";
                     if (Banana_Score >= 2) bananaScoreNow += 's';
 
                     gTextTexture.loadFromRenderedText( scoreNow, ScoreBorderColor, gBorderFont, gRenderer);
-                    gTextTexture.render( gRenderer, 10, 30 );
+                    gTextTexture.render( gRenderer, 10, 40 );
 
                     gTextTexture.loadFromRenderedText( scoreNow, ScoreColor, gFont, gRenderer);
-                    gTextTexture.render( gRenderer, 12, 29 );
+                    gTextTexture.render( gRenderer, 12, 39 );
 
                     gTextTexture.loadFromRenderedText( bananaScoreNow, ScoreBorderColor, gBorderFont, gRenderer);
-                    gTextTexture.render( gRenderer, 10, 60 );
+                    gTextTexture.render( gRenderer, 10, 70 );
 
                     gTextTexture.loadFromRenderedText( bananaScoreNow, ScoreColor, gFont, gRenderer);
-                    gTextTexture.render( gRenderer, 12, 59 );
+                    gTextTexture.render( gRenderer, 12, 69 );
 
-                    int BestDistance = gRunDistance/80, BestBanana = Banana_Score;
-                    UpdateHighScore(BestDistance, BestBanana, DeathMessage);
 
                     //cout << gTimer.getTicks() << "\n"; //debug only
 
                     //-----PlayPause-----
+                    PauseButton.render(gRenderer);
 
-                    PlayButton.render(gRenderer);
                     //-----RenderPresent-----
                     SDL_RenderPresent(gRenderer);
-
-                    //-----Handle Pause/Death-----
-                    if (game_over || game_paused) DeathScreenShot(DeathScreen, gRenderer);
 
                     while (game_over || game_paused)
                     {
@@ -293,19 +293,9 @@ int main( int argc, char* args[] )
                             Mix_PlayChannel(-1, Death_Sound, 0);
                             Death_Sound_Played = 1;
                         }
-                        HandleGameOver(game_over, game_paused, play, quit, gTimer, AgainButton, ExitButton, PauseButton, Hover_Sound, gClick_Sound, SeeYa);
-
+                        HandleGameOver();
                         //-----Score Board-----
-                        SDL_RenderClear(gRenderer);
-
-                        scoreNow = "Distance:  " + longLongToString(gRunDistance/80) + " (Best " + longLongToString(BestDistance) + ")";
-                        bananaScoreNow = "Banana:  " + longLongToString(Banana_Score) + " (Best " + longLongToString(BestBanana) + ")";
-
-                        HandleDeathScreen (gRenderer, DeathScreen, game_over, ScoreBoard, Paused_Text, gTextTexture,
-                                           gDeathFont, gDeathBorderFont, AgainButton, ExitButton, PauseButton, scoreNow,
-                                           bananaScoreNow, DeathMessage);
-
-                        SDL_RenderPresent(gRenderer);
+                        HandleDeathScreen (gRenderer);
                     }
 
                 }
@@ -529,6 +519,16 @@ bool loadMedia(){
         success = false;
     }
 
+    if( !RoundExitButton.loadFromFile( "Material/Menu/PlayPause/Exit.png", gRenderer ) ){
+        printf( "Failed to load RoundExitButton layer %d texture image!\n");
+        success = false;
+    }
+
+    if( !HomeButton.loadFromFile( "Material/Menu/PlayPause/Home.png", gRenderer ) ){
+        printf( "Failed to load HomeButton layer %d texture image!\n");
+        success = false;
+    }
+
     //-----HigherPath-----
     if (!AirPath1_Texture.loadFromFile("Material/HigherPath/AirPath1.png", gRenderer)){
         printf( "Failed to load Ground AirPath1 image!\n" );
@@ -675,6 +675,8 @@ void close()
     IMG_Quit();
     TTF_Quit();
     Mix_Quit();
+
+    exit(0);
 }
 //----------End of Base Function---------->
 

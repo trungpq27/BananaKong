@@ -39,4 +39,13 @@ class gText : public BaseObject{
 
 };
 
+//-----Extern in Main-----
+
+extern TTF_Font *gFont;
+extern TTF_Font *gBorderFont;
+extern TTF_Font *gDeathFont;
+extern TTF_Font *gDeathBorderFont;
+
+extern gText gTextTexture;
+
 #endif // GTEXT_H

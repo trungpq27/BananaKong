@@ -48,17 +48,26 @@ class HigherPath : public BaseObject
 
         ~HigherPath();
 
-        void init(int ID, pair<double, double> *PathPosX_Carry);
+        void init(int ID);
 
-        void updateX(double &posX, pair<double, double> *PathPosX_Carry);
+        void updateX(double &posX);
 
         void render(SDL_Renderer* gRenderer, int wSize, int hSize);
 
-        void Move(double speed, pair<double, double> *PathPosX_Carry);
+        void Move();
 
         double getPosX();
 
         double getPosY();
 };
+
+//-----Extern in Main-----
+extern HigherPath AirPath1_Texture;
+extern HigherPath AirPath2_Texture;
+extern HigherPath UpPath1_Texture;
+extern HigherPath UpPath2_Texture;
+extern pair<double, double> PathPosX_Carry[HIGHER_PATH_COUNT+1];
+
+extern double MONKEY_RUNNING_SPEED;
 
 #endif // HIGHERPATH_H

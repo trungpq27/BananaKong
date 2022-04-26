@@ -31,9 +31,3 @@ void gMonkey::setPosX(int posX){
 void gMonkey::setPosY(int posY){
     this->posY = posY;
 }
-
-//<----------Function---------
-void setMonkeyPos(gMonkey &gMonkey_Texture,pair <int, int> gMonkey_Pos){
-    gMonkey_Texture.setPosX(gMonkey_Pos.first);
-    gMonkey_Texture.setPosY(gMonkey_Pos.second);
-}

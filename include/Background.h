@@ -3,6 +3,7 @@
 
 #include "BaseFunc.h"
 #include "BaseObj.h"
+#include "gMonkey.h"
 
 //-----Declare-----
 const int BACKGROUND_LAYERS_COUNT = 4;
@@ -18,8 +19,15 @@ const string BACKGROUND_LAYERS_PATH[BACKGROUND_LAYERS_COUNT] = {
 
 
 //-----Function-----
-void RenderScrollingBackground ( BaseObject (&backgroundTexture)[BACKGROUND_LAYERS_COUNT], SDL_Renderer* gRenderer, int MonkeyDash = NULL );
-void RenderScrollingGround ( BaseObject &groundTexture, SDL_Renderer* gRenderer, double GROUND_SPEED, int MonkeyDash = NULL );
+void RenderScrollingBackground (SDL_Renderer* gRenderer, int MonkeyDash = NULL );
+void RenderScrollingGround ( SDL_Renderer* gRenderer, int MonkeyDash = NULL );
 
+
+//-----Extern in Main-----
+extern BaseObject Paused_Text;
+extern BaseObject DeathScreen;
+extern BaseObject StartBackground_Texture;
+extern BaseObject backgroundTexture[BACKGROUND_LAYERS_COUNT];
+extern BaseObject groundTexture;
 
 #endif // BACKGROUND_H

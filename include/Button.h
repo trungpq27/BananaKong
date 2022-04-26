@@ -3,36 +3,49 @@
 
 #include "BaseFunc.h"
 #include "BaseObj.h"
+#include "gSound.h"
 
 const int START_BUTTON_HEIGHT = 180;
 const int START_BUTTON_WIDTH = START_BUTTON_HEIGHT * 1.936;
 
-const int PLAY_BUTTON_HEIGHT = 40;
-const int PLAY_BUTTON_WIDTH = PLAY_BUTTON_HEIGHT;
+const int SMALL_BUTTON_HEIGHT = 40;
+const int SMALL_BUTTON_WIDTH = SMALL_BUTTON_HEIGHT;
 
-const int MENU_BUTTON_ID = 1;
-const int PAUSE_BUTTON_ID = 2;
+const int ROUND_BUTTON_SIZE = 180;
 
 class Button : public BaseObject
 {
     private:
-        bool hover;
-        int ID;
         SDL_Point mPosition;
+        bool hover;
         int posX;
         int posY;
         int hSize;
         int wSize;
+        int oldW;
+        int oldH;
 
     public:
-        Button(int ID);
+        Button();
         ~Button();
+
+        void setSize(int wSize, int hSize);
 
         void setPos(int x, int y);
 
-        void handleEvent( SDL_Event* e_mouse, bool &menu, bool &state, Mix_Chunk *Hover_Sound, Mix_Chunk *gClick_Sound);
+        void handleEvent( SDL_Event* e_mouse, bool &menu, bool &state);
 
         void render(SDL_Renderer *gRenderer);
 };
+
+//-----Extern in Main-----
+extern Button StartButton;
+extern Button ExitButton;
+extern Button AgainButton;
+
+extern Button PlayButton;
+extern Button PauseButton;
+extern Button RoundExitButton;
+extern Button HomeButton;
 
 #endif // BUTTON_H

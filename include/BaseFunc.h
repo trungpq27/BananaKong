@@ -13,6 +13,7 @@ using namespace std;
 
 //<----------Base Variable----------
 
+
 //-----Window-----
 const int SCREEN_WIDTH = 1120;
 const int SCREEN_HEIGHT = 630;
@@ -24,9 +25,6 @@ static SDL_Renderer* gRenderer = NULL;
 
 
 //-----Game-----
-
-static const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
-
 bool init();
 bool loadMedia();
 void close();

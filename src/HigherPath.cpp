@@ -11,7 +11,7 @@ HigherPath::~HigherPath(){
     pathWidth = 0;
 }
 
-void HigherPath::init(int ID, pair<double, double> *PathPosX_Carry){
+void HigherPath::init(int ID){
 
     this->ID = ID;
     if (ID == UP_PATH1_ID){
@@ -33,11 +33,11 @@ void HigherPath::init(int ID, pair<double, double> *PathPosX_Carry){
         pathWidth = AIR_PATH2_WIDTH;
         posY = HIGH_PATH_X2_POSY;
     }
-    updateX(posX, PathPosX_Carry);
+    updateX(posX);
 
 }
 
-void HigherPath::updateX(double &posX, pair<double, double> *PathPosX_Carry){
+void HigherPath::updateX(double &posX){
 
     posX = rand() % (PATH_SCREEN_SPACING) + SCREEN_WIDTH;
     double posX_End = posX + pathWidth;
@@ -57,12 +57,12 @@ void HigherPath::render(SDL_Renderer* gRenderer, int wSize, int hSize){
     BaseObject::render(gRenderer, posX, posY, wSize, hSize);
 }
 
-void HigherPath::Move(double speed, pair<double, double> *PathPosX_Carry){
+void HigherPath::Move(){
 
-    posX -= speed;
-    PathPosX_Carry[ID].first -= speed;
-    PathPosX_Carry[ID].second -= speed;
-    if(posX < -pathWidth) updateX(posX, PathPosX_Carry);
+    posX -= MONKEY_RUNNING_SPEED;
+    PathPosX_Carry[ID].first -= MONKEY_RUNNING_SPEED;
+    PathPosX_Carry[ID].second -= MONKEY_RUNNING_SPEED;
+    if(posX < -pathWidth) updateX(posX);
 }
 
 double HigherPath::getPosX(){

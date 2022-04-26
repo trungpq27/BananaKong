@@ -5,8 +5,9 @@
 #include "BaseObj.h"
 #include "Obstacle.h"
 #include "gMonkey.h"
+#include "gSound.h"
 
-
+//-----gMonkey-----
 const int BANANA_HEIGHT = 30;
 const int BANANA_WIDTH = BANANA_HEIGHT*1.348;
 const int BANANA_SPACING = 300;
@@ -24,15 +25,20 @@ class gBanana : public BaseObject
         gBanana();
         ~gBanana();
 
-        void init(list<pair<double, int>> &BananaPos);
+        void init();
 
         void updateY();
 
-        void updateX(double &PosX, list<pair<double, int>> &BananaPos);
+        void updateX(double &PosX);
 
-        void render(SDL_Renderer* gRenderer, int wSize, int hSize, double speed, list<pair<double, int>> &BananaPos);
+        void render(SDL_Renderer* gRenderer);
 
-        void Handle_Monkey(pair <int, int> gMonkey_Pos, list<pair<double, int>> &BananaPos, int &Banana_Score, Mix_Chunk *gBananaGet_Sound);
+        void Handle_Monkey();
 };
+
+//-----Extern in Main-----
+extern int Banana_Score;
+extern gBanana gBanana_Texture;
+extern list<pair<double, int>> BananaPos;
 
 #endif // GBANANA_H

@@ -1,17 +1,16 @@
 #include "gBanana.h"
 
-gBanana::gBanana() : BaseObject(){
+gBanana::gBanana() : BaseObject::BaseObject(){
 }
 
 gBanana::~gBanana()
 {
-
 }
 
-void gBanana::init(list<pair<double, int>> &BananaPos){
+void gBanana::init(){
     Banana_Sum = 0;
     updateY();
-    updateX(posX, BananaPos);
+    updateX(posX);
 }
 
 void gBanana::updateY(){
@@ -21,7 +20,7 @@ void gBanana::updateY(){
     else if (Y_ID == 3) posY = 210;
 }
 
-void gBanana::updateX(double &PosX, list<pair<double, int>> &BananaPos){
+void gBanana::updateX(double &PosX){
 
     Amount = 3 + (rand() % 4);
     Banana_Sum += Amount;
@@ -41,20 +40,20 @@ void gBanana::updateX(double &PosX, list<pair<double, int>> &BananaPos){
     }
 }
 
-void gBanana::render(SDL_Renderer* gRenderer, int wSize, int hSize, double speed, list<pair<double, int>> &BananaPos){
+void gBanana::render(SDL_Renderer* gRenderer){
 
     if (BananaPos.front().first <= SCREEN_WIDTH/2 && BananaPos.front().first + BANANA_WIDTH + 1 > SCREEN_WIDTH/2){
         updateY();
-        updateX(posX, BananaPos);
+        updateX(posX);
     }
     int Carry = Banana_Sum;
     while(Carry--){
 
         pair <double, int> posNow = BananaPos.front();
-        BananaPos.pop_front();
+        if (!BananaPos.empty()) BananaPos.pop_front();
 
-        posNow.first -= speed;
-        BaseObject::render(gRenderer, posNow.first, posNow.second, wSize, hSize);
+        posNow.first -= MONKEY_RUNNING_SPEED;
+        BaseObject::render(gRenderer, posNow.first, posNow.second, BANANA_WIDTH, BANANA_HEIGHT);
 
         if(posNow.first + BANANA_WIDTH >= 0) BananaPos.push_back(posNow);
         else Banana_Sum--;
@@ -62,12 +61,12 @@ void gBanana::render(SDL_Renderer* gRenderer, int wSize, int hSize, double speed
     }
 }
 
-void gBanana::Handle_Monkey(pair <int, int> gMonkey_Pos, list<pair<double, int>> &BananaPos, int &Banana_Score, Mix_Chunk *gBananaGet_Sound){
+void gBanana::Handle_Monkey(){
 
     int Carry = BananaPos.size();
     while(Carry--){
         pair <double, int> Banana_posNow = BananaPos.front();
-        BananaPos.pop_front();
+        if (!BananaPos.empty()) BananaPos.pop_front();
 
         if ((Banana_posNow.second + BANANA_HEIGHT >= gMonkey_Pos.second && Banana_posNow.second <= gMonkey_Pos.second + MONKEY_HEIGHT) &&
             (Banana_posNow.first + BANANA_WIDTH >= gMonkey_Pos.first && Banana_posNow.first <= gMonkey_Pos.first + MONKEY_WIDTH - 30)){

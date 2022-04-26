@@ -72,6 +72,7 @@
 		<Unit filename="include/Timer.h" />
 		<Unit filename="include/gBanana.h" />
 		<Unit filename="include/gMonkey.h" />
+		<Unit filename="include/gSound.h" />
 		<Unit filename="include/gText.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Background.cpp" />
@@ -84,6 +85,7 @@
 		<Unit filename="src/Timer.cpp" />
 		<Unit filename="src/gBanana.cpp" />
 		<Unit filename="src/gMonkey.cpp" />
+		<Unit filename="src/gSound.cpp" />
 		<Unit filename="src/gText.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

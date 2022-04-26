@@ -1,6 +1,6 @@
 #include "GameFunc.h"
 
-void Exit_Sound(Mix_Chunk *SeeYa){
+void Exit_Sound(){
     Mix_HaltMusic();
     Mix_HaltChannel(-1);
     Mix_PlayChannel(-1, SeeYa, 0);
@@ -14,7 +14,52 @@ string longLongToString(long long x){
     return str;
 }
 
-void gMonkeyHandleHigherPath(int &gMonkeyState, pair<int, int> &gMonkey_Pos, pair<double, double> *PathPosX_Carry, int &FallTo_Pos, int MONKEY_JUMPING_SPEED, int &JumpBreak){
+void HandleMenu(SDL_Renderer* gRenderer){
+    SDL_Event e_mouse;
+    while (SDL_PollEvent(&e_mouse) != 0)
+    {
+        if (e_mouse.type == SDL_QUIT) {
+                Exit_Sound();
+                menu = false;
+        }
+
+        quit_game = false;
+
+        StartButton.handleEvent(&e_mouse, menu, play);
+        ExitButton.handleEvent(&e_mouse, menu, quit_game);
+        RoundExitButton.handleEvent(&e_mouse, menu, quit_game);
+
+        if (quit_game == true){
+            Exit_Sound();
+            close();
+        }
+    }
+    SDL_RenderClear(gRenderer);
+
+    RenderScrollingBackground(gRenderer);
+    RenderScrollingGround(gRenderer);
+    StartBackground_Texture.render(gRenderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    SDL_Rect* currentClip = NULL;
+    setMonkeyPos(gMonkeyRunning_Texture);
+    currentClip = &gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED];
+    ++MONKEY_RUNNING_FRAME;
+    if (MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED >= MONKEY_RUNNING_FRAME_COUNT) MONKEY_RUNNING_FRAME = 0;
+    gMonkeyRunning_Texture.render(gRenderer, currentClip);
+
+    StartButton.render(gRenderer);
+    ExitButton.render(gRenderer);
+
+    SDL_RenderPresent(gRenderer);
+}
+
+void setMonkeyPos(gMonkey &gMonkey_Texture){
+    gMonkey_Texture.setPosX(gMonkey_Pos.first);
+    gMonkey_Texture.setPosY(gMonkey_Pos.second);
+}
+
+
+void gMonkeyHandleHigherPath(){
 
     for(int ID = 1; ID <= HIGHER_PATH_COUNT; ++ID){
 
@@ -32,7 +77,6 @@ void gMonkeyHandleHigherPath(int &gMonkeyState, pair<int, int> &gMonkey_Pos, pai
                     gMonkeyState = STATE_RUN;
                 }
             }
-
         }
         else if(gMonkeyState == STATE_RUN && gMonkey_Pos.first + 50 > PathPosX_Carry[ID].second && gMonkey_Pos.first <= PathPosX_Carry[ID].second){
                 if ((ID <= UP_PATH2_ID && gMonkey_Pos.second == gMonkey_X1_PosY) || (ID >= AIR_PATH1_ID && gMonkey_Pos.second == gMonkey_X2_PosY)){
@@ -47,10 +91,7 @@ void gMonkeyHandleHigherPath(int &gMonkeyState, pair<int, int> &gMonkey_Pos, pai
 }
 
 
-void gMonkeyHandleMoving(SDL_Renderer* gRenderer, int &JumpBreak, int &gMonkeyState, pair <int, int> &gMonkey_Pos, int &JumpTo_Pos, int &FallTo_Pos,
-                         gMonkey &gMonkeyRunning_Texture, SDL_Rect *gMonkeyRunning_Clips, gMonkey &gMonkeyJumping_Texture, gMonkey &gMonkeyFallNPR_Texture,
-                         gMonkey &gMonkeyFallPARA_Texture, double &MONKEY_RUNNING_SPEED, int &MONKEY_RUNNING_FRAME, int &MONKEY_ANIMATION_SPEED,
-                         int &MONKEY_JUMPING_SPEED, Timer &gTimer, Mix_Chunk *gMonkeyJump_Sound){
+void gMonkeyHandleMoving(SDL_Renderer* gRenderer){
 
     //cout << gMonkeyState << " " << gMonkey_Pos.second << " " << gMonkey_X1_PosY << " " << FallTo_Pos << "\n";  //debug only
     //cout << JumpBreak << "\n";  //debug only
@@ -58,9 +99,9 @@ void gMonkeyHandleMoving(SDL_Renderer* gRenderer, int &JumpBreak, int &gMonkeySt
 
     if(gMonkeyState == STATE_RUN){
         JumpBreak += MONKEY_RUNNING_SPEED;
-        setMonkeyPos(gMonkeyRunning_Texture, gMonkey_Pos);
+        setMonkeyPos(gMonkeyRunning_Texture);
         if(currentKeyStates[ SDL_SCANCODE_DOWN ]){
-                Mix_PlayChannel(-1, gMonkeyJump_Sound, 0);
+                if (gMonkey_Pos.second < gMonkey_Stable_PosY) Mix_PlayChannel(-1, gMonkeyJump_Sound, 0);
                 gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
                 gMonkeyState = STATE_FALLNPR;
         }
@@ -82,7 +123,7 @@ void gMonkeyHandleMoving(SDL_Renderer* gRenderer, int &JumpBreak, int &gMonkeySt
 
 
     if(gMonkeyState == STATE_JUMP){
-        setMonkeyPos(gMonkeyJumping_Texture, gMonkey_Pos);
+        setMonkeyPos(gMonkeyJumping_Texture);
         if(currentKeyStates[ SDL_SCANCODE_DOWN ]){
             Mix_PlayChannel(-1, gMonkeyJump_Sound, 0);
             gMonkeyState = STATE_FALLNPR;
@@ -103,7 +144,7 @@ void gMonkeyHandleMoving(SDL_Renderer* gRenderer, int &JumpBreak, int &gMonkeySt
 
 
     if(gMonkeyState == STATE_FALLNPR){
-        setMonkeyPos(gMonkeyFallNPR_Texture, gMonkey_Pos);
+        setMonkeyPos(gMonkeyFallNPR_Texture);
         if(gMonkey_Pos.second < FallTo_Pos){
 
             if ((currentKeyStates[ SDL_SCANCODE_UP ] || currentKeyStates[ SDL_SCANCODE_SPACE ])) gMonkeyState = STATE_FALLPARA;
@@ -122,7 +163,7 @@ void gMonkeyHandleMoving(SDL_Renderer* gRenderer, int &JumpBreak, int &gMonkeySt
 
 
     if(gMonkeyState == STATE_FALLPARA){
-        setMonkeyPos(gMonkeyFallPARA_Texture, gMonkey_Pos);
+        setMonkeyPos(gMonkeyFallPARA_Texture);
 
         if(gMonkey_Pos.second < FallTo_Pos && !(currentKeyStates[ SDL_SCANCODE_UP ] || currentKeyStates[ SDL_SCANCODE_SPACE ])){
             gMonkeyState = STATE_FALLNPR;
@@ -150,13 +191,13 @@ void gMonkeyHandleMoving(SDL_Renderer* gRenderer, int &JumpBreak, int &gMonkeySt
 }
 
 
-void UpdateHighScore(int &BestDistance, int &BestBanana, string &DeathMessage){
+void UpdateHighScore(int &BestDistance, int &BestBanana){
 
     int oldBestDistance, oldBestBanana;
     fstream HighScoreFile;
     HighScoreFile.open("HighScoreFile", ios::in);
     HighScoreFile >> oldBestDistance >> oldBestBanana;
-    if (BestDistance <= oldBestDistance || BestBanana <+ oldBestBanana){
+    if (BestDistance <= oldBestDistance || BestBanana <= oldBestBanana){
         BestDistance = oldBestDistance;
         BestBanana = oldBestBanana;
     }
@@ -168,7 +209,7 @@ void UpdateHighScore(int &BestDistance, int &BestBanana, string &DeathMessage){
 
 }
 
-void DeathScreenShot(BaseObject &DeathScreen, SDL_Renderer* gRenderer){
+void DeathScreenShot(SDL_Renderer* gRenderer){
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(gRenderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
     SDL_SaveBMP(sshot, "Material/DeathScreen/DeathScreen.bmp");
@@ -176,8 +217,7 @@ void DeathScreenShot(BaseObject &DeathScreen, SDL_Renderer* gRenderer){
         printf( "Failed to load DeathScreen texture image!\n" );
 }
 
-void HandleGameOver(bool &game_over, bool &game_paused, bool &play, bool &quit, Timer &gTimer, Button &AgainButton, Button &ExitButton, Button &PauseButton,
-                    Mix_Chunk *Hover_Sound, Mix_Chunk *gClick_Sound, Mix_Chunk *SeeYa){
+void HandleGameOver(){
 
     if (game_over) play = false, quit = true, gTimer.stop();
     else gTimer.pause();
@@ -186,36 +226,54 @@ void HandleGameOver(bool &game_over, bool &game_paused, bool &play, bool &quit, 
     while (SDL_PollEvent(&e_mouse) != 0)
     {
         if (e_mouse.type == SDL_QUIT){
-            Exit_Sound(SeeYa);
-            game_over = false;
+            Exit_Sound();
+            close();
         }
 
         if (game_over){
-            AgainButton.handleEvent(&e_mouse, game_over, play, Hover_Sound, gClick_Sound);
-            ExitButton.handleEvent(&e_mouse, game_over, exit, Hover_Sound, gClick_Sound);
+            AgainButton.handleEvent(&e_mouse, game_over, play);
+            ExitButton.handleEvent(&e_mouse, game_over, exit);
         }
 
         else if (game_paused){
-            PauseButton.handleEvent(&e_mouse, game_paused, play, Hover_Sound, gClick_Sound);
+            PlayButton.handleEvent(&e_mouse, game_paused, play);
+            HomeButton.handleEvent(&e_mouse, game_paused, backToMenu);
+            RoundExitButton.handleEvent(&e_mouse, game_paused, exit);
+
             if (!game_paused) {
                 if(Mix_PausedMusic()) Mix_ResumeMusic();
                 gTimer.unpause();
             }
+
+            if(backToMenu){
+                Mix_HaltChannel(-1);
+                quit = true;
+                play = false;
+            }
         }
 
         if (exit){
-            Exit_Sound(SeeYa);
-            game_over = false;
-            game_paused = false;
+            Exit_Sound();
+            close();
         }
     }
 }
 
-void HandleDeathScreen (SDL_Renderer* gRenderer, BaseObject &DeathScreen, bool &game_over, BaseObject &ScoreBoard, BaseObject &Paused_Text, gText &gTextTexture,
-                        TTF_Font *gDeathFont, TTF_Font *gDeathBorderFont, Button &AgainButton, Button &ExitButton, Button &PauseButton, string scoreNow,
-                        string bananaScoreNow, string DeathMessage){
+void HandleDeathScreen (SDL_Renderer* gRenderer){
+
+    SDL_RenderClear(gRenderer);
+
     DeathScreen.render(gRenderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     if (game_over){
+        int BestDistance = gRunDistance/80, BestBanana = Banana_Score;
+        UpdateHighScore(BestDistance, BestBanana);
+
+        bananaScoreNow = "Banana:  ";
+        if (Banana_Score >= 2) bananaScoreNow = "Bananas:  ";
+
+        scoreNow = "Distance:  " + longLongToString(gRunDistance/80) + " (Best " + longLongToString(BestDistance) + ")";
+        bananaScoreNow += longLongToString(Banana_Score) + " (Best " + longLongToString(BestBanana) + ")";
+
         ScoreBoard.render(gRenderer, (SCREEN_WIDTH-SCORE_BOARD_WIDTH)/2, 20, SCORE_BOARD_WIDTH, SCORE_BOARD_HEIGHT);
 
         gTextTexture.loadFromRenderedText( DeathMessage, DeathScoreBorderColor, gDeathBorderFont, gRenderer);
@@ -236,9 +294,12 @@ void HandleDeathScreen (SDL_Renderer* gRenderer, BaseObject &DeathScreen, bool &
         AgainButton.render(gRenderer);
         ExitButton.render(gRenderer);
     }
-    else {
+    else if (game_paused) {
         Paused_Text.render(gRenderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        PauseButton.render(gRenderer);
+        PlayButton.render(gRenderer);
+        HomeButton.render(gRenderer);
+        RoundExitButton.render(gRenderer);
     }
+    SDL_RenderPresent(gRenderer);
 
 }

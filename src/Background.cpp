@@ -1,6 +1,6 @@
 #include "Background.h"
 
-void RenderScrollingBackground(BaseObject (&backgroundTexture)[BACKGROUND_LAYERS_COUNT], SDL_Renderer* gRenderer, int MonkeyDash){
+void RenderScrollingBackground(SDL_Renderer* gRenderer, int MonkeyDash){
 
     for(int i = 0; i < BACKGROUND_LAYERS_COUNT; ++i){
         BACKGROUND_SCROLLING_OFFSET[i] -= BACKGROUND_LAYERS_SPEED[i];
@@ -14,9 +14,9 @@ void RenderScrollingBackground(BaseObject (&backgroundTexture)[BACKGROUND_LAYERS
     }
 }
 
-void RenderScrollingGround(BaseObject &groundTexture, SDL_Renderer* gRenderer, double GROUND_SPEED, int MonkeyDash){
+void RenderScrollingGround(SDL_Renderer* gRenderer, int MonkeyDash){
 
-    GROUND_SCROLLING_OFFSET -= GROUND_SPEED;
+    GROUND_SCROLLING_OFFSET -= MONKEY_RUNNING_SPEED;
     if( GROUND_SCROLLING_OFFSET <= -SCREEN_WIDTH )
     {
         GROUND_SCROLLING_OFFSET = 0;
