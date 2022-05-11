@@ -13,6 +13,12 @@ using namespace std;
 
 //<----------Base Variable----------
 
+//---Screen Level ID---
+const int POSY_GROUND_ID = 0;
+const int POSY_UP_ID = 1;
+const int POSY_AIR_ID = 2;
+const int SCREEN_LEVEL_COUNT = 3;
+
 
 //-----Window-----
 const int SCREEN_WIDTH = 1120;

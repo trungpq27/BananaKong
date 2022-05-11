@@ -40,11 +40,16 @@ void GameInitEverything(SDL_Renderer* gRenderer);
 void HandleMenu(SDL_Renderer* gRenderer);
 
 //-----gMonkey-----
+
 void setMonkeyPos(gMonkey &gMonkey_Texture);
+
+void setMonkeyPosYID();
 
 void gMonkeyHandleMoving();
 
 void gMonkeyHandleHigherPath();
+
+void gMonkeyHandleWalkonObstacle();
 
 void gMonkeyHandleMoving(SDL_Renderer* gRenderer);
 

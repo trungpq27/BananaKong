@@ -29,7 +29,7 @@ class gBanana : public BaseObject
 
         void updateY();
 
-        void updateX(double &PosX);
+        void updateX();
 
         void render(SDL_Renderer* gRenderer);
 

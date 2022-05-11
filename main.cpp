@@ -64,14 +64,15 @@ string bananaScoreNow;
 int gRunDistance = 0;
 int gMonkeyState = STATE_RUN;
 int JumpBreak = 0;
-int JumpTo_Pos = gMonkey_JumpTo_Y1;
+int JumpTo_Pos;
 int FallTo_Pos = gMonkey_Stable_PosY;
+int gMonkey_PosY_ID = POSY_GROUND_ID;
 pair <int, int> gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
 
 int MONKEY_RUNNING_FRAME = 0;
 int MONKEY_JUMPING_SPEED;
 double MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
-int MONKEY_ANIMATION_SPEED = MONKEY_RUNNING_SPEED*0.75;
+int MONKEY_ANIMATION_SPEED = BASE_MONKEY_SPEED*0.75;
 
 gMonkey gMonkeyRunning_Texture;
 gMonkey gMonkeyJumping_Texture;
@@ -85,11 +86,12 @@ HigherPath AirPath1_Texture;
 HigherPath AirPath2_Texture;
 HigherPath UpPath1_Texture;
 HigherPath UpPath2_Texture;
-pair<double, double> PathPosX_Carry[HIGHER_PATH_COUNT+1];
+double PathPosX_Carry[HIGHER_PATH_COUNT];
 
 //-----Obstacle-----
 Obstacle StonePig_Texture;
 Obstacle Tent_Texture;
+double ObstaclePosX_Carry [SCREEN_LEVEL_COUNT][OBSTACLE_COUNT];
 
 //-----gBanana-----
 int Banana_Score = 0;
@@ -102,6 +104,7 @@ list<pair<double, int>> BananaPos;
 //<----------Main----------
 int main( int argc, char* args[] )
 {
+    srand(time(0));
     if( !init() ) printf( "Failed to initialize!\n" );
     else
     {
@@ -128,7 +131,7 @@ int main( int argc, char* args[] )
                         PauseButton.handleEvent(&e, quit, game_paused);
                     }
 
-                    MONKEY_ANIMATION_SPEED = MONKEY_RUNNING_SPEED*0.75;
+                    MONKEY_ANIMATION_SPEED = BASE_MONKEY_SPEED*0.75;
                     MONKEY_JUMPING_SPEED = MONKEY_RUNNING_SPEED*2.5;
 
                     //-----Clear Render-----
@@ -165,7 +168,10 @@ int main( int argc, char* args[] )
                     gBanana_Texture.Handle_Monkey();
 
                     //-----Running Monkey-----
+
                     gMonkeyHandleHigherPath();
+
+                    gMonkeyHandleWalkonObstacle();
 
                     gMonkeyHandleMoving(gRenderer);
 
@@ -337,45 +343,45 @@ bool loadMedia(){
         success = false;
     }
     else {
-            gMonkeyRunning_Clips[0].x = 140 * 0;
+            gMonkeyRunning_Clips[0].x = 115 * 0;
             gMonkeyRunning_Clips[0].y = 0;
-            gMonkeyRunning_Clips[0].h = 168;
-            gMonkeyRunning_Clips[0].w = 140;
+            gMonkeyRunning_Clips[0].h = 151;
+            gMonkeyRunning_Clips[0].w = 115;
 
-            gMonkeyRunning_Clips[1].x = 140 * 1;
+            gMonkeyRunning_Clips[1].x = 115 * 1;
             gMonkeyRunning_Clips[1].y = 0;
-            gMonkeyRunning_Clips[1].h = 168;
-            gMonkeyRunning_Clips[1].w = 140;
+            gMonkeyRunning_Clips[1].h = 151;
+            gMonkeyRunning_Clips[1].w = 115;
 
-            gMonkeyRunning_Clips[2].x = 140 * 2;
+            gMonkeyRunning_Clips[2].x = 115 * 2;
             gMonkeyRunning_Clips[2].y = 0;
-            gMonkeyRunning_Clips[2].h = 168;
-            gMonkeyRunning_Clips[2].w = 140;
+            gMonkeyRunning_Clips[2].h = 151;
+            gMonkeyRunning_Clips[2].w = 115;
 
-            gMonkeyRunning_Clips[3].x = 140 * 3;
+            gMonkeyRunning_Clips[3].x = 115 * 3;
             gMonkeyRunning_Clips[3].y = 0;
-            gMonkeyRunning_Clips[3].h = 168;
-            gMonkeyRunning_Clips[3].w = 140;
+            gMonkeyRunning_Clips[3].h = 151;
+            gMonkeyRunning_Clips[3].w = 115;
 
-            gMonkeyRunning_Clips[4].x = 140 * 4;
+            gMonkeyRunning_Clips[4].x = 115 * 4;
             gMonkeyRunning_Clips[4].y = 0;
-            gMonkeyRunning_Clips[4].h = 168;
-            gMonkeyRunning_Clips[4].w = 140;
+            gMonkeyRunning_Clips[4].h = 151;
+            gMonkeyRunning_Clips[4].w = 115;
 
-            gMonkeyRunning_Clips[5].x = 140 * 5;
+            gMonkeyRunning_Clips[5].x = 115 * 5;
             gMonkeyRunning_Clips[5].y = 0;
-            gMonkeyRunning_Clips[5].h = 168;
-            gMonkeyRunning_Clips[5].w = 140;
+            gMonkeyRunning_Clips[5].h = 151;
+            gMonkeyRunning_Clips[5].w = 115;
 
-            gMonkeyRunning_Clips[6].x = 140 * 6;
+            gMonkeyRunning_Clips[6].x = 115 * 6;
             gMonkeyRunning_Clips[6].y = 0;
-            gMonkeyRunning_Clips[6].h = 168;
-            gMonkeyRunning_Clips[6].w = 140;
+            gMonkeyRunning_Clips[6].h = 151;
+            gMonkeyRunning_Clips[6].w = 115;
 
-            gMonkeyRunning_Clips[7].x = 140 * 7;
+            gMonkeyRunning_Clips[7].x = 115 * 7;
             gMonkeyRunning_Clips[7].y = 0;
-            gMonkeyRunning_Clips[7].h = 168;
-            gMonkeyRunning_Clips[7].w = 140;
+            gMonkeyRunning_Clips[7].h = 151;
+            gMonkeyRunning_Clips[7].w = 115;
 
     }
     //-----gBanana-----

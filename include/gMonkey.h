@@ -14,10 +14,11 @@ const int STATE_JUMP = 2;
 const int STATE_FALLNPR = 3;
 const int STATE_FALLPARA = 4;
 
+const int POSY_ON_OBSTACLE_ID = 3;
+
 //----Pic Info---
-const int MONKEY_WIDTH = 100;
-const int MONKEY_HEIGHT = 120;
-const int MONKEY_BORDER = 7;
+const int MONKEY_WIDTH = 90;
+const int MONKEY_HEIGHT = MONKEY_WIDTH*1.313;
 
 const int MONKEY_WALKING_FRAME_COUNT = 4;
 const int MONKEY_RUNNING_FRAME_COUNT = 8;
@@ -26,13 +27,13 @@ const int MONKEY_FALLNPR_FRAME_COUNT = 1;
 
 //---Position---
 const int gMonkey_Stable_PosX = 280;
-const int gMonkey_Stable_PosY = 480;
-const int gMonkey_JumpTo_Y1 = 250;
-const int gMonkey_JumpTo_Y2 = 120;
+const int gMonkey_Stable_PosY = 472;
 
-const int gMonkey_X1_PosY = HIGH_PATH_X1_POSY - MONKEY_HEIGHT + MONKEY_BORDER + UP_PATH_BORDER;
-const int gMonkey_X2_PosY = HIGH_PATH_X2_POSY - MONKEY_HEIGHT + MONKEY_BORDER + AIR_PATH_BORDER;
+const int gMonkey_X1_PosY = HIGH_PATH_X1_POSY - MONKEY_HEIGHT + UP_PATH_BORDER;
+const int gMonkey_X2_PosY = HIGH_PATH_X2_POSY - MONKEY_HEIGHT + AIR_PATH_BORDER;
 
+const int MONKEY_POSY_LEVEL[SCREEN_LEVEL_COUNT] = {gMonkey_Stable_PosY, HIGH_PATH_X1_POSY - MONKEY_HEIGHT + UP_PATH_BORDER, HIGH_PATH_X2_POSY - MONKEY_HEIGHT + AIR_PATH_BORDER};
+const int MONKEY_JUMPTO_LEVEL[SCREEN_LEVEL_COUNT] = {310,150,0};
 
 
 //<----------Object Class---------
@@ -64,6 +65,7 @@ extern int gMonkeyState;
 extern int JumpBreak;
 extern int JumpTo_Pos;
 extern int FallTo_Pos;
+extern int gMonkey_PosY_ID;
 extern pair <int, int> gMonkey_Pos;
 
 extern int MONKEY_RUNNING_FRAME;

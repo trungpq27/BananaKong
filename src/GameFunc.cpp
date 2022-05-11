@@ -27,7 +27,7 @@ void GameInitEverything(SDL_Renderer* gRenderer){
     //-----gMonkeyInit-----
     gMonkeyState = STATE_RUN;
     JumpBreak = 0;
-    JumpTo_Pos = gMonkey_JumpTo_Y1;
+    JumpTo_Pos = 310;
     FallTo_Pos = gMonkey_Stable_PosY;
     gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
     MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
@@ -132,14 +132,16 @@ void setMonkeyPos(gMonkey &gMonkey_Texture){
 
 void gMonkeyHandleHigherPath(){
 
-    for(int ID = 1; ID <= HIGHER_PATH_COUNT; ++ID){
+    for(int ID = 0; ID < HIGHER_PATH_COUNT; ++ID){
 
-        if ((gMonkey_Pos.first + MONKEY_WIDTH - 20) >= PathPosX_Carry[ID].first && gMonkey_Pos.first + 50 <= PathPosX_Carry[ID].second){
+        double PathPosX = PathPosX_Carry[ID];
+        double PathPosX_End = PathPosX + PATH_WIDTH[ID];
 
-            int gMonkey_HigherPath_PosY;
-            if(ID <= UP_PATH2_ID) gMonkey_HigherPath_PosY = gMonkey_X1_PosY;
-            else gMonkey_HigherPath_PosY = gMonkey_X2_PosY;
+        int gMonkey_HigherPath_PosY;
+        if(ID <= UP_PATH2_ID) gMonkey_HigherPath_PosY = gMonkey_X1_PosY;
+        else gMonkey_HigherPath_PosY = gMonkey_X2_PosY;
 
+        if ((gMonkey_Pos.first + MONKEY_WIDTH - 10) >= PathPosX && gMonkey_Pos.first + 40 <= PathPosX_End){
             if (gMonkeyState == STATE_FALLNPR || gMonkeyState == STATE_FALLPARA){
 
                 if (gMonkey_Pos.second >= gMonkey_HigherPath_PosY && gMonkey_Pos.second <= gMonkey_HigherPath_PosY + MONKEY_JUMPING_SPEED){
@@ -149,8 +151,8 @@ void gMonkeyHandleHigherPath(){
                 }
             }
         }
-        else if(gMonkeyState == STATE_RUN && gMonkey_Pos.first + 50 > PathPosX_Carry[ID].second && gMonkey_Pos.first <= PathPosX_Carry[ID].second){
-                if ((ID <= UP_PATH2_ID && gMonkey_Pos.second == gMonkey_X1_PosY) || (ID >= AIR_PATH1_ID && gMonkey_Pos.second == gMonkey_X2_PosY)){
+        else if(gMonkeyState == STATE_RUN && gMonkey_Pos.second == gMonkey_HigherPath_PosY){
+                if (gMonkey_Pos.first + 40 > PathPosX_End && gMonkey_Pos.first <= PathPosX_End){
                     gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
                     gMonkeyState = STATE_FALLNPR;
                     //cout << ID << " ";     //debug only
@@ -161,25 +163,60 @@ void gMonkeyHandleHigherPath(){
 
 }
 
+void gMonkeyHandleWalkonObstacle(){
+
+    gMonkey_PosY_ID = POSY_GROUND_ID;
+    for (int Level = 0; Level < SCREEN_LEVEL_COUNT; ++Level)
+        for (int ID = 0; ID < OBSTACLE_COUNT; ++ID){
+
+        double ObstaclePosX = ObstaclePosX_Carry[Level][ID];
+        double ObstaclePosX_End = ObstaclePosX + OBSTACLE_WIDTH[ID];
+
+        int gMonkey_Obstacle_PosY = OBSTACLE_POSY[Level] - MONKEY_HEIGHT + 10;
+
+        if ((gMonkey_Pos.first + MONKEY_WIDTH - 10) >= ObstaclePosX && gMonkey_Pos.first + 50 <= ObstaclePosX_End){
+            if (gMonkeyState == STATE_FALLNPR || gMonkeyState == STATE_FALLPARA){
+
+                if (gMonkey_Pos.second >= gMonkey_Obstacle_PosY && gMonkey_Pos.second <= gMonkey_Obstacle_PosY + MONKEY_JUMPING_SPEED){
+                    JumpBreak = 0;
+                    gMonkey_Pos.second = gMonkey_Obstacle_PosY;
+                    gMonkeyState = STATE_RUN;
+                    gMonkey_PosY_ID = POSY_ON_OBSTACLE_ID;
+                    return;
+                    //cout << ObstaclePosX << " " << ObstaclePosX_End << "\n";   //debug only
+                }
+            }
+        }
+        else if(gMonkeyState == STATE_RUN && gMonkey_Pos.second == gMonkey_Obstacle_PosY){
+                //cout << gMonkey_Pos.first  << " " << ObstaclePosX_End << "\n";
+                if ((gMonkey_Pos.first + 50 > ObstaclePosX_End) && (gMonkey_Pos.first <= ObstaclePosX_End)){
+                    gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
+                    gMonkeyState = STATE_FALLNPR;
+                    return;
+                }
+        }
+
+    }
+
+}
+
 
 void gMonkeyHandleMoving(SDL_Renderer* gRenderer){
-
-    //cout << gMonkeyState << " " << gMonkey_Pos.second << " " << gMonkey_X1_PosY << " " << FallTo_Pos << "\n";  //debug only
-    //cout << JumpBreak << "\n";  //debug only
     SDL_Rect* currentClip = NULL;
 
     if(gMonkeyState == STATE_RUN){
         JumpBreak += MONKEY_RUNNING_SPEED;
         setMonkeyPos(gMonkeyRunning_Texture);
         if(currentKeyStates[ SDL_SCANCODE_DOWN ]){
+            if(gMonkey_PosY_ID != POSY_ON_OBSTACLE_ID){
                 if (gMonkey_Pos.second < gMonkey_Stable_PosY) Mix_PlayChannel(-1, gMonkeyJump_Sound, 0);
                 gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
                 gMonkeyState = STATE_FALLNPR;
+            }
         }
         if((currentKeyStates[ SDL_SCANCODE_UP ] || currentKeyStates[ SDL_SCANCODE_SPACE ]) && JumpBreak >= BreakDistance){
-            JumpTo_Pos = gMonkey_JumpTo_Y1;
-            if (gMonkey_Pos.second == gMonkey_X1_PosY) JumpTo_Pos = gMonkey_JumpTo_Y2;
-            if (gMonkey_Pos.second == gMonkey_X2_PosY) JumpTo_Pos = 0;
+
+            JumpTo_Pos = max(0, gMonkey_Pos.second - 190);
             gMonkeyState = STATE_JUMP;
             Mix_PlayChannel(-1, gMonkeyJump_Sound, 0);
         }
@@ -232,7 +269,6 @@ void gMonkeyHandleMoving(SDL_Renderer* gRenderer){
         }
     }
 
-
     if(gMonkeyState == STATE_FALLPARA){
         setMonkeyPos(gMonkeyFallPARA_Texture);
 
@@ -242,7 +278,7 @@ void gMonkeyHandleMoving(SDL_Renderer* gRenderer){
 
         if(gMonkey_Pos.second < FallTo_Pos){
             gMonkeyFallPARA_Texture.setPosY(gMonkeyFallPARA_Texture.getPosY()+MONKEY_RUNNING_SPEED);
-            gMonkey_Pos.second += MONKEY_RUNNING_SPEED/2;
+            gMonkey_Pos.second += MONKEY_RUNNING_SPEED/3;
             gMonkeyFallPARA_Texture.render(gRenderer, currentClip);
         }
         else{
@@ -250,12 +286,6 @@ void gMonkeyHandleMoving(SDL_Renderer* gRenderer){
             JumpBreak = 0;
             gMonkey_Pos.second = FallTo_Pos;
         }
-    }
-
-    if (gMonkeyState == STATE_FALLNPR || gMonkeyState == STATE_FALLPARA){
-            FallTo_Pos = gMonkey_Stable_PosY;
-            if(gMonkey_Pos.second < gMonkey_X2_PosY) FallTo_Pos = gMonkey_X2_PosY;
-            else if(gMonkey_Pos.second < gMonkey_X1_PosY) FallTo_Pos = gMonkey_X1_PosY;
     }
 
     MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED + (1.0*gTimer.getTicks()/50000);

@@ -10,29 +10,29 @@ gBanana::~gBanana()
 void gBanana::init(){
     Banana_Sum = 0;
     updateY();
-    updateX(posX);
+    updateX();
 }
 
 void gBanana::updateY(){
-    Y_ID = rand()%4;
-    if (Y_ID == 1) posY = 500;
-    else if (Y_ID == 2) posY = 360;
-    else if (Y_ID == 3) posY = 210;
+    Y_ID = rand()%3;
+    if (Y_ID == 0) posY = 500;
+    else if (Y_ID == 1) posY = 360;
+    else if (Y_ID == 2) posY = 210;
 }
 
-void gBanana::updateX(double &PosX){
+void gBanana::updateX(){
 
     Amount = 3 + (rand() % 4);
     Banana_Sum += Amount;
 
-    bool rand_ok = 0;
-    while (!rand_ok){
-        rand_ok = 1;
-        posX = SCREEN_WIDTH + BANANA_SPACING + (rand() % BANANA_SPACING);
-        if (posX <= BananaPos.back().first + BANANA_WIDTH) posX = BananaPos.back().first + BANANA_SPACING + (rand() % BANANA_SPACING);
-        if (posX <= ObstaclePosX_Carry[Y_ID][1].second || posX + BANANA_WIDTH*Amount <= ObstaclePosX_Carry[Y_ID][1].first) rand_ok = 0;
-        if (posX <= ObstaclePosX_Carry[Y_ID][2].second || posX + BANANA_WIDTH*Amount <= ObstaclePosX_Carry[Y_ID][2].first) rand_ok = 0;
-    }
+    int endMark = -1;
+    for(int j = 0; j < OBSTACLE_COUNT; ++j)
+        if (endMark < ObstaclePosX_Carry[Y_ID][j] + MAX_OBSTACLE_WIDTH)
+            endMark = ObstaclePosX_Carry[Y_ID][j] + MAX_OBSTACLE_WIDTH;
+
+    if (endMark < BananaPos.back().first) endMark = BananaPos.back().first;
+
+    posX = max(endMark, SCREEN_WIDTH) + BANANA_SPACING + (rand() % BANANA_SPACING);
 
     for(int i = 1; i <= Amount; ++i){
         BananaPos.push_back({posX, posY});
@@ -44,7 +44,7 @@ void gBanana::render(SDL_Renderer* gRenderer){
 
     if (BananaPos.front().first <= SCREEN_WIDTH/2 && BananaPos.front().first + BANANA_WIDTH + 1 > SCREEN_WIDTH/2){
         updateY();
-        updateX(posX);
+        updateX();
     }
     int Carry = Banana_Sum;
     while(Carry--){
