@@ -20,7 +20,8 @@ BananaKong! (NOT AUTHENTIC) is a C++ SDL game so SDL library and its support lib
 ### Game Control
 - Press start to start play.
 - Use Up button or Space Button to jump up, Down button to jump down.
-- The number of bananas and running distance are located at the top left corner of the screen.
+- While the character is not grounded, press and hold Up button or Space button to use the "Parachute"
+- The number of bananas you got and running distance are located at the top left corner of the screen.
 - Press the pause button at the top left corner to pause the game.
 
 ### Graphics/Textures
