@@ -19,5 +19,6 @@
 - Thêm function nhảy và bay					(DONE!) 
 - Thêm function đi trên higherPath			(DONE!)
 - Thêm function va chạm obstacle			(DONE!)
+- Thêm function đi trên obstacle			(DONE!)
 - Thêm Menu và Death Screen					(DONE!)
 - Thêm SDL_Mixer và Sound Effect			(DONE!)
