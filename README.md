@@ -11,10 +11,10 @@ BananaKong! (NOT AUTHENTIC) is a C++ SDL game so SDL library and its support lib
 - Use git or the download button (on the right) to download the game source code.
 - if you are using CodeBlock:
   + Add SDL and its support libraries to CodeBlocks, dependencies are:
-     [SDL] https://www.libsdl.org/download-2.0.php
-     [SDL_image] https://www.libsdl.org/projects/SDL_image/
-     [SDL_mixer] https://www.libsdl.org/projects/SDL_image/
-     [SDL_ttf] https://github.com/libsdl-org/SDL_ttf
+  		[SDL] https://www.libsdl.org/download-2.0.php
+     	[SDL_image] https://www.libsdl.org/projects/SDL_image/
+     	[SDL_mixer] https://www.libsdl.org/projects/SDL_image/
+     	[SDL_ttf] https://github.com/libsdl-org/SDL_ttf
   + Run the BananaKong.cbp file with CodeBlocks and compile, the game should start.
 
 ### Graphics/Textures
