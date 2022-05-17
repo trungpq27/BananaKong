@@ -21,6 +21,6 @@ BananaKong! (NOT AUTHENTIC) is a C++ SDL game so SDL library and its support lib
 The game texture (sprite-sheet) and image cutouts (sprites) are packed in `Material`.
 
 ### License
-- Source codes (except SDL librearies) is writen full by PhuQuocTrung (https://www.facebook.com/phuquoctrung27).
+- Source codes (except SDL libraries) is writen full by PhuQuocTrung (https://www.facebook.com/phuquoctrung27).
 - SDL librearies is distributed under the zlib license (https://www.libsdl.org/license.php).
 - Other sprites and image could be download freely online.
