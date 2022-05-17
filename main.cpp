@@ -59,6 +59,7 @@ BaseObject ScoreBoard;
 string DeathMessage;
 string scoreNow;
 string bananaScoreNow;
+int ScoreBoard_PosY = SCREEN_HEIGHT+10;
 
 //-----gMonkey-----
 int gRunDistance = 0;
@@ -154,24 +155,23 @@ int main( int argc, char* args[] )
                     AirPath2_Texture.Move();
                     AirPath2_Texture.render(gRenderer, AIR_PATH2_WIDTH, AIR_PATH2_HEIGHT);
 
-                    //-----Obstacle-----
-                    StonePig_Texture.Move();
-                    StonePig_Texture.render(gRenderer, STONE_PIG_WIDTH, STONE_PIG_HEIGHT);
-                    StonePig_Texture.Handle_Monkey();
-
-                    Tent_Texture.Move();
-                    Tent_Texture.render(gRenderer, TENT_WIDTH, TENT_HEIGHT);
-                    Tent_Texture.Handle_Monkey();
 
                     //-----gBanana-----
                     gBanana_Texture.render(gRenderer);
                     gBanana_Texture.Handle_Monkey();
 
+                    //-----Obstacle-----
+                    StonePig_Texture.Move();
+                    StonePig_Texture.Handle_Monkey();
+                    StonePig_Texture.render(gRenderer, STONE_PIG_WIDTH, STONE_PIG_HEIGHT);
+
+                    Tent_Texture.Move();
+                    Tent_Texture.Handle_Monkey();
+                    Tent_Texture.render(gRenderer, TENT_WIDTH, TENT_HEIGHT);
+
                     //-----Running Monkey-----
 
                     gMonkeyHandleHigherPath();
-
-                    gMonkeyHandleWalkonObstacle();
 
                     gMonkeyHandleMoving(gRenderer);
 

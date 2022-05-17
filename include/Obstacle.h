@@ -37,6 +37,7 @@ class Obstacle : public BaseObject{
         int posY_Level;
         int ObstacleWidth;
         int ID;
+        int gMonkey_Obstacle_PosY;
 
     public:
         Obstacle();

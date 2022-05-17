@@ -29,6 +29,8 @@ extern bool game_over;
 extern bool game_paused;
 extern bool quit;
 
+extern int ScoreBoard_PosY;
+
 //----------
 
 void Exit_Sound();
@@ -48,8 +50,6 @@ void setMonkeyPosYID();
 void gMonkeyHandleMoving();
 
 void gMonkeyHandleHigherPath();
-
-void gMonkeyHandleWalkonObstacle();
 
 void gMonkeyHandleMoving(SDL_Renderer* gRenderer);
 

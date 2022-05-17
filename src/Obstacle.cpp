@@ -12,6 +12,7 @@ Obstacle::~Obstacle(){
     posY_Level = 0;
     ObstacleWidth = 0;
     ID = 0;
+    gMonkey_Obstacle_PosY = 0;
 }
 
 void Obstacle::init(int ID){
@@ -26,6 +27,7 @@ void Obstacle::init(int ID){
 void Obstacle::updateY(){
     posY_Level = rand()%SCREEN_LEVEL_COUNT;
     posY = OBSTACLE_POSY[posY_Level];
+    gMonkey_Obstacle_PosY = posY - MONKEY_HEIGHT + 10;
 }
 
 void Obstacle::updateX(){
@@ -70,15 +72,35 @@ void Obstacle::Move(){
 }
 
 void Obstacle::Handle_Monkey(){
-    //cout << gMonkey_Pos.second << " " << posY <<  "\n";   //debug only
 
     int monkey_border = 60;
-
-    if ((gMonkey_Pos.second <= posY + OBSTACLE_HEIGHT) && ((gMonkey_Pos.second + MONKEY_HEIGHT) >= (posY + MAX_OBSTACLE_HEIGHT/2))){
+    if (gMonkeyState == STATE_RUN) monkey_border = 30;
+    if ((gMonkey_Pos.second + 10 <= posY + OBSTACLE_HEIGHT) && ((gMonkey_Pos.second + MONKEY_HEIGHT) >= (posY + MAX_OBSTACLE_HEIGHT/2))){
 
         if ((gMonkey_Pos.first + MONKEY_WIDTH - monkey_border) >= posX && gMonkey_Pos.first + monkey_border <= posX + ObstacleWidth ) {
             game_over = 1;
         }
+    }
+
+    double posX_End = posX + ObstacleWidth;
+
+    if ((gMonkey_Pos.first + MONKEY_WIDTH - 20) >= posX && gMonkey_Pos.first + 50 <= posX_End){
+        if (gMonkey_Pos.second >= gMonkey_Obstacle_PosY && gMonkey_Pos.second <= gMonkey_Obstacle_PosY + MONKEY_JUMPING_SPEED){
+            if (gMonkeyState == STATE_FALLNPR || gMonkeyState == STATE_FALLPARA){
+                JumpBreak = 0;
+                gMonkey_Pos.second = gMonkey_Obstacle_PosY;
+                gMonkeyState = STATE_RUN;
+                gMonkey_PosY_ID = POSY_ON_OBSTACLE_ID;
+            }
+        }
+    }
+    else if((gMonkey_Pos.first + 50 > posX_End) && (gMonkey_Pos.first <= posX_End)){
+            gMonkey_PosY_ID = POSY_GROUND_ID;
+            if (gMonkeyState == STATE_RUN && gMonkey_Pos.second == gMonkey_Obstacle_PosY){
+                gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
+                gMonkeyState = STATE_FALLNPR;
+                gMonkey_PosY_ID = POSY_GROUND_ID;
+            }
     }
 }
 

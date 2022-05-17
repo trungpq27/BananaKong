@@ -81,6 +81,8 @@ void GameInitEverything(SDL_Renderer* gRenderer){
     game_paused = false;
     quit = false;
 
+    ScoreBoard_PosY = SCREEN_HEIGHT+10;
+
     //-----Renderer Init-----
     SDL_SetRenderDrawColor(gRenderer, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR );
 }
@@ -156,43 +158,6 @@ void gMonkeyHandleHigherPath(){
                     gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
                     gMonkeyState = STATE_FALLNPR;
                     //cout << ID << " ";     //debug only
-                }
-        }
-
-    }
-
-}
-
-void gMonkeyHandleWalkonObstacle(){
-
-    gMonkey_PosY_ID = POSY_GROUND_ID;
-    for (int Level = 0; Level < SCREEN_LEVEL_COUNT; ++Level)
-        for (int ID = 0; ID < OBSTACLE_COUNT; ++ID){
-
-        double ObstaclePosX = ObstaclePosX_Carry[Level][ID];
-        double ObstaclePosX_End = ObstaclePosX + OBSTACLE_WIDTH[ID];
-
-        int gMonkey_Obstacle_PosY = OBSTACLE_POSY[Level] - MONKEY_HEIGHT + 10;
-
-        if ((gMonkey_Pos.first + MONKEY_WIDTH - 10) >= ObstaclePosX && gMonkey_Pos.first + 50 <= ObstaclePosX_End){
-            if (gMonkeyState == STATE_FALLNPR || gMonkeyState == STATE_FALLPARA){
-
-                if (gMonkey_Pos.second >= gMonkey_Obstacle_PosY && gMonkey_Pos.second <= gMonkey_Obstacle_PosY + MONKEY_JUMPING_SPEED){
-                    JumpBreak = 0;
-                    gMonkey_Pos.second = gMonkey_Obstacle_PosY;
-                    gMonkeyState = STATE_RUN;
-                    gMonkey_PosY_ID = POSY_ON_OBSTACLE_ID;
-                    return;
-                    //cout << ObstaclePosX << " " << ObstaclePosX_End << "\n";   //debug only
-                }
-            }
-        }
-        else if(gMonkeyState == STATE_RUN && gMonkey_Pos.second == gMonkey_Obstacle_PosY){
-                //cout << gMonkey_Pos.first  << " " << ObstaclePosX_End << "\n";
-                if ((gMonkey_Pos.first + 50 > ObstaclePosX_End) && (gMonkey_Pos.first <= ObstaclePosX_End)){
-                    gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
-                    gMonkeyState = STATE_FALLNPR;
-                    return;
                 }
         }
 
@@ -362,37 +327,45 @@ void HandleGameOver(){
 
 void HandleDeathScreen (SDL_Renderer* gRenderer){
 
-    ExitButton.setPos(570, 400);
+    int BestDistance = gRunDistance/80, BestBanana = Banana_Score;
+    UpdateHighScore(BestDistance, BestBanana);
+
+    bananaScoreNow = "Banana:  ";
+    if (Banana_Score >= 2) bananaScoreNow = "Bananas:  ";
+
+    scoreNow = "Distance:  " + longLongToString(gRunDistance/80) + " (Best " + longLongToString(BestDistance) + ")";
+    bananaScoreNow += longLongToString(Banana_Score) + " (Best " + longLongToString(BestBanana) + ")";
 
     SDL_RenderClear(gRenderer);
-
     DeathScreen.render(gRenderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
     if (game_over){
-        int BestDistance = gRunDistance/80, BestBanana = Banana_Score;
-        UpdateHighScore(BestDistance, BestBanana);
 
-        bananaScoreNow = "Banana:  ";
-        if (Banana_Score >= 2) bananaScoreNow = "Bananas:  ";
+        if (ScoreBoard_PosY > 30) ScoreBoard_PosY -= 15;
 
-        scoreNow = "Distance:  " + longLongToString(gRunDistance/80) + " (Best " + longLongToString(BestDistance) + ")";
-        bananaScoreNow += longLongToString(Banana_Score) + " (Best " + longLongToString(BestBanana) + ")";
+        int DeathMessage_PosY = ScoreBoard_PosY + 115;
+        int scoreNow_PosY = ScoreBoard_PosY + 169;
+        int bananaScoreNow_PosY = ScoreBoard_PosY + 229;
 
-        ScoreBoard.render(gRenderer, (SCREEN_WIDTH-SCORE_BOARD_WIDTH)/2, 20, SCORE_BOARD_WIDTH, SCORE_BOARD_HEIGHT);
+        ExitButton.setPos(570, ScoreBoard_PosY + 380);
+        AgainButton.setPos(200, ScoreBoard_PosY + 380);
+
+        ScoreBoard.render(gRenderer, (SCREEN_WIDTH-SCORE_BOARD_WIDTH)/2, ScoreBoard_PosY, SCORE_BOARD_WIDTH, SCORE_BOARD_HEIGHT);
 
         gTextTexture.loadFromRenderedText( DeathMessage, DeathScoreBorderColor, gDeathBorderFont, gRenderer);
-        gTextTexture.render( gRenderer, gTextTexture.getCenter(), 135);
+        gTextTexture.render( gRenderer, gTextTexture.getCenter(), DeathMessage_PosY);
         gTextTexture.loadFromRenderedText( DeathMessage, DeathScoreColor, gDeathFont, gRenderer);
-        gTextTexture.render( gRenderer, gTextTexture.getCenter(), 135);
+        gTextTexture.render( gRenderer, gTextTexture.getCenter(), DeathMessage_PosY);
 
         gTextTexture.loadFromRenderedText( scoreNow, DeathScoreBorderColor, gDeathBorderFont, gRenderer);
-        gTextTexture.render( gRenderer, gTextTexture.getCenter(), 189);
+        gTextTexture.render( gRenderer, gTextTexture.getCenter(), scoreNow_PosY);
         gTextTexture.loadFromRenderedText( scoreNow, DeathScoreColor, gDeathFont, gRenderer);
-        gTextTexture.render( gRenderer, gTextTexture.getCenter(), 189);
+        gTextTexture.render( gRenderer, gTextTexture.getCenter(), scoreNow_PosY);
 
         gTextTexture.loadFromRenderedText( bananaScoreNow, DeathScoreBorderColor, gDeathBorderFont, gRenderer);
-        gTextTexture.render( gRenderer, gTextTexture.getCenter(), 249);
+        gTextTexture.render( gRenderer, gTextTexture.getCenter(), bananaScoreNow_PosY);
         gTextTexture.loadFromRenderedText( bananaScoreNow, DeathScoreColor, gDeathFont, gRenderer);
-        gTextTexture.render( gRenderer, gTextTexture.getCenter(), 249);
+        gTextTexture.render( gRenderer, gTextTexture.getCenter(), bananaScoreNow_PosY);
 
         AgainButton.render(gRenderer);
         ExitButton.render(gRenderer);
