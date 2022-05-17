@@ -30,4 +30,4 @@ The game texture (sprite-sheet) and image cutouts (sprites) are packed in `Mater
 ### License
 - Source codes (except SDL libraries) is writen full by PhuQuocTrung (https://www.facebook.com/phuquoctrung27).
 - SDL librearies is distributed under the zlib license (https://www.libsdl.org/license.php).
-- Other sprites and image could be downloaded freely online.
+- Other sprites and images could be downloaded freely online.
