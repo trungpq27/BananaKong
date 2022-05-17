@@ -28,6 +28,11 @@ BananaKong! (NOT AUTHENTIC) is a C++ SDL game so SDL library and its support lib
 The game texture (sprite-sheet) and image cutouts (sprites) are packed in `Material`.
 
 ### License
-- Source codes (except SDL libraries) is writen full by PhuQuocTrung (https://www.facebook.com/phuquoctrung27).
+- Source codes (except SDL libraries) is writen fully by PhuQuocTrung (https://www.facebook.com/phuquoctrung27).
 - SDL librearies is distributed under the zlib license (https://www.libsdl.org/license.php).
-- Other sprites and images could be downloaded freely online.
+- UVN Van Bold font copyrighted by 2001 Tom Truong.
+- Nueva Bold Extended Copyrighted by 1994 Adobe Systems Incorporated.
+- Background title.png, Paused.png is designed by PhuQuocTrung.
+- MainBgm.wav is extracted from original BananaKong! game by FDG Entertainment.
+- Other sound effect could be downloaded freely from https://mixkit.co/free-sound-effects/game/
+- Other sprites and images could be downloaded freely from https://pngtree.com/.
