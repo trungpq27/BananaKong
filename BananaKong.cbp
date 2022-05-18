@@ -37,7 +37,6 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="HighScoreFile" />
-		<Unit filename="Material/Background/AllLayer.png" />
 		<Unit filename="Material/Background/Ground.png" />
 		<Unit filename="Material/Background/Layer0.png" />
 		<Unit filename="Material/Background/Layer1.png" />
@@ -56,10 +55,21 @@
 		<Unit filename="Material/Menu/Button/Again.png" />
 		<Unit filename="Material/Menu/Button/Exit.png" />
 		<Unit filename="Material/Menu/Button/Start.png" />
+		<Unit filename="Material/Menu/PlayPause/Exit.png" />
+		<Unit filename="Material/Menu/PlayPause/Home.png" />
+		<Unit filename="Material/Menu/PlayPause/Pause.png" />
+		<Unit filename="Material/Menu/PlayPause/Paused.png" />
+		<Unit filename="Material/Menu/PlayPause/Play.png" />
 		<Unit filename="Material/Obstacle/StonePig.png" />
 		<Unit filename="Material/Obstacle/Tent.png" />
 		<Unit filename="Material/Others/ScoreBoard.png" />
+		<Unit filename="Material/Sound/BananaGet.wav" />
+		<Unit filename="Material/Sound/ButtonHover.wav" />
+		<Unit filename="Material/Sound/Death.wav" />
 		<Unit filename="Material/Sound/MainBgm.wav" />
+		<Unit filename="Material/Sound/MonkeyJump.wav" />
+		<Unit filename="Material/Sound/MouseClick.wav" />
+		<Unit filename="Material/Sound/seeya.wav" />
 		<Unit filename="include/Background.h" />
 		<Unit filename="include/BaseFunc.h" />
 		<Unit filename="include/BaseObj.h" />

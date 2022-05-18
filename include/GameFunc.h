@@ -50,8 +50,14 @@ void DeathScreenShot();
 
 void handleTopLeftScore();
 
+//-----Stop Function-----
+void handleDeathFuncion(SDL_Event e_mouse);
+
+void HandlePauseFunction(SDL_Event e_mouse);
+
 void HandleStopFunction();
 
+//-----Stop Screen-----
 void getDeathScore();
 
 void handleDeathFloatingObject();

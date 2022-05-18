@@ -286,7 +286,7 @@ void getDeathScore(){
     bananaScoreNow = "Banana:  ";
     if (Banana_Score >= 2) bananaScoreNow = "Bananas:  ";
 
-    scoreNow = "Distance:  " + longLongToString(gRunDistance/80) + " (Best " + longLongToString(BestDistance) + ")";
+    scoreNow = "Distances:  " + longLongToString(gRunDistance/80) + " (Best " + longLongToString(BestDistance) + ")";
     bananaScoreNow += longLongToString(Banana_Score) + " (Best " + longLongToString(BestBanana) + ")";
 }
 
