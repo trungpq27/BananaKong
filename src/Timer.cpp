@@ -60,3 +60,13 @@ bool Timer::isStarted(){
 bool Timer::isPaused(){
     return mPaused && mStarted;
 }
+
+//----------Declare---------
+Timer gTimer;
+
+//----------Load Media----------
+void closeTimer(){
+    gTimer.stop();
+}
+
+

@@ -31,14 +31,21 @@ class gBanana : public BaseObject
 
         void updateX();
 
-        void render(SDL_Renderer* gRenderer);
+        void render();
 
         void Handle_Monkey();
 };
 
-//-----Extern in Main-----
+//-----Declare-----
 extern int Banana_Score;
 extern gBanana gBanana_Texture;
 extern list<pair<double, int>> BananaPos;
+
+//-----Function-----
+void MoveAndGetBanana();
+
+//-----Load Media-----
+extern bool isLoadBananaOK();
+extern void closeBanana();
 
 #endif // GBANANA_H

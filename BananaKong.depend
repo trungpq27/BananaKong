@@ -135,12 +135,12 @@
 
 1646820256 d:\code\sdl\bananakong\include\gamefunc.h
 
-1652774843 source:d:\code\c++\sdl\bananakong\main.cpp
+1652856755 source:d:\code\c++\sdl\bananakong\main.cpp
 	"GameFunc.h"
 
 1647766502 d:\code\c++\sdl\bananakong\include\gameobj.h
 
-1652257770 d:\code\c++\sdl\bananakong\include\basefunc.h
+1652849863 d:\code\c++\sdl\bananakong\include\basefunc.h
 	<bits/stdc++.h>
 	<SDL.h>
 	<SDL_image.h>
@@ -149,55 +149,57 @@
 	<iostream>
 	<string>
 
-1651825466 d:\code\c++\sdl\bananakong\include\baseobj.h
+1652856308 d:\code\c++\sdl\bananakong\include\baseobj.h
 	"BaseFunc.h"
 
-1651825466 source:d:\code\c++\sdl\bananakong\src\basefunc.cpp
+1652854660 source:d:\code\c++\sdl\bananakong\src\basefunc.cpp
 	"BaseFunc.h"
+	"GameFunc.h"
 
-1651825466 source:d:\code\c++\sdl\bananakong\src\baseobj.cpp
+1652854411 source:d:\code\c++\sdl\bananakong\src\baseobj.cpp
 	"BaseObj.h"
 
 1647766544 source:d:\code\c++\sdl\bananakong\src\gameobj.cpp
 	"GameObj.h"
 
-1651825466 source:d:\code\c++\sdl\bananakong\src\background.cpp
+1652854359 source:d:\code\c++\sdl\bananakong\src\background.cpp
 	"Background.h"
 
 1651825466 d.h"
 
-1651825466 d:\code\c++\sdl\bananakong\include\background.h
+1652854372 d:\code\c++\sdl\bananakong\include\background.h
 	"BaseFunc.h"
 	"BaseObj.h"
 	"gMonkey.h"
 
-1652255934 source:d:\code\c++\sdl\bananakong\src\gmonkey.cpp
+1652854202 source:d:\code\c++\sdl\bananakong\src\gmonkey.cpp
 	"gMonkey.h"
 
-1652258943 d:\code\c++\sdl\bananakong\include\gmonkey.h
+1652854214 d:\code\c++\sdl\bananakong\include\gmonkey.h
 	"BaseFunc.h"
 	"BaseObj.h"
 	"HigherPath.h"
+	"gSound.h"
 
 1651831671 h.h"
 
-1652776667 source:d:\code\c++\sdl\bananakong\src\obstacle.cpp
+1652855074 source:d:\code\c++\sdl\bananakong\src\obstacle.cpp
 	"Obstacle.h"
 
-1652776433 d:\code\c++\sdl\bananakong\include\obstacle.h
+1652855094 d:\code\c++\sdl\bananakong\include\obstacle.h
 	"BaseObj.h"
 	"BaseFunc.h"
 	"HigherPath.h"
 	"gMonkey.h"
 
-1651831671 source:d:\code\c++\sdl\bananakong\src\higherpath.cpp
+1652854796 source:d:\code\c++\sdl\bananakong\src\higherpath.cpp
 	"HigherPath.h"
 
-1652260515 d:\code\c++\sdl\bananakong\include\higherpath.h
+1652854824 d:\code\c++\sdl\bananakong\include\higherpath.h
 	"BaseFunc.h"
 	"BaseObj.h"
 
-1652776741 d:\code\c++\sdl\bananakong\include\gamefunc.h
+1652857312 d:\code\c++\sdl\bananakong\include\gamefunc.h
 	"gMonkey.h"
 	"BaseFunc.h"
 	"BaseObj.h"
@@ -210,46 +212,46 @@
 	"Button.h"
 	"gSound.h"
 
-1652776718 source:d:\code\c++\sdl\bananakong\src\gamefunc.cpp
+1652857491 source:d:\code\c++\sdl\bananakong\src\gamefunc.cpp
 	"GameFunc.h"
 
-1651825466 d:\code\c++\sdl\bananakong\include\gtext.h
+1652856179 d:\code\c++\sdl\bananakong\include\gtext.h
 	"BaseObj.h"
 	"BaseFunc.h"
 
-1651825466 source:d:\code\c++\sdl\bananakong\src\gtext.cpp
+1652856092 source:d:\code\c++\sdl\bananakong\src\gtext.cpp
 	"gText.h"
 
-1651825466 d:\code\c++\sdl\bananakong\include\timer.h
+1652854116 d:\code\c++\sdl\bananakong\include\timer.h
 	<BaseFunc.h>
 
 1651825466 h>
 
-1651825466 source:d:\code\c++\sdl\bananakong\src\timer.cpp
+1652854105 source:d:\code\c++\sdl\bananakong\src\timer.cpp
 	"Timer.h"
 
-1651832695 d:\code\c++\sdl\bananakong\include\gbanana.h
+1652854940 d:\code\c++\sdl\bananakong\include\gbanana.h
 	"BaseFunc.h"
 	"BaseObj.h"
 	"Obstacle.h"
 	"gMonkey.h"
 	"gSound.h"
 
-1652233599 source:d:\code\c++\sdl\bananakong\src\gbanana.cpp
+1652854929 source:d:\code\c++\sdl\bananakong\src\gbanana.cpp
 	"gBanana.h"
 
-1651825466 source:d:\code\c++\sdl\bananakong\src\button.cpp
+1652854559 source:d:\code\c++\sdl\bananakong\src\button.cpp
 	"Button.h"
 
-1651825466 d:\code\c++\sdl\bananakong\include\button.h
+1652854514 d:\code\c++\sdl\bananakong\include\button.h
 	"BaseFunc.h"
 	"BaseObj.h"
 	"gSound.h"
 
-1651825466 d:\code\c++\sdl\bananakong\include\gsound.h
+1652857049 d:\code\c++\sdl\bananakong\include\gsound.h
 	"BaseFunc.h"
 
-1651825466 source:d:\code\c++\sdl\bananakong\src\gsound.cpp
+1652857403 source:d:\code\c++\sdl\bananakong\src\gsound.cpp
 	"gSound.h"
 
 1652262073 source:/mnt/Data/Code/C++/SDL/BananaKong/main.cpp

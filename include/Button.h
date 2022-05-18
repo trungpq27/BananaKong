@@ -35,10 +35,10 @@ class Button : public BaseObject
 
         void handleEvent( SDL_Event* e_mouse, bool &menu, bool &state);
 
-        void render(SDL_Renderer *gRenderer);
+        void render();
 };
 
-//-----Extern in Main-----
+//-----Declare-----
 extern Button StartButton;
 extern Button ExitButton;
 extern Button AgainButton;
@@ -47,5 +47,9 @@ extern Button PlayButton;
 extern Button PauseButton;
 extern Button RoundExitButton;
 extern Button HomeButton;
+
+//-----Load Media-----
+extern bool isLoadButtonOK();
+extern void closeButton();
 
 #endif // BUTTON_H

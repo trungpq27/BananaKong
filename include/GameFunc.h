@@ -13,14 +13,7 @@
 #include "Button.h"
 #include "gSound.h"
 
-
-const int BreakDistance = 50;
-
-//----------Extern in Main----------
-
-extern const Uint8* currentKeyStates;
-
-//-----GameState-----
+//-----Declare Game State-----
 extern bool backToMenu;
 extern bool menu;
 extern bool play;
@@ -28,38 +21,43 @@ extern bool quit_game;
 extern bool game_over;
 extern bool game_paused;
 extern bool quit;
+extern bool exit_game;
 
 extern int ScoreBoard_PosY;
 
-//----------
-
-void Exit_Sound();
+//----------Function----------
 
 string longLongToString(long long x);
 
-void GameInitEverything(SDL_Renderer* gRenderer);
+void GameInitEverything();
 
-void HandleMenu(SDL_Renderer* gRenderer);
+void HandleMenu();
 
 //-----gMonkey-----
 
-void setMonkeyPos(gMonkey &gMonkey_Texture);
-
-void setMonkeyPosYID();
+void gMonkeyHandleChangeSpeed();
 
 void gMonkeyHandleMoving();
 
 void gMonkeyHandleHigherPath();
 
-void gMonkeyHandleMoving(SDL_Renderer* gRenderer);
+void gMonkeyHandleMoving();
 
 //-----Game-----
 void UpdateHighScore(int &BestDistance, int &BestBanana);
 
-void DeathScreenShot(SDL_Renderer* gRenderer);
+void DeathScreenShot();
 
-void HandleGameOver();
+void handleTopLeftScore();
 
-void HandleDeathScreen (SDL_Renderer* gRenderer);
+void HandleStopFunction();
+
+void getDeathScore();
+
+void handleDeathFloatingObject();
+
+void HandlePauseFloatingObject();
+
+void HandleStopScreen();
 
 #endif // GAMEFUNC_H

@@ -17,23 +17,17 @@ const string BACKGROUND_LAYERS_PATH[BACKGROUND_LAYERS_COUNT] = {
     "Material/Background/Layer3.png",
 };
 
-
-//-----Function-----
-void RenderScrollingBackground (SDL_Renderer* gRenderer, int MonkeyDash = NULL );
-void RenderScrollingGround ( SDL_Renderer* gRenderer, int MonkeyDash = NULL );
-
-
-//-----Extern in Main-----
-extern BaseObject Paused_Text;
-extern BaseObject DeathScreen;
-extern BaseObject StartBackground_Texture;
+//-----Declare-----
 extern BaseObject backgroundTexture[BACKGROUND_LAYERS_COUNT];
 extern BaseObject groundTexture;
 
-extern BaseObject ScoreBoard;
-extern string DeathMessage;
-extern string scoreNow;
-extern string bananaScoreNow;
+//-----Function-----
+void RenderScrollingBackground (int MonkeyDash = NULL );
+void RenderScrollingGround (int MonkeyDash = NULL );
+
+//-----Load Media-----
+extern bool isLoadBackgroundOK();
+extern void closeBackground();
 
 
 #endif // BACKGROUND_H

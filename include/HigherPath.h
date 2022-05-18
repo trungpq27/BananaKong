@@ -54,7 +54,7 @@ class HigherPath : public BaseObject
 
         void updateX();
 
-        void render(SDL_Renderer* gRenderer, int wSize, int hSize);
+        void render(int wSize, int hSize);
 
         void Move();
 
@@ -63,7 +63,7 @@ class HigherPath : public BaseObject
         double getPosY();
 };
 
-//-----Extern in Main-----
+//-----Declare-----
 extern HigherPath AirPath1_Texture;
 extern HigherPath AirPath2_Texture;
 extern HigherPath UpPath1_Texture;
@@ -71,5 +71,12 @@ extern HigherPath UpPath2_Texture;
 extern double PathPosX_Carry[HIGHER_PATH_COUNT];
 
 extern double MONKEY_RUNNING_SPEED;
+
+//-----Function-----
+void MoveAndRenderHigherPath();
+
+//-----Load Media-----
+extern bool isLoadHigherPathOK();
+extern void closeHigherPath();
 
 #endif // HIGHERPATH_H

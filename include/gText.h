@@ -25,7 +25,7 @@ class gText : public BaseObject{
 
         void free();
 
-		bool loadFromRenderedText( std::string textureText, SDL_Color textColor, TTF_Font *gFont, SDL_Renderer *gRenderer);
+		bool loadFromRenderedText( std::string textureText, SDL_Color textColor, TTF_Font *gFont);
 
 		int getCenter();
 
@@ -35,17 +35,23 @@ class gText : public BaseObject{
 
 		void setAlpha( Uint8 alpha );
 
-		void render( SDL_Renderer *gRenderer, int x, int y, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
+		void render(int x, int y, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
 };
 
-//-----Extern in Main-----
-
+//-----Declare-----
 extern TTF_Font *gFont;
 extern TTF_Font *gBorderFont;
 extern TTF_Font *gDeathFont;
 extern TTF_Font *gDeathBorderFont;
 
 extern gText gTextTexture;
+
+//-----Function-----
+void RenderScoreWithPosY(string Message, int PosY);
+
+//-----Load Media-----
+extern bool isLoadTextOK();
+extern void closeText();
 
 #endif // GTEXT_H

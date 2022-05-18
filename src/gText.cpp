@@ -1,5 +1,7 @@
 #include "gText.h"
 
+
+//----------Object Class----------
 gText::gText() : BaseObject::BaseObject(){
 
 }
@@ -19,7 +21,7 @@ void gText::free(){
 	}
 }
 
-bool gText::loadFromRenderedText(string textureText, SDL_Color textColor, TTF_Font *gFont, SDL_Renderer *gRenderer )
+bool gText::loadFromRenderedText(string textureText, SDL_Color textColor, TTF_Font *gFont)
 {
 	//Get rid of preexisting texture
 	free();
@@ -77,9 +79,64 @@ void gText::setAlpha( Uint8 alpha )
 	SDL_SetTextureAlphaMod( gFontTexture, alpha );
 }
 
-void gText::render( SDL_Renderer *gRenderer, int x, int y, double angle, SDL_Point* center, SDL_RendererFlip flip )
+void gText::render(int x, int y, double angle, SDL_Point* center, SDL_RendererFlip flip )
 {
 	SDL_Rect renderQuad = { x, y, textWidth, textHeight };
 
 	SDL_RenderCopyEx( gRenderer, gFontTexture, NULL, &renderQuad, angle, center, flip );
+}
+
+
+//---------Declare----------
+TTF_Font *gFont = NULL;
+TTF_Font *gBorderFont = NULL;
+TTF_Font *gDeathFont = NULL;
+TTF_Font *gDeathBorderFont = NULL;
+
+gText gTextTexture;
+
+//----------Function----------
+void RenderScoreWithPosY(string Message, int PosY){
+    gTextTexture.loadFromRenderedText( Message, DeathScoreBorderColor, gDeathBorderFont);
+    gTextTexture.render(gTextTexture.getCenter(), PosY);
+    gTextTexture.loadFromRenderedText( Message, DeathScoreColor, gDeathFont);
+    gTextTexture.render(gTextTexture.getCenter(), PosY);
+}
+
+
+//----------Load Media----------
+bool isLoadTextOK(){
+    bool success = true;
+    gFont = TTF_OpenFont( "Material/Fonts/UVNVan.ttf", 28 );
+	if( gFont == NULL )
+	{
+		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+
+	gBorderFont = TTF_OpenFont( "Material/Fonts/UVNVan.ttf", 28 );
+	if( gBorderFont == NULL )
+	{
+		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+
+	gDeathFont = TTF_OpenFont( "Material/Fonts/Nueva.ttf", 40 );
+	if( gDeathFont == NULL )
+	{
+		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+	gDeathBorderFont = TTF_OpenFont( "Material/Fonts/Nueva.ttf", 40 );
+	if( gDeathBorderFont == NULL )
+	{
+		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+	else TTF_SetFontOutline(gDeathBorderFont, 1);
+	return success;
+}
+
+void closeText(){
+    gTextTexture.free();
 }

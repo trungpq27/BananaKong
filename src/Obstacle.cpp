@@ -58,8 +58,8 @@ void Obstacle::updateX(){
 }
 
 
-void Obstacle::render(SDL_Renderer* gRenderer, int wSize, int hSize){
-    BaseObject::render(gRenderer, posX, posY, wSize, hSize);
+void Obstacle::render(int wSize, int hSize){
+    BaseObject::render(posX, posY, wSize, hSize);
 }
 
 void Obstacle::Move(){
@@ -75,31 +75,30 @@ void Obstacle::Handle_Monkey(){
 
     int monkey_border = 60;
     if (gMonkeyState == STATE_RUN) monkey_border = 30;
-    if ((gMonkey_Pos.second + 10 <= posY + OBSTACLE_HEIGHT) && ((gMonkey_Pos.second + MONKEY_HEIGHT) >= (posY + MAX_OBSTACLE_HEIGHT/2))){
+    if ((gMonkeyPos.second + 10 <= posY + OBSTACLE_HEIGHT) && ((gMonkeyPos.second + MONKEY_HEIGHT) >= (posY + MAX_OBSTACLE_HEIGHT/2))){
 
-        if ((gMonkey_Pos.first + MONKEY_WIDTH - monkey_border) >= posX && gMonkey_Pos.first + monkey_border <= posX + ObstacleWidth ) {
+        if ((gMonkeyPos.first + MONKEY_WIDTH - monkey_border) >= posX && gMonkeyPos.first + monkey_border <= posX + ObstacleWidth ) {
             game_over = 1;
         }
     }
 
     double posX_End = posX + ObstacleWidth;
 
-    if ((gMonkey_Pos.first + MONKEY_WIDTH - 20) >= posX && gMonkey_Pos.first + 50 <= posX_End){
-        if (gMonkey_Pos.second >= gMonkey_Obstacle_PosY && gMonkey_Pos.second <= gMonkey_Obstacle_PosY + MONKEY_JUMPING_SPEED){
+    if ((gMonkeyPos.first + MONKEY_WIDTH - 20) >= posX && gMonkeyPos.first + 50 <= posX_End){
+        if (gMonkeyPos.second >= gMonkey_Obstacle_PosY && gMonkeyPos.second <= gMonkey_Obstacle_PosY + MONKEY_JUMPING_SPEED){
             if (gMonkeyState == STATE_FALLNPR || gMonkeyState == STATE_FALLPARA){
                 JumpBreak = 0;
-                gMonkey_Pos.second = gMonkey_Obstacle_PosY;
+                gMonkeyPos.second = gMonkey_Obstacle_PosY;
                 gMonkeyState = STATE_RUN;
-                gMonkey_PosY_ID = POSY_ON_OBSTACLE_ID;
+                gMonkeyOnObstacle = true;
             }
         }
     }
-    else if((gMonkey_Pos.first + 50 > posX_End) && (gMonkey_Pos.first <= posX_End)){
-            gMonkey_PosY_ID = POSY_GROUND_ID;
-            if (gMonkeyState == STATE_RUN && gMonkey_Pos.second == gMonkey_Obstacle_PosY){
-                gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
+    else if((gMonkeyPos.first + 50 > posX_End) && (gMonkeyPos.first <= posX_End)){
+            gMonkeyOnObstacle = false;
+            if (gMonkeyState == STATE_RUN && gMonkeyPos.second == gMonkey_Obstacle_PosY){
+                gMonkeyPos.second += MONKEY_JUMPING_SPEED;
                 gMonkeyState = STATE_FALLNPR;
-                gMonkey_PosY_ID = POSY_GROUND_ID;
             }
     }
 }
@@ -113,7 +112,41 @@ double Obstacle::getPosY(){
     return posY;
 }
 
+//----------Declare----------
+Obstacle StonePig_Texture;
+Obstacle Tent_Texture;
+double ObstaclePosX_Carry [SCREEN_LEVEL_COUNT][OBSTACLE_COUNT];
 
+//----------Function----------
+void MoveAndCollisionObstacle(){
+    StonePig_Texture.Move();
+    StonePig_Texture.Handle_Monkey();
+    StonePig_Texture.render(STONE_PIG_WIDTH, STONE_PIG_HEIGHT);
+
+    Tent_Texture.Move();
+    Tent_Texture.Handle_Monkey();
+    Tent_Texture.render(TENT_WIDTH, TENT_HEIGHT);
+}
+
+//----------Load Media----------
+bool isLoadObstacleOK(){
+
+    bool success = true;
+    if (!StonePig_Texture.loadFromFile("Material/Obstacle/StonePig.png")){
+        printf( "Failed to load Ground StonePig image!\n" );
+        success = false;
+    }
+    if (!Tent_Texture.loadFromFile("Material/Obstacle/Tent.png")){
+        printf( "Failed to load Ground Tent image!\n" );
+        success = false;
+    }
+    return success;
+}
+
+void closeObstacle(){
+    StonePig_Texture.free();
+    Tent_Texture.free();
+}
 
 
 

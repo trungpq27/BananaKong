@@ -13,6 +13,8 @@ using namespace std;
 
 //<----------Base Variable----------
 
+extern const Uint8* currentKeyStates;
+
 //---Screen Level ID---
 const int POSY_GROUND_ID = 0;
 const int POSY_UP_ID = 1;
@@ -26,14 +28,14 @@ const int SCREEN_HEIGHT = 630;
 const int RENDER_DRAW_COLOR = 0xff;
 const std::string WINDOW_TITLE = "Banana Kong!";
 
-static SDL_Window* gWindow = NULL;
-static SDL_Renderer* gRenderer = NULL;
+extern SDL_Window* gWindow;
+extern SDL_Renderer* gRenderer;
 
 
 //-----Game-----
-bool init();
-bool loadMedia();
-void close();
+extern bool init();
+extern bool loadMedia();
+extern void close();
 
 //----------End of Base Variable---------->
 

@@ -1,5 +1,7 @@
 #include "Button.h"
 
+//<----------Object Class----------
+
 Button::Button()
 {
     hover = false;
@@ -67,6 +69,72 @@ void Button::handleEvent( SDL_Event* e_mouse, bool &menu, bool &state)
     }
 }
 
-void Button::render(SDL_Renderer *gRenderer){
-    BaseObject::render(gRenderer, mPosition.x, mPosition.y, wSize, hSize);
+void Button::render(){
+    BaseObject::render(mPosition.x, mPosition.y, wSize, hSize);
+}
+
+//----------End of Object Class---------->
+
+//----------Declare----------
+Button StartButton;
+Button ExitButton;
+Button AgainButton;
+
+Button PlayButton;
+Button PauseButton;
+Button RoundExitButton;
+Button HomeButton;
+
+//----------Load Media----------
+bool isLoadButtonOK(){
+    bool success = true;
+    if( !StartButton.loadFromFile( "Material/Menu/Button/Start.png" ) ){
+        printf( "Failed to load StartButton layer %d texture image!\n");
+        success = false;
+    }
+
+    if( !ExitButton.loadFromFile( "Material/Menu/Button/Exit.png" ) ){
+        printf( "Failed to load ExitButton layer %d texture image!\n");
+        success = false;
+    }
+
+    if( !AgainButton.loadFromFile( "Material/Menu/Button/Again.png" ) ){
+        printf( "Failed to load AgainButton layer %d texture image!\n");
+        success = false;
+    }
+
+
+    if( !PlayButton.loadFromFile( "Material/Menu/PlayPause/Play.png" ) ){
+        printf( "Failed to load PlayButton layer %d texture image!\n");
+        success = false;
+    }
+
+    if( !PauseButton.loadFromFile( "Material/Menu/PlayPause/Pause.png" ) ){
+        printf( "Failed to load PauseButton layer %d texture image!\n");
+        success = false;
+    }
+
+    if( !RoundExitButton.loadFromFile( "Material/Menu/PlayPause/Exit.png" ) ){
+        printf( "Failed to load RoundExitButton layer %d texture image!\n");
+        success = false;
+    }
+
+    if( !HomeButton.loadFromFile( "Material/Menu/PlayPause/Home.png" ) ){
+        printf( "Failed to load HomeButton layer %d texture image!\n");
+        success = false;
+    }
+
+    return success;
+}
+
+void closeButton(){
+
+    StartButton.free();
+    ExitButton.free();
+    AgainButton.free();
+
+    PlayButton.free();
+    PauseButton.free();
+    RoundExitButton.free();
+    HomeButton.free();
 }

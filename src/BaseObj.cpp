@@ -13,7 +13,7 @@ BaseObject::~BaseObject(){
     free();
 }
 
-bool BaseObject::loadFromFile(string path, SDL_Renderer *gRenderer){
+bool BaseObject::loadFromFile(string path){
 
     free();
 
@@ -57,7 +57,7 @@ void BaseObject::free(){
     }
 }
 
-void BaseObject::render(SDL_Renderer *gRenderer, double x, double y, int wSize, int hSize, SDL_Rect* clip){
+void BaseObject::render(double x, double y, int wSize, int hSize, SDL_Rect* clip){
 
     SDL_Rect renderQuad = {x, y, wSize, hSize};
 
@@ -73,3 +73,43 @@ int BaseObject::getHeight(){
 }
 
 //----------End of Object Class--------->
+
+//---------Declare----------
+BaseObject ScoreBoard;
+string DeathMessage;
+string scoreNow;
+string bananaScoreNow;
+int ScoreBoard_PosY = SCREEN_HEIGHT+10;
+
+BaseObject Paused_Text;
+BaseObject DeathScreen;
+BaseObject StartBackground_Texture;
+
+//----------Load Media---------->
+bool isLoadBaseObjectOK(){
+
+    bool success = true;
+
+    //-----ScoreBoard-----
+	if(!ScoreBoard.loadFromFile("Material/Others/ScoreBoard.png")){
+        printf( "Failed to load ScoreBoard texture image!\n" );
+        success = false;
+    }
+
+    //-----PlayPauseText-----
+    if( !StartBackground_Texture.loadFromFile( "Material/Background/Title.png" ) ){
+        printf( "Failed to load StartBackground layer %d texture image!\n");
+        success = false;
+    }
+    if( !Paused_Text.loadFromFile( "Material/Menu/PlayPause/Paused.png" ) ){
+        printf( "Failed to load Paused_Text layer %d texture image!\n");
+        success = false;
+    }
+    return success;
+}
+
+void closeBaseObject(){
+    Paused_Text.free();
+    DeathScreen.free();
+    ScoreBoard.free();
+}

@@ -56,8 +56,8 @@ void HigherPath::updateX(){
     PathPosX_Carry[ID] = posX;
 }
 
-void HigherPath::render(SDL_Renderer* gRenderer, int wSize, int hSize){
-    BaseObject::render(gRenderer, posX, posY, wSize, hSize);
+void HigherPath::render(int wSize, int hSize){
+    BaseObject::render(posX, posY, wSize, hSize);
 }
 
 void HigherPath::Move(){
@@ -73,4 +73,55 @@ double HigherPath::getPosX(){
 
 double HigherPath::getPosY(){
     return posY;
+}
+
+//----------Declare----------
+HigherPath AirPath1_Texture;
+HigherPath AirPath2_Texture;
+HigherPath UpPath1_Texture;
+HigherPath UpPath2_Texture;
+double PathPosX_Carry[HIGHER_PATH_COUNT];
+
+//----------Function----------
+void MoveAndRenderHigherPath(){
+    UpPath1_Texture.Move();
+    UpPath1_Texture.render(UP_PATH1_WIDTH, UP_PATH1_HEIGHT);
+
+    UpPath2_Texture.Move();
+    UpPath2_Texture.render(UP_PATH2_WIDTH, UP_PATH2_HEIGHT);
+
+    AirPath1_Texture.Move();
+    AirPath1_Texture.render(AIR_PATH1_WIDTH, AIR_PATH1_HEIGHT);
+
+    AirPath2_Texture.Move();
+    AirPath2_Texture.render(AIR_PATH2_WIDTH, AIR_PATH2_HEIGHT);
+}
+
+//----------Load Media----------
+bool isLoadHigherPathOK(){
+    bool success = true;
+    if (!AirPath1_Texture.loadFromFile("Material/HigherPath/AirPath1.png")){
+        printf( "Failed to load Ground AirPath1 image!\n" );
+        success = false;
+    }
+    if (!AirPath2_Texture.loadFromFile("Material/HigherPath/AirPath2.png")){
+        printf( "Failed to load Ground AirPath2 image!\n" );
+        success = false;
+    }
+    if (!UpPath1_Texture.loadFromFile("Material/HigherPath/UpPath1.png")){
+        printf( "Failed to load Ground UpPath1 image!\n" );
+        success = false;
+    }
+    if (!UpPath2_Texture.loadFromFile("Material/HigherPath/UpPath2.png")){
+        printf( "Failed to load Ground UpPath2 image!\n" );
+        success = false;
+    }
+    return success;
+}
+
+void closeHigherPath(){
+    AirPath1_Texture.free();
+    AirPath2_Texture.free();
+    UpPath1_Texture.free();
+    UpPath2_Texture.free();
 }

@@ -2,44 +2,84 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="src\GameFunc.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\gBanana.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5579" topLine="156" />
+			<Cursor1 position="796" topLine="9" />
 		</Cursor>
 	</File>
-	<File name="include\Obstacle.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\gMonkey.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="211" topLine="1" />
+			<Cursor1 position="2141" topLine="54" />
+		</Cursor>
+	</File>
+	<File name="src\HigherPath.cpp" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1879" topLine="65" />
+		</Cursor>
+	</File>
+	<File name="src\Obstacle.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3404" topLine="96" />
+		</Cursor>
+	</File>
+	<File name="src\GameFunc.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1557" topLine="231" />
+		</Cursor>
+	</File>
+	<File name="include\HigherPath.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1689" topLine="44" />
+		</Cursor>
+	</File>
+	<File name="include\Obstacle.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1597" topLine="36" />
+		</Cursor>
+	</File>
+	<File name="include\GameFunc.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="483" topLine="13" />
 		</Cursor>
 	</File>
 	<File name="src\gSound.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="21" topLine="0" />
+			<Cursor1 position="468" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+	<File name="src\BaseFunc.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4373" topLine="149" />
-		</Cursor>
-	</File>
-	<File name="include\BaseObj.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="152" topLine="1" />
-		</Cursor>
-	</File>
-	<File name="include\Timer.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="371" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\gMonkey.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2023" topLine="32" />
+			<Cursor1 position="2966" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="src\gText.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1923" topLine="46" />
+			<Cursor1 position="2286" topLine="81" />
+		</Cursor>
+	</File>
+	<File name="include\BaseFunc.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="694" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\Background.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1811" topLine="2" />
+		</Cursor>
+	</File>
+	<File name="src\gMonkey.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2960" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\gSound.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="377" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\gText.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1216" topLine="7" />
 		</Cursor>
 	</File>
 	<File name="HighScoreFile" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -47,89 +87,49 @@
 			<Cursor1 position="3" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include\gSound.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\Button.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="70" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Background.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="800" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\GameFunc.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="955" topLine="13" />
+			<Cursor1 position="1019" topLine="16" />
 		</Cursor>
 	</File>
 	<File name="include\Background.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="793" topLine="0" />
+			<Cursor1 position="941" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src\HigherPath.cpp" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\gBanana.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="72" topLine="0" />
+			<Cursor1 position="2395" topLine="61" />
 		</Cursor>
 	</File>
-	<File name="include\gText.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1014" topLine="12" />
-		</Cursor>
-	</File>
-	<File name="src\BaseFunc.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="22" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\BaseObj.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="253" topLine="7" />
-		</Cursor>
-	</File>
-	<File name="include\HigherPath.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="328" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\gBanana.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="575" topLine="5" />
+			<Cursor1 position="414" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="src\Button.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="505" topLine="0" />
+			<Cursor1 position="3312" topLine="102" />
 		</Cursor>
 	</File>
-	<File name="src\gBanana.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\BaseObj.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="726" topLine="12" />
+			<Cursor1 position="2593" topLine="60" />
+		</Cursor>
+	</File>
+	<File name="include\Timer.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="436" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\BaseObj.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="197" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="src\Timer.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="141" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\BaseFunc.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="20" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\Button.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1031" topLine="12" />
-		</Cursor>
-	</File>
-	<File name="src\Obstacle.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2382" topLine="63" />
-		</Cursor>
-	</File>
-	<File name="src\gMonkey.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="494" topLine="0" />
+			<Cursor1 position="1169" topLine="34" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

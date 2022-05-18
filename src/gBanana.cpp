@@ -40,7 +40,7 @@ void gBanana::updateX(){
     }
 }
 
-void gBanana::render(SDL_Renderer* gRenderer){
+void gBanana::render(){
 
     if (BananaPos.front().first <= SCREEN_WIDTH/2 && BananaPos.front().first + BANANA_WIDTH + 1 > SCREEN_WIDTH/2){
         updateY();
@@ -53,7 +53,7 @@ void gBanana::render(SDL_Renderer* gRenderer){
         if (!BananaPos.empty()) BananaPos.pop_front();
 
         posNow.first -= MONKEY_RUNNING_SPEED;
-        BaseObject::render(gRenderer, posNow.first, posNow.second, BANANA_WIDTH, BANANA_HEIGHT);
+        BaseObject::render(posNow.first, posNow.second, BANANA_WIDTH, BANANA_HEIGHT);
 
         if(posNow.first + BANANA_WIDTH >= 0) BananaPos.push_back(posNow);
         else Banana_Sum--;
@@ -68,8 +68,8 @@ void gBanana::Handle_Monkey(){
         pair <double, int> Banana_posNow = BananaPos.front();
         if (!BananaPos.empty()) BananaPos.pop_front();
 
-        if ((Banana_posNow.second + BANANA_HEIGHT >= gMonkey_Pos.second && Banana_posNow.second <= gMonkey_Pos.second + MONKEY_HEIGHT) &&
-            (Banana_posNow.first + BANANA_WIDTH >= gMonkey_Pos.first && Banana_posNow.first <= gMonkey_Pos.first + MONKEY_WIDTH - 30)){
+        if ((Banana_posNow.second + BANANA_HEIGHT >= gMonkeyPos.second && Banana_posNow.second <= gMonkeyPos.second + MONKEY_HEIGHT) &&
+            (Banana_posNow.first + BANANA_WIDTH >= gMonkeyPos.first && Banana_posNow.first <= gMonkeyPos.first + MONKEY_WIDTH - 30)){
                 Banana_Score++;
                 Banana_Sum--;
                 Mix_PlayChannel( -1, gBananaGet_Sound, 0 );
@@ -77,4 +77,29 @@ void gBanana::Handle_Monkey(){
         else BananaPos.push_back(Banana_posNow);
 
     }
+}
+
+//----------Declare----------
+int Banana_Score = 0;
+gBanana gBanana_Texture;
+list<pair<double, int>> BananaPos;
+
+//----------Function----------
+void MoveAndGetBanana(){
+    gBanana_Texture.render();
+    gBanana_Texture.Handle_Monkey();
+}
+
+//----------Load Media----------
+bool isLoadBananaOK(){
+    bool success = 0;
+    if(!gBanana_Texture.loadFromFile("Material/Characters/Banana/Banana.png")){
+        printf( "Failed to load Banana texture image!\n" );
+        success = false;
+    }
+    return success;
+}
+
+void closeBanana(){
+    gBanana_Texture.free();
 }

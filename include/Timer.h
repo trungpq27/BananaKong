@@ -31,7 +31,8 @@ class Timer
 		bool isPaused();
 };
 
-//-----Extern in Main-----
+//-----Declare------
 extern Timer gTimer;
+extern void closeTimer();
 
 #endif // TIMER_H

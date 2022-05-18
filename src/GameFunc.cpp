@@ -1,12 +1,17 @@
 #include "GameFunc.h"
 
-void Exit_Sound(){
-    Mix_HaltMusic();
-    Mix_HaltChannel(-1);
-    Mix_PlayChannel(-1, SeeYa, 0);
-    SDL_Delay(1500);
-}
+//----------Declare----------
+bool backToMenu = true;
+bool menu = true;
+bool play = false;
+bool quit_game = false;
+bool game_over = false;
+bool game_paused = false;
+bool quit = false;
+bool exit_game = false;
 
+
+//----------Function----------
 string longLongToString(long long x){
     stringstream ss;
     ss << x;
@@ -14,7 +19,7 @@ string longLongToString(long long x){
     return str;
 }
 
-void GameInitEverything(SDL_Renderer* gRenderer){
+void GameInitEverything(){
 
     //-----SoundInit-----
     if(Death_Sound_Played){
@@ -27,9 +32,8 @@ void GameInitEverything(SDL_Renderer* gRenderer){
     //-----gMonkeyInit-----
     gMonkeyState = STATE_RUN;
     JumpBreak = 0;
-    JumpTo_Pos = 310;
-    FallTo_Pos = gMonkey_Stable_PosY;
-    gMonkey_Pos = {gMonkey_Stable_PosX, gMonkey_Stable_PosY};
+    jumpToPos = 0;
+    gMonkeyPos = {MONKEY_STABLE_POSX, MONKEY_STABLE_POSY};
     MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED;
     MONKEY_RUNNING_FRAME = 0;
 
@@ -80,6 +84,7 @@ void GameInitEverything(SDL_Renderer* gRenderer){
     game_over = false;
     game_paused = false;
     quit = false;
+    exit_game = false;
 
     ScoreBoard_PosY = SCREEN_HEIGHT+10;
 
@@ -87,12 +92,12 @@ void GameInitEverything(SDL_Renderer* gRenderer){
     SDL_SetRenderDrawColor(gRenderer, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR );
 }
 
-void HandleMenu(SDL_Renderer* gRenderer){
+void HandleMenu(){
     SDL_Event e_mouse;
     while (SDL_PollEvent(&e_mouse) != 0)
     {
         if (e_mouse.type == SDL_QUIT) {
-                Exit_Sound();
+                ExitSound();
                 menu = false;
         }
 
@@ -103,34 +108,23 @@ void HandleMenu(SDL_Renderer* gRenderer){
         RoundExitButton.handleEvent(&e_mouse, menu, quit_game);
 
         if (quit_game == true){
-            Exit_Sound();
+            ExitSound();
             close();
         }
     }
     SDL_RenderClear(gRenderer);
 
-    RenderScrollingBackground(gRenderer);
-    RenderScrollingGround(gRenderer);
-    StartBackground_Texture.render(gRenderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    RenderScrollingBackground();
+    RenderScrollingGround();
+    StartBackground_Texture.render(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    SDL_Rect* currentClip = NULL;
-    setMonkeyPos(gMonkeyRunning_Texture);
-    currentClip = &gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED];
-    ++MONKEY_RUNNING_FRAME;
-    if (MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED >= MONKEY_RUNNING_FRAME_COUNT) MONKEY_RUNNING_FRAME = 0;
-    gMonkeyRunning_Texture.render(gRenderer, currentClip);
+    gMonkeyRenderRunning();
 
-    StartButton.render(gRenderer);
-    ExitButton.render(gRenderer);
+    StartButton.render();
+    ExitButton.render();
 
     SDL_RenderPresent(gRenderer);
 }
-
-void setMonkeyPos(gMonkey &gMonkey_Texture){
-    gMonkey_Texture.setPosX(gMonkey_Pos.first);
-    gMonkey_Texture.setPosY(gMonkey_Pos.second);
-}
-
 
 void gMonkeyHandleHigherPath(){
 
@@ -140,22 +134,22 @@ void gMonkeyHandleHigherPath(){
         double PathPosX_End = PathPosX + PATH_WIDTH[ID];
 
         int gMonkey_HigherPath_PosY;
-        if(ID <= UP_PATH2_ID) gMonkey_HigherPath_PosY = gMonkey_X1_PosY;
-        else gMonkey_HigherPath_PosY = gMonkey_X2_PosY;
+        if(ID <= UP_PATH2_ID) gMonkey_HigherPath_PosY = MONKEY_POSY_LEVEL[POSY_UP_ID];
+        else gMonkey_HigherPath_PosY = MONKEY_POSY_LEVEL[POSY_AIR_ID];
 
-        if ((gMonkey_Pos.first + MONKEY_WIDTH - 10) >= PathPosX && gMonkey_Pos.first + 40 <= PathPosX_End){
+        if ((gMonkeyPos.first + MONKEY_WIDTH - 10) >= PathPosX && gMonkeyPos.first + 40 <= PathPosX_End){
             if (gMonkeyState == STATE_FALLNPR || gMonkeyState == STATE_FALLPARA){
 
-                if (gMonkey_Pos.second >= gMonkey_HigherPath_PosY && gMonkey_Pos.second <= gMonkey_HigherPath_PosY + MONKEY_JUMPING_SPEED){
+                if (gMonkeyPos.second >= gMonkey_HigherPath_PosY && gMonkeyPos.second <= gMonkey_HigherPath_PosY + MONKEY_JUMPING_SPEED){
                     JumpBreak = 0;
-                    gMonkey_Pos.second = gMonkey_HigherPath_PosY;
+                    gMonkeyPos.second = gMonkey_HigherPath_PosY;
                     gMonkeyState = STATE_RUN;
                 }
             }
         }
-        else if(gMonkeyState == STATE_RUN && gMonkey_Pos.second == gMonkey_HigherPath_PosY){
-                if (gMonkey_Pos.first + 40 > PathPosX_End && gMonkey_Pos.first <= PathPosX_End){
-                    gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
+        else if(gMonkeyState == STATE_RUN && gMonkeyPos.second == gMonkey_HigherPath_PosY){
+                if (gMonkeyPos.first + 40 > PathPosX_End && gMonkeyPos.first <= PathPosX_End){
+                    gMonkeyPos.second += MONKEY_JUMPING_SPEED;
                     gMonkeyState = STATE_FALLNPR;
                     //cout << ID << " ";     //debug only
                 }
@@ -166,92 +160,20 @@ void gMonkeyHandleHigherPath(){
 }
 
 
-void gMonkeyHandleMoving(SDL_Renderer* gRenderer){
-    SDL_Rect* currentClip = NULL;
+void gMonkeyHandleChangeSpeed(){
+    MONKEY_ANIMATION_SPEED = BASE_MONKEY_SPEED*0.75;
+    MONKEY_JUMPING_SPEED = MONKEY_RUNNING_SPEED*2.5;
+}
 
-    if(gMonkeyState == STATE_RUN){
-        JumpBreak += MONKEY_RUNNING_SPEED;
-        setMonkeyPos(gMonkeyRunning_Texture);
-        if(currentKeyStates[ SDL_SCANCODE_DOWN ]){
-            if(gMonkey_PosY_ID != POSY_ON_OBSTACLE_ID){
-                if (gMonkey_Pos.second < gMonkey_Stable_PosY) Mix_PlayChannel(-1, gMonkeyJump_Sound, 0);
-                gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
-                gMonkeyState = STATE_FALLNPR;
-            }
-        }
-        if((currentKeyStates[ SDL_SCANCODE_UP ] || currentKeyStates[ SDL_SCANCODE_SPACE ]) && JumpBreak >= BreakDistance){
+void gMonkeyHandleMoving(){
 
-            JumpTo_Pos = max(0, gMonkey_Pos.second - 190);
-            gMonkeyState = STATE_JUMP;
-            Mix_PlayChannel(-1, gMonkeyJump_Sound, 0);
-        }
+    if(gMonkeyState == STATE_RUN) gMonkeyHandleRunning();
 
-        else {
-            currentClip = &gMonkeyRunning_Clips[MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED];
-            ++MONKEY_RUNNING_FRAME;
-            if (MONKEY_RUNNING_FRAME / MONKEY_ANIMATION_SPEED >= MONKEY_RUNNING_FRAME_COUNT) MONKEY_RUNNING_FRAME = 0;
-            gMonkeyRunning_Texture.render(gRenderer, currentClip);
-        }
-    }
+    if(gMonkeyState == STATE_JUMP) gMonkeyHandleJumping();
 
+    if(gMonkeyState == STATE_FALLNPR) gMonkeyHandleFallNPR();
 
-    if(gMonkeyState == STATE_JUMP){
-        setMonkeyPos(gMonkeyJumping_Texture);
-        if(currentKeyStates[ SDL_SCANCODE_DOWN ]){
-            Mix_PlayChannel(-1, gMonkeyJump_Sound, 0);
-            gMonkeyState = STATE_FALLNPR;
-        }
-        else{
-
-            if(gMonkey_Pos.second > JumpTo_Pos){
-                gMonkeyJumping_Texture.setPosY(gMonkeyJumping_Texture.getPosY()-MONKEY_JUMPING_SPEED);
-                gMonkey_Pos.second -= MONKEY_JUMPING_SPEED;
-                gMonkeyJumping_Texture.render(gRenderer, currentClip);
-            }
-            else {
-                if (!(currentKeyStates[ SDL_SCANCODE_UP ] || currentKeyStates[ SDL_SCANCODE_SPACE ])) gMonkeyState = STATE_FALLNPR;
-                else gMonkeyState = STATE_FALLPARA;
-            }
-        }
-    }
-
-
-    if(gMonkeyState == STATE_FALLNPR){
-        setMonkeyPos(gMonkeyFallNPR_Texture);
-        if(gMonkey_Pos.second < FallTo_Pos){
-
-            if ((currentKeyStates[ SDL_SCANCODE_UP ] || currentKeyStates[ SDL_SCANCODE_SPACE ])) gMonkeyState = STATE_FALLPARA;
-
-            else{
-                gMonkeyFallNPR_Texture.setPosY(gMonkeyFallNPR_Texture.getPosY()+MONKEY_JUMPING_SPEED);
-                gMonkey_Pos.second += MONKEY_JUMPING_SPEED;
-                gMonkeyFallNPR_Texture.render(gRenderer, currentClip);
-            }
-        }
-        else{
-            gMonkeyState = STATE_RUN;
-            gMonkey_Pos.second = FallTo_Pos;
-        }
-    }
-
-    if(gMonkeyState == STATE_FALLPARA){
-        setMonkeyPos(gMonkeyFallPARA_Texture);
-
-        if(gMonkey_Pos.second < FallTo_Pos && !(currentKeyStates[ SDL_SCANCODE_UP ] || currentKeyStates[ SDL_SCANCODE_SPACE ])){
-            gMonkeyState = STATE_FALLNPR;
-        }
-
-        if(gMonkey_Pos.second < FallTo_Pos){
-            gMonkeyFallPARA_Texture.setPosY(gMonkeyFallPARA_Texture.getPosY()+MONKEY_RUNNING_SPEED);
-            gMonkey_Pos.second += MONKEY_RUNNING_SPEED/3;
-            gMonkeyFallPARA_Texture.render(gRenderer, currentClip);
-        }
-        else{
-            gMonkeyState = STATE_RUN;
-            JumpBreak = 0;
-            gMonkey_Pos.second = FallTo_Pos;
-        }
-    }
+    if(gMonkeyState == STATE_FALLPARA) gMonkeyHandleFallPARA();
 
     MONKEY_RUNNING_SPEED = BASE_MONKEY_SPEED + (1.0*gTimer.getTicks()/50000);
 }
@@ -275,58 +197,89 @@ void UpdateHighScore(int &BestDistance, int &BestBanana){
 
 }
 
-void DeathScreenShot(SDL_Renderer* gRenderer){
+void DeathScreenShot(){
     SDL_Surface *sshot = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     SDL_RenderReadPixels(gRenderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
     SDL_SaveBMP(sshot, "Material/DeathScreen/DeathScreen.bmp");
-    if(!DeathScreen.loadFromFile("Material/DeathScreen/DeathScreen.bmp", gRenderer))
+    if(!DeathScreen.loadFromFile("Material/DeathScreen/DeathScreen.bmp"))
         printf( "Failed to load DeathScreen texture image!\n" );
 }
 
-void HandleGameOver(){
+void handleTopLeftScore(){
+    gRunDistance += MONKEY_RUNNING_SPEED;
+    scoreNow = longLongToString(gRunDistance/80) + " m";
+    bananaScoreNow = longLongToString(Banana_Score) + " Banana";
+    if (Banana_Score >= 2) bananaScoreNow += 's';
 
-    if (game_over) play = false, quit = true, gTimer.stop();
+    gTextTexture.loadFromRenderedText( scoreNow, ScoreBorderColor, gBorderFont);
+    gTextTexture.render(10, 40);
+
+    gTextTexture.loadFromRenderedText( scoreNow, ScoreColor, gFont);
+    gTextTexture.render(12, 39);
+
+    gTextTexture.loadFromRenderedText( bananaScoreNow, ScoreBorderColor, gBorderFont);
+    gTextTexture.render(10, 70);
+
+    gTextTexture.loadFromRenderedText( bananaScoreNow, ScoreColor, gFont);
+    gTextTexture.render(12, 69);
+}
+
+//----------Game Stopped----------
+
+void handleDeathFuncion(SDL_Event e_mouse){
+    AgainButton.handleEvent(&e_mouse, game_over, play);
+    ExitButton.handleEvent(&e_mouse, game_over, exit_game);
+}
+
+void HandlePauseFunction(SDL_Event e_mouse){
+    PlayButton.handleEvent(&e_mouse, game_paused, play);
+    HomeButton.handleEvent(&e_mouse, game_paused, backToMenu);
+    RoundExitButton.handleEvent(&e_mouse, game_paused, exit_game);
+
+    if (!game_paused) {
+        if(Mix_PausedMusic()) Mix_ResumeMusic();
+        gTimer.unpause();
+    }
+
+    if(backToMenu){
+        Mix_HaltChannel(-1);
+        quit = true;
+        play = false;
+    }
+}
+
+void HandleStopFunction(){
+
+    if (game_over){
+        play = false;
+        quit = true;
+        gTimer.stop();
+    }
     else gTimer.pause();
-    bool exit = false;
+
+    exit_game = false;
     SDL_Event e_mouse;
+
     while (SDL_PollEvent(&e_mouse) != 0)
     {
         if (e_mouse.type == SDL_QUIT){
-            Exit_Sound();
+            ExitSound();
             close();
         }
 
-        if (game_over){
-            AgainButton.handleEvent(&e_mouse, game_over, play);
-            ExitButton.handleEvent(&e_mouse, game_over, exit);
-        }
+        if (game_over) handleDeathFuncion(e_mouse);
 
-        else if (game_paused){
-            PlayButton.handleEvent(&e_mouse, game_paused, play);
-            HomeButton.handleEvent(&e_mouse, game_paused, backToMenu);
-            RoundExitButton.handleEvent(&e_mouse, game_paused, exit);
+        else if (game_paused) HandlePauseFunction(e_mouse);
 
-            if (!game_paused) {
-                if(Mix_PausedMusic()) Mix_ResumeMusic();
-                gTimer.unpause();
-            }
-
-            if(backToMenu){
-                Mix_HaltChannel(-1);
-                quit = true;
-                play = false;
-            }
-        }
-
-        if (exit){
-            Exit_Sound();
+        if (exit_game){
+            ExitSound();
             close();
         }
     }
 }
 
-void HandleDeathScreen (SDL_Renderer* gRenderer){
-
+//----------Stop Screen----------
+void getDeathScore(){
     int BestDistance = gRunDistance/80, BestBanana = Banana_Score;
     UpdateHighScore(BestDistance, BestBanana);
 
@@ -335,47 +288,42 @@ void HandleDeathScreen (SDL_Renderer* gRenderer){
 
     scoreNow = "Distance:  " + longLongToString(gRunDistance/80) + " (Best " + longLongToString(BestDistance) + ")";
     bananaScoreNow += longLongToString(Banana_Score) + " (Best " + longLongToString(BestBanana) + ")";
+}
+
+void handleDeathFloatingObject(){
+
+    if (ScoreBoard_PosY > 30) ScoreBoard_PosY -= 15;
+    ExitButton.setPos(570, ScoreBoard_PosY + 380);
+    AgainButton.setPos(200, ScoreBoard_PosY + 380);
+
+    ScoreBoard.render(SCORE_BOARD_POSX, ScoreBoard_PosY, SCORE_BOARD_WIDTH, SCORE_BOARD_HEIGHT);
+
+    RenderScoreWithPosY(DeathMessage, ScoreBoard_PosY + 115);
+    RenderScoreWithPosY(scoreNow, ScoreBoard_PosY + 169);
+    RenderScoreWithPosY(bananaScoreNow, ScoreBoard_PosY + 229);
+
+    AgainButton.render();
+    ExitButton.render();
+}
+
+void HandlePauseFloatingObject(){
+    Paused_Text.render(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    PlayButton.render();
+    HomeButton.render();
+    RoundExitButton.render();
+}
+
+void HandleStopScreen(){
+
+    getDeathScore();
 
     SDL_RenderClear(gRenderer);
-    DeathScreen.render(gRenderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    if (game_over){
+    DeathScreen.render(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        if (ScoreBoard_PosY > 30) ScoreBoard_PosY -= 15;
+    if (game_over) handleDeathFloatingObject();
 
-        int DeathMessage_PosY = ScoreBoard_PosY + 115;
-        int scoreNow_PosY = ScoreBoard_PosY + 169;
-        int bananaScoreNow_PosY = ScoreBoard_PosY + 229;
+    else if (game_paused) HandlePauseFloatingObject();
 
-        ExitButton.setPos(570, ScoreBoard_PosY + 380);
-        AgainButton.setPos(200, ScoreBoard_PosY + 380);
-
-        ScoreBoard.render(gRenderer, (SCREEN_WIDTH-SCORE_BOARD_WIDTH)/2, ScoreBoard_PosY, SCORE_BOARD_WIDTH, SCORE_BOARD_HEIGHT);
-
-        gTextTexture.loadFromRenderedText( DeathMessage, DeathScoreBorderColor, gDeathBorderFont, gRenderer);
-        gTextTexture.render( gRenderer, gTextTexture.getCenter(), DeathMessage_PosY);
-        gTextTexture.loadFromRenderedText( DeathMessage, DeathScoreColor, gDeathFont, gRenderer);
-        gTextTexture.render( gRenderer, gTextTexture.getCenter(), DeathMessage_PosY);
-
-        gTextTexture.loadFromRenderedText( scoreNow, DeathScoreBorderColor, gDeathBorderFont, gRenderer);
-        gTextTexture.render( gRenderer, gTextTexture.getCenter(), scoreNow_PosY);
-        gTextTexture.loadFromRenderedText( scoreNow, DeathScoreColor, gDeathFont, gRenderer);
-        gTextTexture.render( gRenderer, gTextTexture.getCenter(), scoreNow_PosY);
-
-        gTextTexture.loadFromRenderedText( bananaScoreNow, DeathScoreBorderColor, gDeathBorderFont, gRenderer);
-        gTextTexture.render( gRenderer, gTextTexture.getCenter(), bananaScoreNow_PosY);
-        gTextTexture.loadFromRenderedText( bananaScoreNow, DeathScoreColor, gDeathFont, gRenderer);
-        gTextTexture.render( gRenderer, gTextTexture.getCenter(), bananaScoreNow_PosY);
-
-        AgainButton.render(gRenderer);
-        ExitButton.render(gRenderer);
-    }
-    else if (game_paused) {
-        Paused_Text.render(gRenderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        PlayButton.render(gRenderer);
-        HomeButton.render(gRenderer);
-        RoundExitButton.render(gRenderer);
-    }
     SDL_RenderPresent(gRenderer);
-
 }

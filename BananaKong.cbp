@@ -45,10 +45,8 @@
 		<Unit filename="Material/Background/Layer3.png" />
 		<Unit filename="Material/Characters/Banana/Banana.png" />
 		<Unit filename="Material/Characters/Monkey/MonkeyFall_NoPara.png" />
-		<Unit filename="Material/Characters/Monkey/MonkeyIdle.png" />
 		<Unit filename="Material/Characters/Monkey/MonkeyJump.png" />
 		<Unit filename="Material/Characters/Monkey/MonkeyRun.png" />
-		<Unit filename="Material/Characters/Monkey/MonkeyWalk.png" />
 		<Unit filename="Material/Fonts/Nueva.ttf" />
 		<Unit filename="Material/Fonts/UVNVan.TTF" />
 		<Unit filename="Material/HigherPath/AirPath1.png" />

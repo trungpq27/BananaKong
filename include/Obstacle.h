@@ -50,7 +50,7 @@ class Obstacle : public BaseObject{
 
         void updateY();
 
-        void render(SDL_Renderer* gRenderer, int wSize, int hSize);
+        void render(int wSize, int hSize);
 
         void Move();
 
@@ -67,5 +67,12 @@ extern Obstacle Tent_Texture;
 extern double ObstaclePosX_Carry [SCREEN_LEVEL_COUNT][OBSTACLE_COUNT];
 
 extern bool game_over;
+
+//-----Function-----
+ void MoveAndCollisionObstacle();
+
+//-----Load Media-----
+extern bool isLoadObstacleOK();
+extern void closeObstacle();
 
 #endif // OBSTACLE_H
