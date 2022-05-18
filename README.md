@@ -34,6 +34,7 @@ The game texture (sprite-sheet) and image cutouts (sprites) are packed in `Mater
 - Nueva Bold Extended Copyrighted by 1994 Adobe Systems Incorporated.
 - Background title.png, Paused.png is designed by PhuQuocTrung.
 - MainBgm.wav is extracted from original BananaKong! game by FDG Entertainment.
+- Death.wav is extracted from Super Mario game series by Nintendo.
 - seeya.wav is extracted from Osu! game by Dean Herbert.
 - Other sound effect could be downloaded freely from https://mixkit.co/free-sound-effects/game/
 - Other sprites and images could be downloaded freely from https://pngtree.com/.
