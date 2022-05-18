@@ -30,8 +30,8 @@ The game texture (sprite-sheet) and image cutouts (sprites) are packed in `Mater
 ### License
 - Source codes (except SDL libraries) is writen fully by PhuQuocTrung (https://www.facebook.com/phuquoctrung27).
 - SDL librearies is distributed under the zlib license (https://www.libsdl.org/license.php).
-- UVN Van Bold font copyrighted by 2001 Tom Truong.
-- Nueva Bold Extended Copyrighted by 1994 Adobe Systems Incorporated.
+- UVN Van Bold font is copyrighted by 2001 Tom Truong.
+- Nueva Bold Extended font is Copyrighted by 1994 Adobe Systems Incorporated.
 - Background title.png, Paused.png is designed by PhuQuocTrung.
 - MainBgm.wav is extracted from original BananaKong! game by FDG Entertainment.
 - Death.wav is extracted from Super Mario game series by Nintendo.
