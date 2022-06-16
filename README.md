@@ -1,6 +1,7 @@
 # BananaKong!
 
 BananaKong! (NOT AUTHENTIC) is a C++ SDL game project for mid term INT2215_2 class of UET-VNU.
+Demo Link: https://youtu.be/u5LSeDUtm6g
 
 ## Developer
 
